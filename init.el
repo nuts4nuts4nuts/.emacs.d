@@ -1,23 +1,23 @@
-;Hide extra bars
+;; Hide extra bars
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-; IDO mode
+;; IDO mode
 (ido-mode 1)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 
-; Auto indent
+;; Auto indent
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
-; Use Marmalade repo
+;; Use Marmalade repo
 (require 'package)
 (package-initialize)
 (push '("melpa" . "http://melpa.milkbox.net/packages/")
       package-archives)
 
-; Evil Leader on
+;; Evil Leader on
 (require 'evil-leader)
 (global-evil-leader-mode)
     ;; leader configurations
@@ -25,41 +25,41 @@
     (evil-leader/set-key
       "f" 'find-file
       "b" 'switch-to-buffer
-      "k" 'kill-buffer)
+      "k" 'kill-buffer
+      "d" 'ido-dired)
 
-; Evil Mode on
+;; Evil Mode on
 (require 'evil)
 (evil-mode 1)
 
-;; evil configurations
-    ;; esc quits
-    (defun minibuffer-keyboard-quit ()
-      "Abort recursive edit.
-    In Delete Selection mode, if the mark is active, just deactivate it;
-    then it takes a second \\[keyboard-quit] to abort the minibuffer."
-      (interactive)
-      (if (and delete-selection-mode transient-mark-mode mark-active)
-	  (setq deactivate-mark  t)
-	(when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-	(abort-recursive-edit)))
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
-    (define-key evil-visual-state-map [escape] 'keyboard-quit)
-    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-    (global-set-key [escape] 'evil-exit-emacs-state);; esc quits
+;; ESC quits
+(defun minibuffer-keyboard-quit ()
+  "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  (interactive)
+  (if (and delete-selection-mode transient-mark-mode mark-active)
+      (setq deactivate-mark  t)
+    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+    (abort-recursive-edit)))
+(define-key evil-normal-state-map [escape] 'keyboard-quit)
+(define-key evil-visual-state-map [escape] 'keyboard-quit)
+(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+(global-set-key [escape] 'evil-exit-emacs-state); esc quits
 
-    ;;Scroll up and down
-    (define-key evil-normal-state-map (kbd "C-k") (lambda ()
+;; Scroll up and down
+(define-key evil-normal-state-map (kbd "C-k") (lambda ()
+		    (interactive)
+		    (evil-scroll-up nil)))
+(define-key evil-normal-state-map (kbd "C-j") (lambda ()
 			(interactive)
-			(evil-scroll-up nil)))
-    (define-key evil-normal-state-map (kbd "C-j") (lambda ()
-			    (interactive)
-			    (evil-scroll-down nil)))
+			(evil-scroll-down nil)))
 
-; Zenburn theme
+;; Zenburn theme
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -74,13 +74,13 @@
  ;; If there is more than one, they won't work right.
  )
 
-; Make prompts nicer
+;; Make prompts nicer
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-confirm-create-new-buffer 'always)
 
-; Display tooltips in the echo area
+;; Display tooltips in the echo area
 (tooltip-mode -1)
 (setq tooltip-use-echo-area t)
 
-; Disable splash screen
+;; Disable splash screen
 (setq inhibit-splash-screen t)
