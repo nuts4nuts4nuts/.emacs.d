@@ -1,1 +1,21 @@
 vim
+ls
+ll
+ls
+git add .
+git status
+tl
+j
+git commit -m "updated evil and added d (dired) to leader"
+git config --global user.name "David Johnston"
+git config --global user.email dvdjoh@gmail.com
+git config --global user.email nuts4nuts4nuts@gmail.com
+git commit -m "updated evil and added d (dired) to leader"
+git push
+git remote set-url origin https://github.com/nuts4nuts4nuts/.emacs.d.git
+git push
+git remote set-url origin https://nuts4nuts4nuts@github.com/nuts4nuts4nuts/.emacs.d.git
+git push
+exit
+kill -9 2655
+terminator &
