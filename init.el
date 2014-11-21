@@ -8,6 +8,9 @@
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 
+;; auto-complete-mode
+(global-auto-complete-mode 1)
+
 ;; Auto indent
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
@@ -84,3 +87,17 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
 ;; Disable splash screen
 (setq inhibit-splash-screen t)
+
+;; M-j is indent-new-comment-line  
+;; M-k is kill-sentence                       ; REBIND THESE THINGS MAYBE
+;; M-h is mark-paragraph
+;; M-l is downcase-word
+;; Took the i3 switch window bindings + normal C-tab thing
+(global-set-key (kbd "M-j") 'windmove-down)
+(global-set-key (kbd "M-k") 'windmove-up)
+(global-set-key (kbd "M-h") 'windmove-left)
+(global-set-key (kbd "M-l") 'windmove-right)
+(global-set-key (kbd "<C-tab>") 'other-window)
+
+;; Don't prompt for nonexistent buffer
+(setq ido-create-new-buffer 'always)
