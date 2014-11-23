@@ -1,0 +1,5 @@
+; Attempt at writing function to create C declaration in header file for function under cursor
+
+(defun generate-declaration ()
+  (interactive)
+  (message "This functino does things!"))

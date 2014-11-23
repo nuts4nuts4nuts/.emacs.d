@@ -11,8 +11,8 @@
 ;; auto-complete-mode
 (global-auto-complete-mode 1)
 
-;; Auto indent
-(define-key global-map (kbd "RET") 'newline-and-indent)
+;; Smex on
+(global-set-key (kbd "M-x") 'smex)
 
 ;; Use Marmalade repo
 (require 'package)
@@ -69,7 +69,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (zenburn)))
- '(custom-safe-themes (quote ("f9bb8302f2fc463c68df5951fbcff1bb4ea88aa96080ea94d808cafc05d956b0" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
+ '(custom-safe-themes (quote ("6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "f9bb8302f2fc463c68df5951fbcff1bb4ea88aa96080ea94d808cafc05d956b0" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

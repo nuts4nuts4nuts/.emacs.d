@@ -1,0 +1,18 @@
+
+;; ----- smex-history -----
+(
+ eval-buffer
+ eval-expression
+ list-packages
+ cd
+ 5x5
+ arp
+ dbx
+)
+
+;; ----- smex-data -----
+(
+ (eval-buffer . 2)
+ (list-packages . 1)
+ (eval-expression . 1)
+)
