@@ -9,6 +9,7 @@
 (setq ido-everywhere t)
 
 ;; auto-complete-mode
+;(global-auto-complete-mode 1)
 
 ;; Smex on
 (global-set-key (kbd "M-x") 'smex)

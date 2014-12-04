@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ global-auto-complete-mode
  eval-buffer
  eval-expression
  list-packages
  cd
  5x5
  arp
- dbx
 )
 
 ;; ----- smex-data -----
@@ -15,4 +15,5 @@
  (eval-buffer . 2)
  (list-packages . 1)
  (eval-expression . 1)
+ (global-auto-complete-mode . 1)
 )
