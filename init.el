@@ -1,7 +1,8 @@
 ;; Hide extra bars
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(when (eq system-type 'windows-nt)
+      (menu-bar-mode -1)
+      (tool-bar-mode -1)
+      (scroll-bar-mode -1))
 
 ;; IDO mode
 (ido-mode 1)
