@@ -1,0 +1,69 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("c:/$Recycle.Bin/" . "S-1-5-21-1251070531-2644047320-2510440992-1006/")
+ ("c:/Users/david.johnston/Documents/test_project/" . "Assets/")
+ ("c:/Users/david.johnston/Documents/Test Omnisharp/" . "Assets/")
+ ("c:/Users/david.johnston/Documents/" . "test_project/")
+ ("c:/Users/david.johnston/" . "Documents/")
+ ("c:/Users/" . "david.johnston/")
+ ("c:/" . "Users/")
+ ("w:/HOME/" . ".emacs.d/")
+ ("w:/" . "HOME/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "c:/Users/david.johnston/Documents/test_project/Assets/"
+ "w:/HOME/.emacs.d/"
+ "c:/Users/david.johnston/Documents/Test Omnisharp/Assets/"
+ "w:/home/.emacs.d/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "test.cs"
+ "init.el"
+ "NewBehaviourScript.cs"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("c:/Users/david.johnston/Documents/test_project/Assets/" (22004 44504 0 0) "test.cs~" "test.cs.meta" "test.cs" "../" "./")
+
+ ("c:/Users/david.johnston/" (22004 44502 0 0) "Videos/" "Templates/" "Start Menu/" "SendTo/" "Searches/" "Saved Games/" "Recent/" "PrintHood/" "Pictures/" "omnisharp-tmp-file.cs" "ntuser.pol" "ntuser.ini" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000002.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000001.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TM.blf" "ntuser.dat.LOG2" "ntuser.dat.LOG1" "NTUSER.DAT" "NetHood/" "My Documents/" "Music/" "Local Settings/" "Links/" "Favorites/" "Downloads/" "Documents/" "Desktop/" "Cookies/" "Contacts/" "Application Data/" "AppData/" "Adobe Flash Builder 4.7/" ".nbi/" "../" "./")
+
+ ("w:/HOME/.emacs.d/" (22004 45465 0 0) "tutorial/" "themes/" "smex-items" "README.md" "init.el~" "init.el" "ido.last~" "ido.last" "eshell/" "elpa/" "declareFunc.el~" "declareFunc.el" "auto-save-list/" "ac-comphist.dat" ".git/" "../" "./")
+
+ ("c:/$Recycle.Bin/S-1-5-21-1251070531-2644047320-2510440992-1006/" (21971 20335 0 0) "desktop.ini" "../" "./")
+
+ ("c:/$Recycle.Bin/" (22004 40709 0 0) "S-1-5-21-140789816-1097400475-1238779560-53631/" "S-1-5-21-140789816-1097400475-1238779560-52792/" "S-1-5-21-140789816-1097400475-1238779560-52375/" "S-1-5-21-140789816-1097400475-1238779560-50401/" "S-1-5-21-140789816-1097400475-1238779560-49082/" "S-1-5-21-140789816-1097400475-1238779560-44023/" "S-1-5-21-140789816-1097400475-1238779560-42336/" "S-1-5-21-140789816-1097400475-1238779560-42327/" "S-1-5-21-140789816-1097400475-1238779560-42126/" "S-1-5-21-140789816-1097400475-1238779560-41925/" "S-1-5-21-140789816-1097400475-1238779560-39754/" "S-1-5-21-140789816-1097400475-1238779560-39622/" "S-1-5-21-140789816-1097400475-1238779560-39573/" "S-1-5-21-140789816-1097400475-1238779560-39379/" "S-1-5-21-140789816-1097400475-1238779560-38238/" "S-1-5-21-140789816-1097400475-1238779560-38225/" "S-1-5-21-140789816-1097400475-1238779560-36754/" "S-1-5-21-140789816-1097400475-1238779560-35812/" "S-1-5-21-140789816-1097400475-1238779560-35334/" "S-1-5-21-140789816-1097400475-1238779560-34980/" "S-1-5-21-140789816-1097400475-1238779560-34768/" "S-1-5-21-140789816-1097400475-1238779560-34703/" "S-1-5-21-140789816-1097400475-1238779560-34685/" "S-1-5-21-140789816-1097400475-1238779560-34612/" "S-1-5-21-140789816-1097400475-1238779560-34525/" "S-1-5-21-140789816-1097400475-1238779560-34368/" "S-1-5-21-140789816-1097400475-1238779560-34358/" "S-1-5-21-1251070531-2644047320-2510440992-1006/" "../" "./")
+
+ ("w:/HOME/" (22004 41081 0 0) "omnisharp-server/" "curl/" ".emacs.d/" "../" "./")
+
+ ("c:/Users/david.johnston/Documents/test_project/" (22004 42079 0 0) "test_project.userprefs" "test_project.sln" "test_project-csharp.sln" "Temp/" "ProjectSettings/" "Library/" "Assets/" "Assembly-CSharp.csproj" "Assembly-CSharp-vs.csproj" "../" "./")
+
+ ("w:/home/.emacs.d/" (22004 41868 0 0) "tutorial/" "themes/" "smex-items" "README.md" "init.el~" "init.el" "ido.last~" "ido.last" "eshell/" "elpa/" "declareFunc.el~" "declareFunc.el" "auto-save-list/" "ac-comphist.dat" ".git/" ".#init.el" "#init.el#" "../" "./")
+
+ ("c:/Users/david.johnston/Documents/" (22004 41662 0 0) "Visual Studio 2013/" "Visual Studio 2010/" "Visual Studio 2008/" "test_project/" "My Videos/" "My Pictures/" "My Music/" "desktop.ini" "Autodesk Application Manager/" "Adobe/" "../" "./")
+
+ ("c:/Users/" (22004 40698 0 0) "yvonne.lee/" "wesley.davis/" "walter.tang/" "User/" "sophie.forman/" "Public/" "matthew.martineau/" "matthew.barrett/" "mary.burbridge/" "lillian.vinson/" "kody.corbosiero/" "justin.spognardi/" "jtelensky/" "joseph.lefebvre/" "jonathan.barrett/" "joe.masucci/" "graham.pannier/" "dylan.gooley/" "desktop.ini" "Default User/" "Default/" "david.johnston/" "damond.barkley/" "christopher.leberech/" "christine.kirkpatric/" "brook.chipman/" "brielle.hansen/" "brian.flaherty/" "angelo.person/" "amanda.ledwidge/" "amanda.deep/" "All Users/" "Administrator/" "adam.cerutti/" "../" "./")
+
+ ("w:/home/" (22004 41081 0 0) "omnisharp-server/" "curl/" ".emacs.d/" "../" "./")
+
+ ("c:/Users/david.johnston/Documents/Test Omnisharp/Assets/" (22004 37896 0 0) "NewBehaviourScript.cs.meta" "NewBehaviourScript.cs" "../" "./")
+
+ ("c:/Users/david.johnston/Documents/Test Omnisharp/" (22004 36278 0 0) "Test Omnisharp.userprefs" "Test Omnisharp.sln" "Test Omnisharp-csharp.sln" "Temp/" "ProjectSettings/" "Library/" "Assets/" "../" "./")
+
+ ("w:/home/.emacs.d/elpa/" (22004 34297 0 0) "zenburn-theme-20141112.923/" "undo-tree-readme.txt~" "undo-tree-readme.txt" "undo-tree-20140509.522/" "textile-mode-readme.txt" "smex-20141027.245/" "smart-mode-line-20141113.1437/" "s-20150909.608/" "rich-minority-20140821.2020/" "popup-20141002.320/" "pkg-info-20150517.443/" "omnisharp-20150709.1045/" "magit-20141115.1601/" "let-alist-1.0.4/" "goto-chg-20131228.1459/" "git-rebase-mode-20140928.1547/" "git-commit-mode-20141014.1634/" "flycheck-20150907.619/" "evil-leader-20140606.543/" "evil-20141119.205/" "evil-20141118.106/" "evil-20141112.2116/" "epl-20150517.433/" "dash-20150829.433/" "dash-20141106.455/" "csharp-mode-20150906.1210/" "cl-lib-0.5/" "auto-complete-20141111.2346/" "archives/" "4clojure-readme.txt" "../" "./")
+
+ ("w:/home/.emacs.d/elpa/omnisharp-20150709.1045/" (22004 34299 0 0) "omnisharp.elc" "omnisharp.el" "omnisharp-utils.elc" "omnisharp-utils.el" "omnisharp-settings.elc" "omnisharp-settings.el" "omnisharp-server-actions.elc" "omnisharp-server-actions.el" "omnisharp-pkg.el" "omnisharp-autoloads.el~" "omnisharp-autoloads.el" "omnisharp-auto-complete-actions.elc" "omnisharp-auto-complete-actions.el" "example-config-for-evil-mode.elc" "example-config-for-evil-mode.el" "../" "./")
+
+ ("w:/Emacs/bin/" (22004 32745 0 0) "runemacs.exe - Shortcut.lnk" "runemacs.exe" "libXpm.dll" "grep-changelog" "etags.exe" "emacsclientw.exe" "emacsclient.exe" "emacs.exe" "emacs-24.5.exe" "ebrowse.exe" "ctags.exe" "addpm.exe" "../" "./")
+
+ ("w:/Emacs/" (22004 31853 0 0) "var/" "share/" "libexec/" "bin/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

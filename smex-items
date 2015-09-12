@@ -1,19 +1,27 @@
 
 ;; ----- smex-history -----
 (
- global-auto-complete-mode
+ omnisharp-start-omnisharp-server
+ load-file
+ ido-mode
  eval-buffer
- eval-expression
- list-packages
- cd
- 5x5
- arp
+ package-list-packages
+ split-window-right
+ package-install
 )
 
 ;; ----- smex-data -----
 (
- (eval-buffer . 2)
+ (eval-buffer . 31)
  (list-packages . 1)
  (eval-expression . 1)
  (global-auto-complete-mode . 1)
+ (package-install . 2)
+ (package-menu-mode . 1)
+ (package-list-packages . 2)
+ (package-refresh-contents . 1)
+ (split-window-right . 1)
+ (omnisharp-start-omnisharp-server . 19)
+ (ido-mode . 2)
+ (load-file . 1)
 )
