@@ -27,5 +27,5 @@
  (evil-escape . 1)
  (evil-escape-mode . 3)
  (eshell . 3)
- (magit-status . 4)
+ (magit-status . 5)
 )
