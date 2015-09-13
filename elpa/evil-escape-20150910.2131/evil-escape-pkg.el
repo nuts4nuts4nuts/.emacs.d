@@ -1,0 +1,1 @@
+(define-package "evil-escape" "20150910.2131" "Escape from anything with a customizable key sequence" '((emacs "24") (evil "1.0.9")) :url "https://github.com/syl20bnr/evil-escape" :keywords '("convenience" "editing" "evil"))

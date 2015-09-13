@@ -30,6 +30,8 @@
 
 ;; ----- ido-dir-file-cache -----
 (
+ ("/home/chronos/user/.emacs.d/" (22004 50290 945122 539000) "init.el" "ac-comphist.dat" "eshell/" "auto-save-list/" "elpa/" "init.el~" "README.md" ".git/" "declareFunc.el" "ido.last" "./" "tutorial/" "smex-items" "../" "ido.last~" "declareFunc.el~" "themes/")
+
  ("c:/Users/david.johnston/Documents/test_project/Assets/" (22004 44504 0 0) "test.cs~" "test.cs.meta" "test.cs" "../" "./")
 
  ("c:/Users/david.johnston/" (22004 44502 0 0) "Videos/" "Templates/" "Start Menu/" "SendTo/" "Searches/" "Saved Games/" "Recent/" "PrintHood/" "Pictures/" "omnisharp-tmp-file.cs" "ntuser.pol" "ntuser.ini" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000002.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000001.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TM.blf" "ntuser.dat.LOG2" "ntuser.dat.LOG1" "NTUSER.DAT" "NetHood/" "My Documents/" "Music/" "Local Settings/" "Links/" "Favorites/" "Downloads/" "Documents/" "Desktop/" "Cookies/" "Contacts/" "Application Data/" "AppData/" "Adobe Flash Builder 4.7/" ".nbi/" "../" "./")

@@ -2,6 +2,7 @@
 
 ;; ----- ido-last-directory-list -----
 (
+ ("c:/$Recycle.Bin/" . "S-1-5-21-1251070531-2644047320-2510440992-1006/")
  ("c:/Users/david.johnston/Documents/test_project/" . "Assets/")
  ("c:/Users/david.johnston/Documents/Test Omnisharp/" . "Assets/")
  ("c:/Users/david.johnston/Documents/" . "test_project/")
@@ -29,11 +30,17 @@
 
 ;; ----- ido-dir-file-cache -----
 (
- ("c:/Users/david.johnston/Documents/test_project/Assets/" (22004 44422 0 0) "test.cs~" "test.cs.meta" "test.cs" "../" "./")
+ ("/home/chronos/user/.emacs.d/" (22004 47600 829026 738000) "init.el" "ac-comphist.dat" "eshell/" "auto-save-list/" "elpa/" "init.el~" "README.md" ".git/" "declareFunc.el" "ido.last" "./" "tutorial/" "smex-items" "../" "ido.last~" "declareFunc.el~" "themes/")
 
- ("c:/Users/david.johnston/" (22004 44420 0 0) "Videos/" "Templates/" "Start Menu/" "SendTo/" "Searches/" "Saved Games/" "Recent/" "PrintHood/" "Pictures/" "omnisharp-tmp-file.cs" "ntuser.pol" "ntuser.ini" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000002.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000001.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TM.blf" "ntuser.dat.LOG2" "ntuser.dat.LOG1" "NTUSER.DAT" "NetHood/" "My Documents/" "Music/" "Local Settings/" "Links/" "Favorites/" "Downloads/" "Documents/" "Desktop/" "Cookies/" "Contacts/" "Application Data/" "AppData/" "Adobe Flash Builder 4.7/" ".nbi/" "../" "./")
+ ("c:/Users/david.johnston/Documents/test_project/Assets/" (22004 44504 0 0) "test.cs~" "test.cs.meta" "test.cs" "../" "./")
 
- ("w:/HOME/.emacs.d/" (22004 42953 0 0) "tutorial/" "themes/" "smex-items" "README.md" "init.el~" "init.el" "ido.last~" "ido.last" "eshell/" "elpa/" "declareFunc.el~" "declareFunc.el" "auto-save-list/" "ac-comphist.dat" ".git/" "../" "./")
+ ("c:/Users/david.johnston/" (22004 44502 0 0) "Videos/" "Templates/" "Start Menu/" "SendTo/" "Searches/" "Saved Games/" "Recent/" "PrintHood/" "Pictures/" "omnisharp-tmp-file.cs" "ntuser.pol" "ntuser.ini" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000002.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TMContainer00000000000000000001.regtrans-ms" "NTUSER.DAT{016888bd-6c6f-11de-8d1d-001e0bcde3ec}.TM.blf" "ntuser.dat.LOG2" "ntuser.dat.LOG1" "NTUSER.DAT" "NetHood/" "My Documents/" "Music/" "Local Settings/" "Links/" "Favorites/" "Downloads/" "Documents/" "Desktop/" "Cookies/" "Contacts/" "Application Data/" "AppData/" "Adobe Flash Builder 4.7/" ".nbi/" "../" "./")
+
+ ("w:/HOME/.emacs.d/" (22004 45465 0 0) "tutorial/" "themes/" "smex-items" "README.md" "init.el~" "init.el" "ido.last~" "ido.last" "eshell/" "elpa/" "declareFunc.el~" "declareFunc.el" "auto-save-list/" "ac-comphist.dat" ".git/" "../" "./")
+
+ ("c:/$Recycle.Bin/S-1-5-21-1251070531-2644047320-2510440992-1006/" (21971 20335 0 0) "desktop.ini" "../" "./")
+
+ ("c:/$Recycle.Bin/" (22004 40709 0 0) "S-1-5-21-140789816-1097400475-1238779560-53631/" "S-1-5-21-140789816-1097400475-1238779560-52792/" "S-1-5-21-140789816-1097400475-1238779560-52375/" "S-1-5-21-140789816-1097400475-1238779560-50401/" "S-1-5-21-140789816-1097400475-1238779560-49082/" "S-1-5-21-140789816-1097400475-1238779560-44023/" "S-1-5-21-140789816-1097400475-1238779560-42336/" "S-1-5-21-140789816-1097400475-1238779560-42327/" "S-1-5-21-140789816-1097400475-1238779560-42126/" "S-1-5-21-140789816-1097400475-1238779560-41925/" "S-1-5-21-140789816-1097400475-1238779560-39754/" "S-1-5-21-140789816-1097400475-1238779560-39622/" "S-1-5-21-140789816-1097400475-1238779560-39573/" "S-1-5-21-140789816-1097400475-1238779560-39379/" "S-1-5-21-140789816-1097400475-1238779560-38238/" "S-1-5-21-140789816-1097400475-1238779560-38225/" "S-1-5-21-140789816-1097400475-1238779560-36754/" "S-1-5-21-140789816-1097400475-1238779560-35812/" "S-1-5-21-140789816-1097400475-1238779560-35334/" "S-1-5-21-140789816-1097400475-1238779560-34980/" "S-1-5-21-140789816-1097400475-1238779560-34768/" "S-1-5-21-140789816-1097400475-1238779560-34703/" "S-1-5-21-140789816-1097400475-1238779560-34685/" "S-1-5-21-140789816-1097400475-1238779560-34612/" "S-1-5-21-140789816-1097400475-1238779560-34525/" "S-1-5-21-140789816-1097400475-1238779560-34368/" "S-1-5-21-140789816-1097400475-1238779560-34358/" "S-1-5-21-1251070531-2644047320-2510440992-1006/" "../" "./")
 
  ("w:/HOME/" (22004 41081 0 0) "omnisharp-server/" "curl/" ".emacs.d/" "../" "./")
 

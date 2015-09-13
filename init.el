@@ -8,7 +8,7 @@
 (setq x-select-enable-clipboard nil)
 
 ;; IDO mode
-(ido-mode 1)
+(ido-mode t)
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
 
@@ -34,27 +34,12 @@
 
 ;; Evil Mode on
 (require 'evil)
-(evil-mode 1)
+(evil-mode t)
 
 ;; ESC quits
-(defun minibuffer-keyboard-quit ()
-  "Abort recursive edit.
-In Delete Selection mode, if the mark is active, just deactivate it;
-then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  (interactive)
-  (if (and delete-selection-mode transient-mark-mode mark-active)
-      (setq deactivate-mark  t)
-    (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-    (abort-recursive-edit)))
-
-(define-key evil-normal-state-map [escape] 'keyboard-quit)
-(define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-(global-set-key [escape] 'evil-exit-emacs-state); esc quits
+(require 'evil-escape)
+(evil-escape-mode t)
+(setq-default evil-escape-key-sequence "kj")
 
 ;; Scroll up and down
 (define-key evil-normal-state-map (kbd "C-k") (lambda ()
@@ -116,6 +101,9 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (windmove-right)
   (find-file "~/.emacs.d/init.el"))
 (evil-leader/set-key "in" 'open-init)
+
+;; Use company mode
+(add-hook 'after-init-hook 'global-company-mode)
 
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)

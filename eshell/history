@@ -19,3 +19,10 @@ git push
 exit
 kill -9 2655
 terminator &
+ls
+ls elpa
+exit
+ls
+ls elpa
+:q
+exit
