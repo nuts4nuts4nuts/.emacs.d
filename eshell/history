@@ -26,3 +26,6 @@ ls
 ls elpa
 :q
 exit
+git --verison
+git --version
+exit

@@ -1,19 +1,19 @@
 
 ;; ----- smex-history -----
 (
+ magit-status
  list-packages
+ eshell
  load-file
  eval-buffer
- eshell
  package-install
  package-refresh-contents
- evil-escape-mode
 )
 
 ;; ----- smex-data -----
 (
  (eval-buffer . 36)
- (list-packages . 4)
+ (list-packages . 7)
  (eval-expression . 1)
  (global-auto-complete-mode . 1)
  (package-install . 5)
@@ -26,5 +26,6 @@
  (load-file . 3)
  (evil-escape . 1)
  (evil-escape-mode . 3)
- (eshell . 2)
+ (eshell . 3)
+ (magit-status . 4)
 )

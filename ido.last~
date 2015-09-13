@@ -2,6 +2,8 @@
 
 ;; ----- ido-last-directory-list -----
 (
+ ("h:/HOME/" . ".emacs.d/")
+ ("h:/" . "HOME/")
  ("c:/$Recycle.Bin/" . "S-1-5-21-1251070531-2644047320-2510440992-1006/")
  ("c:/Users/david.johnston/Documents/test_project/" . "Assets/")
  ("c:/Users/david.johnston/Documents/Test Omnisharp/" . "Assets/")
@@ -15,6 +17,7 @@
 
 ;; ----- ido-work-directory-list -----
 (
+ "h:/HOME/.emacs.d/"
  "c:/Users/david.johnston/Documents/test_project/Assets/"
  "w:/HOME/.emacs.d/"
  "c:/Users/david.johnston/Documents/Test Omnisharp/Assets/"
@@ -23,6 +26,7 @@
 
 ;; ----- ido-work-file-list -----
 (
+ ".gitignore"
  "test.cs"
  "init.el"
  "NewBehaviourScript.cs"
@@ -30,7 +34,11 @@
 
 ;; ----- ido-dir-file-cache -----
 (
- ("/home/chronos/user/.emacs.d/" (22004 47600 829026 738000) "init.el" "ac-comphist.dat" "eshell/" "auto-save-list/" "elpa/" "init.el~" "README.md" ".git/" "declareFunc.el" "ido.last" "./" "tutorial/" "smex-items" "../" "ido.last~" "declareFunc.el~" "themes/")
+ ("h:/HOME/.emacs.d/" (22005 41099 0 0) "tutorial/" "themes/" "smex-items" "README.md" "init.el~" "init.el" "ido.last~" "ido.last" "eshell/" "elpa/" "declareFunc.el~" "declareFunc.el" "auto-save-list/" "ac-comphist.dat" ".git/" "../" "./")
+
+ ("h:/HOME/" (22005 40696 0 0) "omnisharp-server/" "curl/" ".emacs.d/" "../" "./")
+
+ ("/home/chronos/user/.emacs.d/" (22004 50290 945122 539000) "init.el" "ac-comphist.dat" "eshell/" "auto-save-list/" "elpa/" "init.el~" "README.md" ".git/" "declareFunc.el" "ido.last" "./" "tutorial/" "smex-items" "../" "ido.last~" "declareFunc.el~" "themes/")
 
  ("c:/Users/david.johnston/Documents/test_project/Assets/" (22004 44504 0 0) "test.cs~" "test.cs.meta" "test.cs" "../" "./")
 

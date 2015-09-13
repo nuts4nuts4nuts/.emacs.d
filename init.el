@@ -58,7 +58,7 @@
  '(custom-enabled-themes (quote (zenburn)))
  '(custom-safe-themes
    (quote
-    ("19352d62ea0395879be564fc36bc0b4780d9768a964d26dfae8aad218062858d" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "f9bb8302f2fc463c68df5951fbcff1bb4ea88aa96080ea94d808cafc05d956b0" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
+    ("8e66467d0701835107f3f7e301d9be9739c40d9f63e0c65695870dc6ab01c564" "19352d62ea0395879be564fc36bc0b4780d9768a964d26dfae8aad218062858d" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "f9bb8302f2fc463c68df5951fbcff1bb4ea88aa96080ea94d808cafc05d956b0" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
