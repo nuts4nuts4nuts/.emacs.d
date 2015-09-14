@@ -38,7 +38,7 @@
 ;; ESC quits
 (require 'evil-escape)
 (evil-escape-mode t)
-(setq-default evil-escape-key-sequence "kj")
+(setq-default evil-escape-key-sequence "fd")
 (setq-default evil-escape-delay 0.2)
 
 ;; Scroll up and down
@@ -67,9 +67,11 @@
 (setq moe-theme-highlight-buffer-id t)
 (moe-dark)
 (moe-theme-set-color 'red)
-;; Uses default emacs (show-paren-mode) but nicer
+
+;; Shows matching parens 
 (show-paren-mode t)
 (setq show-paren-style 'expression)
+(setq show-paren-delay 0.01)
 
 ;; Display tooltips in the echo area
 (tooltip-mode -1)
