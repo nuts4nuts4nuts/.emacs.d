@@ -1,5 +1,5 @@
 ;; Hide extra bars
-(when (eq system-type 'windows-nt)
+(when (display-graphic-p)
       (menu-bar-mode -1)
       (tool-bar-mode -1)
       (scroll-bar-mode -1))
@@ -53,31 +53,23 @@
 ;; Unbind clipboard integration (so that I can use the VIM clipboard stuff
 (setq x-select-enable-clipboard nil)
 
-;; Powerline makes the info bar at the bottom real pretty
-(require 'powerline)
-(powerline-evil-center-color-theme)
-
 ;; Helm is the craziest thing ever
 (require 'helm-config)
 (helm-mode t)
 (global-set-key (kbd "M-x") 'helm-M-x)
 
-;; Zenburn theme
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (zenburn)))
- '(custom-safe-themes
-   (quote
-    ("8e66467d0701835107f3f7e301d9be9739c40d9f63e0c65695870dc6ab01c564" "19352d62ea0395879be564fc36bc0b4780d9768a964d26dfae8aad218062858d" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "f9bb8302f2fc463c68df5951fbcff1bb4ea88aa96080ea94d808cafc05d956b0" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Powerline makes the info bar at the bottom real pretty
+(require 'powerline)
+(powerline-evil-center-color-theme)
+
+;; moe~~~~
+(require 'moe-theme)
+(setq moe-theme-highlight-buffer-id t)
+(moe-dark)
+(moe-theme-set-color 'red)
+;; Uses default emacs (show-paren-mode) but nicer
+(show-paren-mode t)
+(setq show-paren-style 'expression)
 
 ;; Display tooltips in the echo area
 (tooltip-mode -1)
