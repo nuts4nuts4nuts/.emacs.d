@@ -1,31 +1,24 @@
 
 ;; ----- smex-history -----
 (
- magit-status
- list-packages
- eshell
- load-file
  eval-buffer
- package-install
+ load-file
+ package-list-packages
  package-refresh-contents
+ package-menu-refresh
+ magit-status
+ global-auto-complete-mode
 )
 
 ;; ----- smex-data -----
 (
- (eval-buffer . 36)
- (list-packages . 7)
+ (eval-buffer . 3)
+ (list-packages . 1)
  (eval-expression . 1)
  (global-auto-complete-mode . 1)
- (package-install . 5)
- (package-menu-mode . 1)
+ (magit-status . 1)
  (package-list-packages . 2)
- (package-refresh-contents . 2)
- (split-window-right . 1)
- (omnisharp-start-omnisharp-server . 19)
- (ido-mode . 2)
- (load-file . 3)
- (evil-escape . 1)
- (evil-escape-mode . 3)
- (eshell . 3)
- (magit-status . 5)
+ (package-menu-refresh . 1)
+ (package-refresh-contents . 1)
+ (load-file . 1)
 )
