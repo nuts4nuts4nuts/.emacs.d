@@ -70,7 +70,7 @@
 
 ;; Shows matching parens 
 (show-paren-mode t)
-(setq show-paren-style 'expression)
+(setq show-paren-style 'parenthesis)
 (setq show-paren-delay 0.01)
 
 ;; Display tooltips in the echo area
@@ -94,13 +94,15 @@
 ;; auto-complete-mode
 (global-auto-complete-mode t)
 
+(require 'magit)
+
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)
 ;; Example evil-mode config
 ;; ~~~~~NOTE: <SPC> does <Leader> stuff but not very elegantly. Mode mapping not working~~~~~
 (evil-define-key 'insert omnisharp-mode-map (kbd "M-.") 'omnisharp-auto-complete)
 (evil-define-key 'normal omnisharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
-(evil-define-key 'normal omnisharp-mode-map (kbd "gou") 'omnisharp-find-usages)
+(evil-define-key 'normal omnisharp-mode-map (kbd "gou") 'omniSharp-find-usages)
 (evil-define-key 'normal omnisharp-mode-map (kbd "goi") 'omnisharp-find-implementations) ; g i is taken
 (evil-define-key 'normal omnisharp-mode-map (kbd "god") 'Omnisharp-go-to-definition)
 (evil-define-key 'normal omnisharp-mode-map (kbd "goR") 'omnisharp-run-code-action-refactoring)
