@@ -94,7 +94,9 @@
 ;; auto-complete-mode
 (global-auto-complete-mode t)
 
+;; Magit is magic
 (require 'magit)
+(setenv "GIT_ASKPASS" "git-gui--askpass")
 
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)
