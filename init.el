@@ -146,7 +146,3 @@
 ;; Automatically start omnisharp-emacs when editing csharp files.
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 ;; END OF TESTING OMNISHARP STUFF
-
-;; Customize stuff. Sets the magit exe.
-(custom-set-variables
- '(magit-git-executable "c:/Program Files/Git/bin/git.exe"))

@@ -1,3 +1,7 @@
 # Remove autosaves
 *.*~
 #*#
+
+
+url/
+ac-comphist.dat
