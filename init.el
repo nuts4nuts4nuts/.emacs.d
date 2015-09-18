@@ -39,6 +39,13 @@
 (require 'evil)
 (evil-mode t)
 
+;; Jump in a radical way
+(global-evil-jumper-mode t)
+
+;; Surround stuff like never before
+(require 'evil-surround)
+(global-evil-surround-mode t)
+
 ;; ESC quits
 (require 'evil-escape)
 (evil-escape-mode t)
@@ -52,9 +59,13 @@
 (define-key evil-normal-state-map (kbd "C-j") (lambda ()
 			(interactive)
 			(evil-scroll-down nil)))
+
+;; Company is cool
+(define-key evil-normal-state-map (kbd "C-n") 'company-complete)
+(define-key evil-insert-state-map (kbd "C-n") 'company-complete)
 ;;; Evil Mode things end
 
-;; Unbind clipboard integration (so that I can use the VIM clipboard stuff
+;; Unbind clipboard integration (so that I can use the VIM clipboard stuff)
 (setq x-select-enable-clipboard nil)
 
 ;; Helm is the craziest thing ever
@@ -65,6 +76,11 @@
 ;; Powerline makes the info bar at the bottom real pretty
 (require 'powerline)
 (powerline-evil-center-color-theme)
+
+;; We're in good company now
+(add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-omnisharp))
 
 ;; moe~~~~
 (require 'moe-theme)
@@ -94,9 +110,6 @@
 (global-set-key (kbd "M-h") 'windmove-left)
 (global-set-key (kbd "M-l") 'windmove-right)
 (global-set-key (kbd "<C-tab>") 'other-window)
-
-;; auto-complete-mode
-(global-auto-complete-mode t)
 
 ;; Magit is magic
 (require 'magit)
@@ -137,10 +150,6 @@
 (evil-define-key 'normal omnisharp-mode-map
   (kbd ",ra")
   (lambda() (interactive) (omnisharp-unit-test "all")))
-
-;; Speed up auto-complete on mono drastically. This comes with the
-;; downside that documentation is impossible to fetch.
-(setq omnisharp-auto-complete-want-documentation nil)
 
 ;; Set the curl path.
 (setq omnisharp--curl-executable-path "~/curl/curl.exe")
