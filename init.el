@@ -31,9 +31,14 @@
       "d" 'dired
       "in" 'open-init)
 
+;; Lets us do structured lisp editing in a vimmy way
+(require 'evil-lisp-state)
+(evil-leader/set-key "l" 'evil-lisp-state)
+
 ;; Clojure mode bindings
 (evil-leader/set-key-for-mode 'clojure-mode
   "e" 'cider-eval-last-sexp)
+
 
 ;;; Evil Mode on
 (require 'evil)
