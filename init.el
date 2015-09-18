@@ -39,7 +39,7 @@
 (require 'evil-escape)
 (evil-escape-mode t)
 (setq-default evil-escape-key-sequence "fd")
-(setq-default evil-escape-delay 0.2)
+(setq-default evil-escape-delay 0.1)
 
 ;; Scroll up and down
 (define-key evil-normal-state-map (kbd "C-k") (lambda ()
