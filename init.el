@@ -31,6 +31,10 @@
       "d" 'dired
       "in" 'open-init)
 
+;; Clojure mode bindings
+(evil-leader/set-key-for-mode 'clojure-mode
+  "e" 'cider-eval-last-sexp)
+
 ;;; Evil Mode on
 (require 'evil)
 (evil-mode t)
@@ -101,7 +105,6 @@
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)
 ;; Example evil-mode config
-;; ~~~~~NOTE: <SPC> does <Leader> stuff but not very elegantly. Mode mapping not working~~~~~
 (evil-define-key 'insert omnisharp-mode-map (kbd "M-.") 'omnisharp-auto-complete)
 (evil-define-key 'normal omnisharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
 (evil-define-key 'normal omnisharp-mode-map (kbd "gou") 'omniSharp-find-usages)

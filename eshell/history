@@ -29,3 +29,26 @@ exit
 git --verison
 git --version
 exit
+cd ../../
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein run
+lein uberjar
+java -jar target/uverjar/clojure-noob-0.1.0-SNAPSHOT-standalone.jar
+java -jar target/uberjar/clojure-noob-0.1.0-SNAPSHOT-standalone.jar
+lein repl
+exit
