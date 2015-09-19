@@ -11,7 +11,9 @@
 ** Production
 *** TODO Write third blog<2015-09-23 Wed>
 *** The Game
-**** TODO Work on it today<2015-09-19 Sat>
+**** DONE Work on it today<2015-09-19 Sat>
+     CLOSED: [2015-09-19 Sat 18:46]
+     CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42
 ** Networking
 *** TODO Assignment 1<2015-10-09 Fri>
     1. Set up parts that Saad explained in class<2015-09-19 Sat>
