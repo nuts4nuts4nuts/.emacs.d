@@ -1,7 +1,7 @@
 * Linear Algebra
 ** MyMathLab
-   1. Do the things due on monday.
-   2. Figure out what number 6 meant on beautiful problems.
+1. Do the things due on monday.
+2. Figure out what number 6 meant on beautiful problems.
 
 * Physics
 ** Mastering Physics
