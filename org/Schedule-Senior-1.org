@@ -1,11 +1,22 @@
-* Linear Algebra
-** MyMathLab
-1. Do the things due on monday.
-2. Figure out what number 6 meant on beautiful problems.
+* Classes
+** Linear Algebra
+*** TODO MyMathLab work<2015-09-21 Mon>
+*** Talk to Dr. Brown (just for kicks)
+** Physics
+*** Mastering Physics
+**** TODO Write last essay part for assignment 3<2015-09-22 Tue>
+**** TODO Finish lab work<2015-09-24 Thu>
+     1. Parse lab data
+     2. Write up report
+** Production
+*** TODO Write third blog<2015-09-23 Wed>
+*** The Game
+**** TODO Work on it today<2015-09-19 Sat>
+** Networking
+*** TODO Assignment 1<2015-10-09 Fri>
+    1. Set up parts that Saad explained in class<2015-09-19 Sat>
+* Personal
+* Work
+** TODO Grade flow charts<2015-09-21 Mon>
+** TODO Grade assignments<2015-09-21 Mon>
 
-* Physics
-** Mastering Physics
-*** TODO Figure out what I'm even supposed to be doing for this.
-* Production
-** Blogging
-* Networking

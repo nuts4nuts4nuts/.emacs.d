@@ -39,6 +39,20 @@
 (evil-leader/set-key-for-mode 'clojure-mode
   "e" 'cider-eval-last-sexp)
 
+;; Org-mode settings
+(setq org-log-done 'time)
+(evil-leader/set-key-for-mode 'org-mode
+  "," 'org-metaleft
+  "." 'org-metaright
+  "o" '(lambda ()
+	 (interactive)
+	 (evil-append-line 1)
+	 (org-meta-return)
+	 (evil-normal-state))
+  "gt" 'org-todo
+  "gi" 'org-clock-in
+  "go" 'org-clock-out)
+(evil-define-key 'insert org-mode-map (kbd "M-a") 'org-time-stamp) ; This was backward-sentence
 
 ;;; Evil Mode on
 (require 'evil)
@@ -163,3 +177,15 @@
 ;; Automatically start omnisharp-emacs when editing csharp files.
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 ;; END OF TESTING OMNISHARP STUFF
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("~/.emacs.d/org/Schedule-Senior-1.org"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
