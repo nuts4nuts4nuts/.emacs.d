@@ -1,17 +1,20 @@
 * Classes
 ** Linear Algebra
-*** TODO MyMathLab work<2015-09-21 Mon>
+*** DONE MyMathLab work<2015-09-21 Mon>
+    CLOSED: [2015-09-20 Sun 14:47]
 *** Talk to Dr. Brown (just for kicks)
+*** MyMathLab work<2015-09-24 Thu>
 ** Physics
 *** Mastering Physics
-**** TODO Write last essay part for assignment 3<2015-09-22 Tue>
+**** DONE Write last essay part for assignment 3<2015-09-22 Tue>
+     CLOSED: [2015-09-20 Sun 11:35]
 **** TODO Finish lab work<2015-09-24 Thu>
      1. Parse lab data
      2. Write up report
 ** Production
 *** TODO Write third blog<2015-09-23 Wed>
 *** The Game
-**** DONE Work on it today<2015-09-19 Sat>
+**** DONE Work on it <2015-09-19 Sat>
      CLOSED: [2015-09-19 Sat 18:46]
      CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42
 ** Networking

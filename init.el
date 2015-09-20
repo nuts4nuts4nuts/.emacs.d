@@ -42,6 +42,7 @@
 
 ;; Org-mode settings
 (setq org-log-done 'time)
+(setq org-startup-truncated nil)
 (evil-leader/set-key-for-mode 'org-mode
   "," 'org-metaleft
   "." 'org-metaright
@@ -58,6 +59,17 @@
   "c" 'org-toggle-checkbox)
 (evil-define-key 'insert org-mode-map (kbd "M-a") 'org-time-stamp) ; This was backward-sentence
 
+;; M-j is indent-new-comment-line  
+;; M-k is kill-sentence                       ; REBIND THESE THINGS MAYBE
+;; M-h is mark-paragraph
+;; M-l is downcase-word
+;; Took the i3 switch window bindings + normal C-tab thing
+(global-set-key (kbd "M-j") 'windmove-down)
+(global-set-key (kbd "M-k") 'windmove-up)
+(global-set-key (kbd "M-h") 'windmove-left)
+(global-set-key (kbd "M-l") 'windmove-right)
+(global-set-key (kbd "<C-tab>") 'other-window)
+
 ;;; Evil Mode on
 (require 'evil)
 (evil-mode t)
@@ -68,6 +80,9 @@
 ;; Surround stuff like never before
 (require 'evil-surround)
 (global-evil-surround-mode t)
+
+(require 'evil-lisp-state)
+(setq evil-lisp-state-global t)
 
 ;; ESC quits
 (require 'evil-escape)
@@ -86,6 +101,10 @@
 ;; Company is cool
 (define-key evil-normal-state-map (kbd "C-n") 'company-complete)
 (define-key evil-insert-state-map (kbd "C-n") 'company-complete)
+
+(setq evilnc-invert-comment-line-by-line t)
+(evil-leader/set-key
+  "ci" 'evilnc-comment-or-uncomment-lines)
 ;;; Evil Mode things end
 
 ;; Unbind clipboard integration (so that I can use the VIM clipboard stuff)
@@ -122,17 +141,6 @@
 
 ;; Disable splash screen
 (setq inhibit-splash-screen t)
-
-;; M-j is indent-new-comment-line  
-;; M-k is kill-sentence                       ; REBIND THESE THINGS MAYBE
-;; M-h is mark-paragraph
-;; M-l is downcase-word
-;; Took the i3 switch window bindings + normal C-tab thing
-(global-set-key (kbd "M-j") 'windmove-down)
-(global-set-key (kbd "M-k") 'windmove-up)
-(global-set-key (kbd "M-h") 'windmove-left)
-(global-set-key (kbd "M-l") 'windmove-right)
-(global-set-key (kbd "<C-tab>") 'other-window)
 
 ;; Magit is magic
 (require 'magit)

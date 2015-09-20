@@ -1,0 +1,17 @@
+* Networking Stuff 
+** TCP/IP | OSI Layers 
+   1. Application
+      1. Application
+      2. Presentation
+      3. Session
+   2. Transport
+   3. Internet / Network
+   4. Network Access
+      1. Datalink
+      2. Physical
+** CMake Stuff
+*** Linking to libraries
+    1. link_directories(some/directory/here) should point to a directory with the actual library files in it.
+    2. include_directories(some/headers/here) should point to a directory with headers for a library.
+    3. target_link_libraries(project_name library_name) should link the project to some library, library_name, which is pointed to in link_directories.
+*** 
