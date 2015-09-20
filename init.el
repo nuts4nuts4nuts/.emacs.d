@@ -37,13 +37,16 @@
 
 ;; Clojure mode bindings
 (evil-leader/set-key-for-mode 'clojure-mode
-  "e" 'cider-eval-last-sexp)
+  "e" 'cider-eval-last-sexp
+  "c" 'cider-load-buffer)
 
 ;; Org-mode settings
 (setq org-log-done 'time)
 (evil-leader/set-key-for-mode 'org-mode
   "," 'org-metaleft
   "." 'org-metaright
+  "gj" 'org-metadown
+  "gk" 'org-metaup
   "o" '(lambda ()
 	 (interactive)
 	 (evil-append-line 1)
@@ -133,7 +136,10 @@
 
 ;; Magit is magic
 (require 'magit)
-(setenv "GIT_ASKPASS" "git-gui--askpass")
+
+;; If we're on windows, use git-gui
+(when (eq system-type 'windows-nt)
+  (setenv "GIT_ASKPASS" "git-gui--askpass"))
 
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)
