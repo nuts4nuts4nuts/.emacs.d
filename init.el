@@ -54,6 +54,12 @@
 	 (org-meta-return)
 	 (evil-normal-state))
   "gt" 'org-todo
+  "st" '(lambda ()
+	  (interactive)
+	  (evil-append-line 1)
+	  (insert-char ?\s 1)
+	  (org-timer)
+	  (evil-normal-state))
   "gi" 'org-clock-in
   "go" 'org-clock-out
   "c" 'org-toggle-checkbox)
@@ -82,7 +88,7 @@
 (global-evil-surround-mode t)
 
 (require 'evil-lisp-state)
-(setq evil-lisp-state-global t)
+(setq global-evil-lisp-state t)
 
 ;; ESC quits
 (require 'evil-escape)
