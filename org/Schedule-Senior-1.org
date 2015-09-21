@@ -29,4 +29,5 @@
 * Personal
 * Work
 ** TODO Grade flow charts <2015-09-21 Mon>
+   CLOCK: [2015-09-21 Mon 13:30]--[2015-09-21 Mon 14:00] =>  0:30
 ** TODO Grade assignments <2015-09-21 Mon>
