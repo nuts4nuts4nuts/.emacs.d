@@ -4,6 +4,10 @@
       (tool-bar-mode -1)
       (scroll-bar-mode -1))
 
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
 ;; Add repos for the package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
