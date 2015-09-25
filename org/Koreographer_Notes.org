@@ -1,0 +1,26 @@
+* Koreographer Beta
+  Does not work with Unity 5. This is kind of a deal breaker. Could try to get it working.
+* Koreographer Full
+** Pros
+   Seems like exactly what we want
+    1. Helps with syncronization, beat matching, performance of audio clips, music driven mechanics.
+    2. Good pedigree. Made by Harmonix people.
+    3. Though it is very new, it is used in known games like Panoramical.
+** Cons
+   1. $98 per seat, potentially, though we would probably get by with one seat.
+   2. Very few unity store reviews. Not too important given pedigree and known usage, but I still value the impression of the masses.
+* Other Options
+** Visualizer Studio
+*** Pros
+    1. High Unity store ratings over many reviews. (5 stars, 83 reviews)
+    2. Seems to do similar things to Koreographer. Helps with syncro, beat matching, and music-driven gameplay.
+    3. Cheaper. Only $35, no specification about seats. 
+*** Cons
+    1. Less of a pedigree.
+    2. No known projects using it.
+    3. Most of the information on it is from at least a few months ago. It claims to work in U5, but who knows.
+** PSai / Ultimate Audio Whatever
+*** Pros
+    1. Seems good.
+*** Cons
+    1. Hard to tell if they do what we want.

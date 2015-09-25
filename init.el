@@ -62,6 +62,7 @@
 	  (evil-normal-state))
   "gi" 'org-clock-in
   "go" 'org-clock-out
+  "gl" 'org-open-at-point
   "c" 'org-toggle-checkbox)
 (evil-define-key 'insert org-mode-map (kbd "M-a") 'org-time-stamp) ; This was backward-sentence
 
