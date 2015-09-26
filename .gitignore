@@ -1,6 +1,9 @@
 # Remove autosaves
 *.*~
 #*#
-url/
 *.dat
+
+# Dumb folders
+url/
 eshell/
+server/

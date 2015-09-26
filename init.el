@@ -1,12 +1,16 @@
 ;; Hide extra bars
 (when (display-graphic-p)
-      (menu-bar-mode -1)
-      (tool-bar-mode -1)
-      (scroll-bar-mode -1))
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
+;; C indentation settings
+(add-hook 'c-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode t)
+	    (setq tab-width 4)
+	    (setq indent-line-function 'insert-tab)
+	    (setq c-basic-offset 4 t)))
 
 ;; Add repos for the package manager
 (require 'package)
@@ -26,14 +30,15 @@
 
 (require 'evil-leader)
 (global-evil-leader-mode)
-    ;; leader configurations
-    (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key
-      "f" 'helm-find-files
-      "b" 'helm-buffers-list
-      "k" 'kill-buffer
-      "d" 'dired
-      "in" 'open-init)
+;; leader configurations
+(evil-leader/set-leader "<SPC>")
+(evil-leader/set-key
+  "f" 'helm-find-files
+  "b" 'helm-buffers-list
+  "k" 'kill-buffer
+  "d" 'dired
+  "x" 'helm-M-x
+  "in" 'open-init)
 
 ;; Lets us do structured lisp editing in a vimmy way
 (require 'evil-lisp-state)
@@ -103,11 +108,11 @@
 
 ;; Scroll up and down
 (define-key evil-normal-state-map (kbd "C-k") (lambda ()
-		    (interactive)
-		    (evil-scroll-up nil)))
+						(interactive)
+						(evil-scroll-up nil)))
 (define-key evil-normal-state-map (kbd "C-j") (lambda ()
-			(interactive)
-			(evil-scroll-down nil)))
+						(interactive)
+						(evil-scroll-down nil)))
 
 ;; Company is cool
 (define-key evil-normal-state-map (kbd "C-n") 'company-complete)
