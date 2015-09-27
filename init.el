@@ -38,7 +38,8 @@
   "k" 'kill-buffer
   "d" 'dired
   "x" 'helm-M-x
-  "in" 'open-init)
+  "in" 'open-init
+  "gs" 'magit-status)
 
 ;; Lets us do structured lisp editing in a vimmy way
 (require 'evil-lisp-state)

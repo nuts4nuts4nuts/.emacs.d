@@ -1,5 +1,6 @@
 * Koreographer Beta
   Does not work with Unity 5. This is kind of a deal breaker. Could try to get it working.
+  Can make it work in a hacky way.
 * Koreographer Full
 ** Pros
    Seems like exactly what we want
@@ -24,3 +25,4 @@
     1. Seems good.
 *** Cons
     1. Hard to tell if they do what we want.
+       
