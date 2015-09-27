@@ -19,6 +19,7 @@
 *** DONE Write third blog <2015-09-23 Wed>
     CLOSED: [2015-09-20 Sun 23:13]
     CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
+*** TODO Write fourth blog
 *** Two Masters
 **** DONE Work on it <2015-09-19 Sat>
      CLOSED: [2015-09-19 Sat 18:46]
@@ -28,9 +29,11 @@
      CLOCK: [2015-09-23 Wed 15:40]--[2015-09-23 Wed 16:53] =>  1:13 - Logged
 **** Prototype Music Integration
 ***** Goals:
+      CLOCK: [2015-09-27 Sun 15:11]--[2015-09-27 Sun 17:03] => 1:52
+      CLOCK: [2015-09-27 Sun 12:20]--[2015-09-27 Sun 14:51] =>  2:31
       1. Get beat matching working nicely for songs we add to the game.
       2. Get beat matching working for dynamically added songs.
-      3. Think about secondary beat matching, i.e. the player is bumping to one theme and different enemies are on different themes.
+      3. Think about secondary beat matching, i.e. the player is bumping to one theme and different enemies are on different themes. --THIS IS VERY POSSIBLE
       4. Look at interesting musical potential that comes up in the tools and think of uses.
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org

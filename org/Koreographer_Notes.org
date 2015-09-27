@@ -1,6 +1,9 @@
 * Koreographer Beta
   Does not work with Unity 5. This is kind of a deal breaker. Could try to get it working.
   Can make it work in a hacky way.
+
+  Does not have certain payloads, e.g. color. Full list can be seen in Koreographer docs.
+  Does not have delta slice in event with time. 
 * Koreographer Full
 ** Pros
    Seems like exactly what we want
