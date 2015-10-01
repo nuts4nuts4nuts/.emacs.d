@@ -1,0 +1,21 @@
+* Code Assignments
+  General guidelines:
+  + Standard error = Standard error -- ex. Input is wrong
+  + Minor error = Standard error / 2 -- ex. Input is formatted wrong
+  + Major error = Standard error * 2 -- ex. Input is missing
+** Logical Errors
+   + Missing step in calculation -5
+   + Missing input / output -5
+   + Error in math -3
+** Compiler Errors
+   Should reward putting forth basic effort. 
+   + Simple errors -10 -- ex. Missing parens
+   + Complex errors -5 -- ex. Linker errors
+** Style Errors
+   + Bad variable names -3
+   + Missing useful commments, code unclear -3
+   + Unnecessarily complex -3
+** Meta Errors
+   + Missing cert. of auth. -10
+   + Missing physical copy -10
+   + Missing missing program desc. -5
