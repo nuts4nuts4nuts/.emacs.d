@@ -1,6 +1,6 @@
 # Remove autosaves
 *.*~
-#*#
+*#
 *.dat
 
 # Dumb folders

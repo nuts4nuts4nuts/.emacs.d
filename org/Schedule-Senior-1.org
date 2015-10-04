@@ -19,7 +19,8 @@
 *** DONE Write third blog <2015-09-23 Wed>
     CLOSED: [2015-09-20 Sun 23:13]
     CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
-*** TODO Write fourth blog
+*** DONE Write fourth blog
+    CLOSED: [2015-10-04 Sun 16:24]
 *** Two Masters
 **** DONE Work on it <2015-09-19 Sat>
      CLOSED: [2015-09-19 Sat 18:46]
