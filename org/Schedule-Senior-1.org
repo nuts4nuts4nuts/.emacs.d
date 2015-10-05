@@ -26,6 +26,19 @@
      CLOSED: [2015-09-19 Sat 18:46]
      CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42 - Logged
 *** Ripples
+**** Deep Dive Part 1. <2015-10-07 Wed>
+***** TODO [0/3] Integrate vectrocity
+      1. [ ] Get vectrocity replacing current implementation
+      2. [ ] Make it efficient
+      3. [ ] Make it pretty
+***** TODO [1/4] Flesh out encounter creation
+      CLOCK: [2015-10-04 Sun 18:46]--[2015-10-04 Sun 18:49] =>  0:03 -- Random stuff
+      1. [X] Make jumping koreographer driven
+      CLOCK: [2015-10-04 Sun 16:37]--[2015-10-04 Sun 18:46] =>  2:09
+      2. [-] Work on koreographer pipeline
+      CLOCK: [2015-10-04 Sun 18:49]--[2015-10-04 Sun 20:34] =>  1:45 -- Copying events
+      3. [-] Walk through full creation workflow
+      4. [-] Make AI creation relatively painless
 **** Outlining prototype for week 5 
      CLOCK: [2015-09-23 Wed 15:40]--[2015-09-23 Wed 16:53] =>  1:13 - Logged
 **** Prototype Music Integration
@@ -41,8 +54,9 @@
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org
 ** Networking
-*** TODO [1/3] Assignment 1 <2015-10-09 Fri>
+*** TODO [2/4] Assignment 1 <2015-10-09 Fri>
     1. [X] Set up parts that Saad explained in class <2015-09-19 Sat>
+    1. [X] Get basic networking going
     2. [ ] Set up graphics library
     3. [ ] Do actual networking
 * Personal
