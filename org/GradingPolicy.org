@@ -7,10 +7,11 @@
    + Missing step in calculation -5
    + Missing input / output -5
    + Error in math -3
-** Compiler Errors
+** Compiler
    Should reward putting forth basic effort. 
    + Simple errors -10 -- ex. Missing parens
    + Complex errors -5 -- ex. Linker errors
+   + Warnings -3 or -1 per warning if less than 3, 0 if warning is crazy
 ** Style Errors
    + Bad variable names -3
    + Missing useful commments, code unclear -3
@@ -18,4 +19,9 @@
 ** Meta Errors
    + Missing cert. of auth. -10
    + Missing physical copy -10
-   + Missing missing program desc. -5
+   + Missing program desc. -5
+
+**** Other notes
+    ETHAN FARMER PAPER DIFFERENT FROM CODE FOR LOAN CALC
+    For code: no conversion to months -3
+    math very wrong -10

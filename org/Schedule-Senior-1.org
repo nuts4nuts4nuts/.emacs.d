@@ -20,11 +20,7 @@
     CLOSED: [2015-09-20 Sun 23:13]
     CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
 *** DONE Write fourth blog
-<<<<<<< HEAD
     CLOSED: [2015-10-03 Sat 11:59]
-=======
-    CLOSED: [2015-10-04 Sun 16:24]
->>>>>>> 0af358e0768bdba5b789eb619615ff2ad25778ec
 *** Two Masters
 **** DONE Work on it <2015-09-19 Sat>
      CLOSED: [2015-09-19 Sat 18:46]
@@ -58,11 +54,7 @@
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org
 ** Networking
-<<<<<<< HEAD
-*** TODO [2/3] Assignment 1 <2015-10-09 Fri>
-=======
 *** TODO [2/4] Assignment 1 <2015-10-09 Fri>
->>>>>>> 0af358e0768bdba5b789eb619615ff2ad25778ec
     1. [X] Set up parts that Saad explained in class <2015-09-19 Sat>
     1. [X] Get basic networking going
     2. [ ] Set up graphics library
@@ -77,4 +69,5 @@
    CLOSED: [2015-09-26 Sat 19:21]
    CLOCK: [2015-09-23 Wed 20:12]--[2015-09-23 Wed 22:03] =>  1:51
    CLOCK: [2015-09-21 Mon 13:30]--[2015-09-21 Mon 14:00] =>  0:30
+   
    
