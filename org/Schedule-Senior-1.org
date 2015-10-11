@@ -32,11 +32,13 @@
       2. [ ] Make it efficient
       3. [ ] Make it pretty
 ***** TODO [1/4] Flesh out encounter creation
-      CLOCK: [2015-10-04 Sun 18:46]--[2015-10-04 Sun 18:49] =>  0:03 -- Random stuff
+      CLOCK: [2015-10-04 Sun 18:46]--[2015-10-04 Sun 18:49] =>  0:03 -- Random stuff - Logged
       1. [X] Make jumping koreographer driven
-      CLOCK: [2015-10-04 Sun 16:37]--[2015-10-04 Sun 18:46] =>  2:09
+      CLOCK: [2015-10-04 Sun 16:37]--[2015-10-04 Sun 18:46] =>  2:09 - Logged
       2. [-] Work on koreographer pipeline
-      CLOCK: [2015-10-04 Sun 18:49]--[2015-10-04 Sun 20:34] =>  1:45 -- Copying events
+      CLOCK: [2015-10-04 Sun 18:49]--[2015-10-04 Sun 20:34] =>  1:45 -- Copying events - Logged
+      CLOCK: [2015-10-11 Sun 16:49]--[2015-10-11 Sun 17:44] =>  0:55 -- Discussed moving forward with Willie, started corpus of encounter
+      CLOCK: [2015-10-11 Sun 18:04]--[2015-10-11 Sun 18:15] =>  0:11 -- Working on Anatomy
       3. [-] Walk through full creation workflow
       4. [-] Make AI creation relatively painless
 **** Outlining prototype for week 5 
@@ -54,20 +56,26 @@
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org
 ** Networking
-*** TODO [2/4] Assignment 1 <2015-10-09 Fri>
+*** DONE [4/4] Assignment 1 <2015-10-09 Fri>
+    CLOSED: [2015-10-11 Sun 14:37]
     1. [X] Set up parts that Saad explained in class <2015-09-19 Sat>
     1. [X] Get basic networking going
-    2. [ ] Set up graphics library
+    2. [X] Set up graphics library
     3. [X] Do actual networking
 * Personal
 * Work
-** TODO Grade loan calculators
-** TODO Grade drunk driving assignments
+** TODO Grade assignment 4
+** TODO Grade assignment 5
+** DONE Grade loan calculators
+   CLOSED: [2015-10-11 Sun 14:37]
+** DONE Grade drunk driving assignments
+   CLOSED: [2015-10-11 Sun 14:37]
 ** DONE Grade flow charts <2015-09-21 Mon>
    CLOSED: [2015-10-03 Sat 12:00]
 ** DONE Grade assignments <2015-09-21 Mon>
    CLOSED: [2015-09-26 Sat 19:21]
    CLOCK: [2015-09-23 Wed 20:12]--[2015-09-23 Wed 22:03] =>  1:51
    CLOCK: [2015-09-21 Mon 13:30]--[2015-09-21 Mon 14:00] =>  0:30
+   
    
    

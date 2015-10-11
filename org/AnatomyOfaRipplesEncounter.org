@@ -1,0 +1,25 @@
+* Anatomy of a Ripples Encounter
+** The Song
+   The song is the driving force of all the action in an encounter, both figuratively and, with Koreographer, literally.
+*** Components
+**** The Main Beat
+     The main beat of the song drives [[The Player]]'s jump rate and, as such, makes the greatest impact on the pace of the encounter.
+**** Secondary Beat
+**** The Melody
+*** Moments
+**** Introduction
+**** Verse
+**** Chorus
+**** Bridge
+**** Outro
+** The Duel
+   The player and the boss are dueling. This is the central conceit of the encounter.
+The boss is big and the player is little, metaphorically and, often, literally.
+The boss has many advantages, the fight is unfair. The player is caught unprepared.
+The player will win. This is how a videogame is made.
+*** The Player
+    The player is you. The player can be one of an assortment of characters. The different characters have different abilities, both passive and active. Depending on your character you might be able to affect [[The Arena]], [[The Boss]], [[The Enemies]], or even [[The Song]].
+*** The Boss
+*** The Enemies
+** The Arena
+   The arena is where the duel takes place. It is dynamically created by and informs [[The Song]]. 
