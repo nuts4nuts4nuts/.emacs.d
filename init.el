@@ -12,6 +12,11 @@
 	    (setq indent-line-function 'insert-tab)
 	    (setq c-basic-offset 4 t)))
 
+;; Javascript settings
+(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq js2-highlight-level 3)
+
 ;; Add repos for the package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
