@@ -115,7 +115,7 @@
 (require 'evil-lisp-state)
 (setq global-evil-lisp-state t)
 
-;; ESC quits
+;; fd quits
 (require 'evil-escape)
 (evil-escape-mode t)
 (setq-default evil-escape-key-sequence "fd")
