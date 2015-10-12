@@ -33,6 +33,12 @@
   (windmove-right)
   (find-file "~/.emacs.d/init.el"))
 
+(defun open-org ()
+  (interactive)
+  (split-window-right)
+  (windmove-right)
+  (dired "~/.emacs.d/org"))
+
 (require 'evil-leader)
 (global-evil-leader-mode)
 ;; leader configurations
@@ -43,7 +49,10 @@
   "k" 'kill-buffer
   "d" 'dired
   "x" 'helm-M-x
+  "v" 'evil-window-vsplit
+  "h" 'evil-window-split
   "in" 'open-init
+  "go" 'open-org
   "gs" 'magit-status)
 
 ;; Lets us do structured lisp editing in a vimmy way
