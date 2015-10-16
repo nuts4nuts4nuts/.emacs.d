@@ -20,8 +20,3 @@
    + Missing cert. of auth. -10
    + Missing physical copy -10
    + Missing program desc. -5
-
-**** Other notes
-    ETHAN FARMER PAPER DIFFERENT FROM CODE FOR LOAN CALC
-    For code: no conversion to months -3
-    math very wrong -10

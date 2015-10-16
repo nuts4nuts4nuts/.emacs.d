@@ -4,13 +4,16 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1))
 
-;; C indentation settings
-(add-hook 'c-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode t)
-	    (setq tab-width 4)
-	    (setq indent-line-function 'insert-tab)
-	    (setq c-basic-offset 4 t)))
+;; Indent with spaces
+(setq-default indent-tabs-mode nil)
+(setq indent-line-function 'insert-tab)
+
+;; C/C++ indentation settings
+(setq c-default-style "bsd"
+      c-basic-offset 4)
+
+(add-hook 'c-mode-common-hook (lambda ()
+          (setq-default tab-width 4)))
 
 ;; Add repos for the package manager
 (require 'package)

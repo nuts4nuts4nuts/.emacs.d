@@ -1,0 +1,95 @@
+﻿			   ━━━━━━━━━━━━━━━━━
+			     Coding Standards
+			   ━━━━━━━━━━━━━━━━━
+
+
+Table of Contents
+─────────────────
+
+1 Coding Standards
+.. 1.1 Comments
+.. 1.2 Spacing
+.. 1.3 Naming Convention
+.. 1.4 General Guidelines
+.. 1.5 Organization
+
+
+1 Coding Standards
+══════════════════
+
+1.1 Comments
+────────────
+
+  ⁃ Comment if you're doing something tricky.
+    e.g.  /* This is using pointer arithmetic for string copying.
+    If it's really tricky, you could leave a block comment of pseudo-code */
+  ⁃ Don't leave commented out code.
+  ⁃ Format todos as //TODO <name>: <thing to do>
+
+
+1.2 Spacing
+───────────
+
+  ⁃ Use Allman style braces
+    e.g. prefer if (cond)
+    	 	{
+		    body
+		}
+	   over if (cond) {
+		    body
+		}
+  ⁃ Indent with 4 spaces
+  ⁃ Wrap lines such that arguments line up vertically
+    e.g. SomeReallyLongFunctionName(arg1, arg2,
+				    longAssArg, arg4);
+
+
+1.3 Naming Convention
+─────────────────────
+
+  ⁃ Local variables should be in camelCase
+  ⁃ Functions should be in PascalCase
+  ⁃ Types should be in PascalCase (structs or classes)
+  ⁃ Member variables should be formatted as mVariableName
+  ⁃ Public member variables should be formatted as PascalCase
+  ⁃ Global variables should be formatted as gVariableName – But don't
+    make global variables
+  ⁃ Constants should be in ALL_CAPS_WITH_UNDERSCORES
+  ⁃ Enum values should be ALL_CAPS_WITH_UNDERSCORES
+
+
+1.4 General Guidelines
+──────────────────────
+
+  ⁃ Enforce const-correctness
+    e.g. Don't do int Add(x, y)
+    	       	  {
+			return x + y;
+		  }
+    Do	    	  int Add(const x, const y)
+		  {
+			return x + y;
+		  }
+    Especially if it's a reference!!!
+  ⁃ Follow the single responsibility principle i.e. Scripts, Functions,
+    Classes, etc… should do as close to one thing as possible.
+  ⁃ For editor exposed variables, use [SerializeField] instead of public
+  ⁃ Organize variables in a class in order of public, protected,
+    private, from top to bottom, within logical blocks.
+
+
+1.5 Organization
+────────────────
+
+  ⁃ In a class, values should come before functions.
+  ⁃ In a file, shorter classes / structs should come before long ones
+    e.g. struct Point
+	 {
+	     int x;
+	     int y;
+	 }
+	 class PointUser
+	 {
+	     Point p;
+	     // More stuff
+	 }
