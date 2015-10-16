@@ -15,6 +15,11 @@
 (add-hook 'c-mode-common-hook (lambda ()
           (setq-default tab-width 4)))
 
+;; Javascript settings
+(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq js2-highlight-level 3)
+
 ;; Add repos for the package manager
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -113,7 +118,7 @@
 (require 'evil-lisp-state)
 (setq global-evil-lisp-state t)
 
-;; ESC quits
+;; fd quits
 (require 'evil-escape)
 (evil-escape-mode t)
 (setq-default evil-escape-key-sequence "fd")

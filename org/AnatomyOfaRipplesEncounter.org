@@ -12,7 +12,7 @@
 **** Chorus
 **** Bridge
 **** Outro
-** The Duel
+** The Duelists
    The player and the boss are dueling. This is the central conceit of the encounter.
 The boss is big and the player is little, metaphorically and, often, literally.
 The boss has many advantages, the fight is unfair. The player is caught unprepared.
@@ -20,6 +20,7 @@ The player will win. This is how a videogame is made.
 *** The Player
     The player is you. The player can be one of an assortment of characters. The different characters have different abilities, both passive and active. Depending on your character you might be able to affect [[The Arena]], [[The Boss]], [[The Enemies]], or even [[The Song]].
 *** The Boss
+    The boss is a player character to which the player does not yet have access. [[The Player]] is challenging the boss to the duel. The boss has home-field advantage. The boss should use abilities which the player will be able to use when playing as the boss. 
 *** The Enemies
 ** The Arena
    The arena is where the duel takes place. It is dynamically created by and informs [[The Song]]. 
