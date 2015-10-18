@@ -24,3 +24,79 @@ The player will win. This is how a videogame is made.
 *** The Enemies
 ** The Arena
    The arena is where the duel takes place. It is dynamically created by and informs [[The Song]]. 
+
+
+* The Cast
+** Alpha
+*** Meaning
+    Alpha is used for many different things
+as a general purpose variable, most commonly for an angle.
+*** Attributes
+    The smallest and quickest of the bunch.
+*** Abilities
+    Air dash.
+*** Bio
+    Alpha is always the first on the scene.
+Once bullied for her slight frame, now she uses it
+to her advantage on the field of battle.
+** Delta
+*** Meaning
+    Delta generally stands for the change in a variable,
+or the difference between two variables over time.
+*** Attributes
+    Big and medium speed.
+*** Abilities
+    Can change the size of his ripples on the fly.
+*** Bio
+    Delta could never decide on anything as a kid.
+Now his powers ensure he never has to.
+** Sigma
+*** Meaning
+    Sigma is used to denote a repeated sum.
+*** Attributes
+    Big and tank-like.
+*** Abilities
+    Builds up a "sum counter" then, when used, jumps at double speed for a number of jumps equal to the sum counter.
+*** Bio
+    Once you get Sigma going, you never know when she will stop.
+She might go for four minutes, she might go off into infinity.
+She just keeps adding, and adding, and adding, and adding...
+** Theta and Phi
+*** Meaning
+    Theta and Phi are often used for angles.
+*** Attributes
+    Two characters. One character jumps and moves, then the other.
+*** Abilities
+    Can launch a wave of ripples in the angle sweeping
+counter-clockwise from Theta to Phi.
+*** Bio
+    Theta and Phi have been unseperable from birth.
+With their tricky angular approaches and synchronized moves,
+they have pickpocketed their way across the country.
+So strong is their bond that if one were to fall the other
+would die on the spot.
+** Integral
+*** Meaning
+*** Attributes
+*** Abilities
+*** Bio
+** Mu
+*** Meaning
+*** Attributes
+*** Abilities
+*** Bio
+** Omega
+*** Meaning
+*** Attributes
+*** Abilities
+*** Bio
+** Lambda
+*** Meaning
+*** Attributes
+*** Abilities
+*** Bio
+** Lemniscate
+*** Meaning
+*** Attributes
+*** Abilities
+*** Bio

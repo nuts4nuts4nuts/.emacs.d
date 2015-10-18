@@ -16,12 +16,6 @@
      1. Parse lab data
      2. Write up report
 ** Production
-*** DONE Write third blog <2015-09-23 Wed>
-    CLOSED: [2015-09-20 Sun 23:13]
-    CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
-*** DONE Write fourth blog
-    CLOSED: [2015-10-03 Sat 11:59]
-*** TODO Write fifth blog <2015-10-14 Wed>
 *** Two Masters
 **** DONE Work on it <2015-09-19 Sat>
      CLOSED: [2015-09-19 Sat 18:46]
@@ -45,6 +39,10 @@
       4. [-] Make AI creation relatively painless
 ***** Clean up the code
       4 Hours - Logged
+***** Work on the cast of characters
+      CLOCK: [2015-10-16 Fri 19:35]--[2015-10-16 Fri 19:36] =>  0:01
+      CLOCK: [2015-10-16 Fri 17:49]--[2015-10-16 Fri 19:29] =>  1:40
+      CLOCK: [2015-10-16 Fri 17:37]--[2015-10-16 Fri 17:48] =>  0:11
 **** Outlining prototype for week 5 
      CLOCK: [2015-09-23 Wed 15:40]--[2015-09-23 Wed 16:53] =>  1:13 - Logged
 **** Prototype Music Integration
@@ -59,6 +57,15 @@
       4. Look at interesting musical potential that comes up in the tools and think of uses.
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org
+*** DONE Write third blog <2015-09-23 Wed>
+    CLOSED: [2015-09-20 Sun 23:13]
+    CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
+*** DONE Write fourth blog
+    CLOSED: [2015-10-03 Sat 11:59]
+*** DONE Write fifth blog <2015-10-14 Wed>
+    CLOSED: [2015-10-16 Fri 17:34]
+    CLOCK: [2015-10-16 Fri 17:02]--[2015-10-16 Fri 17:33] =>  0:31
+*** TODO Write sixth blog <2015-10-21 Wed>
 ** Networking
 *** DONE [4/4] Assignment 1 <2015-10-09 Fri>
     CLOSED: [2015-10-11 Sun 14:37]
