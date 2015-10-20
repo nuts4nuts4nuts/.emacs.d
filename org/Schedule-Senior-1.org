@@ -22,11 +22,10 @@
      CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42 - Logged
 *** Ripples
 **** Deep Dive Part 1. <2015-10-07 Wed>
-***** TODO [1/3] Integrate vectrocity
+***** DONE [1/1] Integrate vectrocity
+      CLOSED: [2015-10-18 Sun 13:55]
       1. [X] Get vectrocity replacing current implementation
-      2. [ ] Make it efficient
-      3. [ ] Make it pretty
-***** TODO [2/4] Flesh out encounter creation
+***** TODO [3/4] Flesh out encounter creation
       CLOCK: [2015-10-04 Sun 18:46]--[2015-10-04 Sun 18:49] =>  0:03 -- Random stuff - Logged
       1. [X] Make jumping koreographer driven
       CLOCK: [2015-10-04 Sun 16:37]--[2015-10-04 Sun 18:46] =>  2:09 - Logged
@@ -34,9 +33,11 @@
       CLOCK: [2015-10-04 Sun 18:49]--[2015-10-04 Sun 20:34] =>  1:45 -- Copying events - Logged
       CLOCK: [2015-10-11 Sun 16:49]--[2015-10-11 Sun 17:44] =>  0:55 -- Discussed moving forward with Willie, started corpus of encounter - Logged
       CLOCK: [2015-10-11 Sun 18:04]--[2015-10-11 Sun 18:15] =>  0:11 -- Working on Anatomy - Logged
-      3. [-] Walk through full creation workflow
       CLOCK: [2015-10-13 Tue 15:19]--[2015-10-13 Tue 20:11] =>  4:52 - Logged
-      4. [-] Make AI creation relatively painless
+      3. [X] Work on AI
+      CLOCK: [2015-10-18 Sun 13:55]--[2015-10-18 Sun 21:13] =>  7:18
+      4. [ ] Work on AI more
+      CLOCK: [2015-10-18 Sun 22:05]--[2015-10-18 Sun 23:21] =>  1:16
 ***** Clean up the code
       4 Hours - Logged
 ***** Work on the cast of characters
