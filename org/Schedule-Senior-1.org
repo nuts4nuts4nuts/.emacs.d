@@ -16,10 +16,6 @@
      1. Parse lab data
      2. Write up report
 ** Production
-*** Two Masters
-**** DONE Work on it <2015-09-19 Sat>
-     CLOSED: [2015-09-19 Sat 18:46]
-     CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42 - Logged
 *** Ripples
 **** Deep Dive Part 1. <2015-10-07 Wed>
 ***** DONE [1/1] Integrate vectrocity
@@ -58,15 +54,22 @@
       4. Look at interesting musical potential that comes up in the tools and think of uses.
 ***** Look at the viability of using beta Koreographer
       If this doesn't work, look into doing the stuff myself vs buying new Koreographer. file:Koreographer_Notes.org
-*** DONE Write third blog <2015-09-23 Wed>
-    CLOSED: [2015-09-20 Sun 23:13]
-    CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
-*** DONE Write fourth blog
-    CLOSED: [2015-10-03 Sat 11:59]
-*** DONE Write fifth blog <2015-10-14 Wed>
-    CLOSED: [2015-10-16 Fri 17:34]
-    CLOCK: [2015-10-16 Fri 17:02]--[2015-10-16 Fri 17:33] =>  0:31
-*** TODO Write sixth blog <2015-10-21 Wed>
+*** Blogs
+**** DONE Write third blog <2015-09-23 Wed>
+     CLOSED: [2015-09-20 Sun 23:13]
+     CLOCK: [2015-09-20 Sun 19:44]--[2015-09-20 Sun 20:47] =>  1:03 - Logged
+**** DONE Write fourth blog
+     CLOSED: [2015-10-03 Sat 11:59]
+**** DONE Write fifth blog <2015-10-14 Wed>
+     CLOSED: [2015-10-16 Fri 17:34]
+     CLOCK: [2015-10-16 Fri 17:02]--[2015-10-16 Fri 17:33] =>  0:31
+**** DONE Write sixth blog <2015-10-21 Wed>
+     CLOSED: [2015-10-21 Wed 19:03]
+**** TODO Write seventh blog <2015-10-28 Wed>
+*** Two Masters
+**** DONE Work on it <2015-09-19 Sat>
+     CLOSED: [2015-09-19 Sat 18:46]
+     CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42 - Logged
 ** Networking
 *** DONE [4/4] Assignment 1 <2015-10-09 Fri>
     CLOSED: [2015-10-11 Sun 14:37]
@@ -75,19 +78,3 @@
     2. [X] Set up graphics library
     3. [X] Do actual networking
 * Personal
-* Work
-** TODO Grade assignment 4
-** TODO Grade assignment 5
-** DONE Grade loan calculators
-   CLOSED: [2015-10-11 Sun 14:37]
-** DONE Grade drunk driving assignments
-   CLOSED: [2015-10-11 Sun 14:37]
-** DONE Grade flow charts <2015-09-21 Mon>
-   CLOSED: [2015-10-03 Sat 12:00]
-** DONE Grade assignments <2015-09-21 Mon>
-   CLOSED: [2015-09-26 Sat 19:21]
-   CLOCK: [2015-09-23 Wed 20:12]--[2015-09-23 Wed 22:03] =>  1:51
-   CLOCK: [2015-09-21 Mon 13:30]--[2015-09-21 Mon 14:00] =>  0:30
-   
-   
-   
