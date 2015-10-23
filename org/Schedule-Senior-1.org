@@ -21,11 +21,12 @@
      CLOSED: [2015-09-19 Sat 18:46]
      CLOCK: [2015-09-19 Sat 17:04]--[2015-09-19 Sat 18:46] =>  1:42 - Logged
 *** Ripples
-**** Deep Dive Part 1. <2015-10-07 Wed>
+**** Deep Dive. <2015-10-07 Wed>
 ***** DONE [1/1] Integrate vectrocity
       CLOSED: [2015-10-18 Sun 13:55]
       1. [X] Get vectrocity replacing current implementation
-***** TODO [3/4] Flesh out encounter creation
+***** DONE [4/4] Flesh out encounter creation
+      CLOSED: [2015-10-20 Tue 23:18]
       CLOCK: [2015-10-04 Sun 18:46]--[2015-10-04 Sun 18:49] =>  0:03 -- Random stuff - Logged
       1. [X] Make jumping koreographer driven
       CLOCK: [2015-10-04 Sun 16:37]--[2015-10-04 Sun 18:46] =>  2:09 - Logged
@@ -35,15 +36,15 @@
       CLOCK: [2015-10-11 Sun 18:04]--[2015-10-11 Sun 18:15] =>  0:11 -- Working on Anatomy - Logged
       CLOCK: [2015-10-13 Tue 15:19]--[2015-10-13 Tue 20:11] =>  4:52 - Logged
       3. [X] Work on AI
-      CLOCK: [2015-10-18 Sun 13:55]--[2015-10-18 Sun 21:13] =>  7:18
-      4. [ ] Work on AI more
-      CLOCK: [2015-10-18 Sun 22:05]--[2015-10-18 Sun 23:21] =>  1:16
+      CLOCK: [2015-10-18 Sun 13:55]--[2015-10-18 Sun 21:13] =>  7:18 - Logged
+      4. [X] Work on AI more
+      CLOCK: [2015-10-18 Sun 22:05]--[2015-10-18 Sun 23:21] =>  1:16 - Logged
 ***** Clean up the code
       4 Hours - Logged
 ***** Work on the cast of characters
-      CLOCK: [2015-10-16 Fri 19:35]--[2015-10-16 Fri 19:36] =>  0:01
-      CLOCK: [2015-10-16 Fri 17:49]--[2015-10-16 Fri 19:29] =>  1:40
-      CLOCK: [2015-10-16 Fri 17:37]--[2015-10-16 Fri 17:48] =>  0:11
+      CLOCK: [2015-10-16 Fri 19:35]--[2015-10-16 Fri 19:36] =>  0:01 - Logged
+      CLOCK: [2015-10-16 Fri 17:49]--[2015-10-16 Fri 19:29] =>  1:40 - Logged
+      CLOCK: [2015-10-16 Fri 17:37]--[2015-10-16 Fri 17:48] =>  0:11 - Logged
 **** Outlining prototype for week 5 
      CLOCK: [2015-09-23 Wed 15:40]--[2015-09-23 Wed 16:53] =>  1:13 - Logged
 **** Prototype Music Integration
