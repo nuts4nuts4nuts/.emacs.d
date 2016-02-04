@@ -183,6 +183,9 @@
 (when (eq system-type 'windows-nt)
   (setenv "GIT_ASKPASS" "git-gui--askpass"))
 
+;; Associate nasm-mode with .asm files
+(add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
+
 ;; TESTING OMNISHARP STUFF
 (require 'omnisharp)
 ;; Example evil-mode config
