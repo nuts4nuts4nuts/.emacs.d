@@ -4,16 +4,14 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1))
 
-;; Indent with spaces
+;; Indent with 4 spaces
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq indent-line-function 'insert-tab)
 
 ;; C/C++ indentation settings
 (setq c-default-style "bsd"
-      c-basic-offset 4)
-
-(add-hook 'c-mode-common-hook (lambda ()
-          (setq-default tab-width 4)))
+      c-basic-offset 'tab-width)
 
 ;; Javascript settings
 (add-hook 'js-mode-hook 'js2-minor-mode)
