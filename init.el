@@ -4,6 +4,8 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1))
 
+;;Magit test
+
 ;; Indent with 4 spaces
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
