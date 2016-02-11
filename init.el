@@ -119,7 +119,7 @@
 ;; fd quits
 (require 'evil-escape)
 (evil-escape-mode t)
-(setq-default evil-escape-key-sequence "fd")
+(setq-default evil-escape-key-sequence "kj")
 (setq-default evil-escape-delay 0.1)
 
 ;; Scroll up and down
