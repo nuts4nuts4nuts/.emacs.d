@@ -10,26 +10,12 @@
 ;; Indent with 4 spaces
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
-(setq indent-line-function 'insert-tab)
 
 ;; C/C++ indentation settings
 (setq c-default-style "bsd"
       c-basic-offset 'tab-width)
 
-;; Javascript settings
-(add-hook 'js-mode-hook 'js2-minor-mode)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
-(setq js2-highlight-level 3)
-
-;; Add repos for the package manager
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(setq package-enable-at-startup nil)
-(package-initialize)
-
-;;; Evil Mode things
+;; Evil Mode things
 ;; Evil Leader on
 (defun open-init ()
   (interactive)
@@ -58,10 +44,6 @@
   "in" 'open-init
   "go" 'open-org
   "gs" 'magit-status)
-
-;; Lets us do structured lisp editing in a vimmy way
-(require 'evil-lisp-state)
-(evil-leader/set-key "l" 'evil-lisp-state)
 
 ;; Clojure mode bindings
 (evil-leader/set-key-for-mode 'clojure-mode
@@ -109,17 +91,11 @@
 (require 'evil)
 (evil-mode t)
 
-;; Jump in a radical way
-(global-evil-jumper-mode t)
-
 ;; Surround stuff like never before
 (require 'evil-surround)
 (global-evil-surround-mode t)
 
-(require 'evil-lisp-state)
-(setq global-evil-lisp-state t)
-
-;; fd quits
+;; kj quits
 (require 'evil-escape)
 (evil-escape-mode t)
 (setq-default evil-escape-key-sequence "kj")
@@ -142,6 +118,19 @@
   "ci" 'evilnc-comment-or-uncomment-lines)
 ;;; Evil Mode things end
 
+;; Javascript settings
+(add-hook 'js-mode-hook 'js2-minor-mode)
+(add-hook 'js2-mode-hook 'ac-js2-mode)
+(setq js2-highlight-level 3)
+
+;; Add repos for the package manager
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(setq package-enable-at-startup nil)
+(package-initialize)
+
 ;; Unbind clipboard integration (so that I can use the VIM clipboard stuff)
 (setq x-select-enable-clipboard nil)
 
@@ -149,10 +138,6 @@
 (require 'helm-config)
 (helm-mode t)
 (global-set-key (kbd "M-x") 'helm-M-x)
-
-;; Powerline makes the info bar at the bottom real pretty
-(require 'powerline)
-(powerline-evil-center-color-theme)
 
 ;; We're in good company now
 (add-hook 'after-init-hook 'global-company-mode)
