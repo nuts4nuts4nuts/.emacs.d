@@ -15,108 +15,19 @@
 (setq c-default-style "bsd"
       c-basic-offset 'tab-width)
 
-;; Evil Mode things
-;; Evil Leader on
+;; Open and focus this file: init.el
 (defun open-init ()
   (interactive)
   (split-window-right)
   (windmove-right)
   (find-file "~/.emacs.d/init.el"))
 
+;; Open and focus my main org mode file
 (defun open-org ()
   (interactive)
   (split-window-right)
   (windmove-right)
   (dired "~/.emacs.d/org"))
-
-(require 'evil-leader)
-(global-evil-leader-mode)
-;; leader configurations
-(evil-leader/set-leader "<SPC>")
-(evil-leader/set-key
-  "f" 'helm-find-files
-  "b" 'helm-buffers-list
-  "k" 'kill-buffer
-  "d" 'dired
-  "x" 'helm-M-x
-  "v" 'evil-window-vsplit
-  "h" 'evil-window-split
-  "in" 'open-init
-  "go" 'open-org
-  "gs" 'magit-status)
-
-;; Clojure mode bindings
-(evil-leader/set-key-for-mode 'clojure-mode
-  "e" 'cider-eval-last-sexp
-  "c" 'cider-load-buffer)
-
-;; Org-mode settings
-(setq org-log-done 'time)
-(setq org-startup-truncated nil)
-(evil-leader/set-key-for-mode 'org-mode
-  "," 'org-metaleft
-  "." 'org-metaright
-  "gj" 'org-metadown
-  "gk" 'org-metaup
-  "o" '(lambda ()
-	 (interactive)
-	 (evil-append-line 1)
-	 (org-meta-return)
-	 (evil-normal-state))
-  "gt" 'org-todo
-  "st" '(lambda ()
-	  (interactive)
-	  (evil-append-line 1)
-	  (insert-char ?\s 1)
-	  (org-timer)
-	  (evil-normal-state))
-  "gi" 'org-clock-in
-  "go" 'org-clock-out
-  "gl" 'org-open-at-point
-  "c" 'org-toggle-checkbox)
-(evil-define-key 'insert org-mode-map (kbd "M-a") 'org-time-stamp) ; This was backward-sentence
-
-;; M-j is indent-new-comment-line  
-;; M-k is kill-sentence                       ; REBIND THESE THINGS MAYBE
-;; M-h is mark-paragraph
-;; M-l is downcase-word
-;; Took the i3 switch window bindings + normal C-tab thing
-(global-set-key (kbd "M-j") 'windmove-down)
-(global-set-key (kbd "M-k") 'windmove-up)
-(global-set-key (kbd "M-h") 'windmove-left)
-(global-set-key (kbd "M-l") 'windmove-right)
-(global-set-key (kbd "<C-tab>") 'other-window)
-
-;;; Evil Mode on
-(require 'evil)
-(evil-mode t)
-
-;; Surround stuff like never before
-(require 'evil-surround)
-(global-evil-surround-mode t)
-
-;; kj quits
-(require 'evil-escape)
-(evil-escape-mode t)
-(setq-default evil-escape-key-sequence "kj")
-(setq-default evil-escape-delay 0.1)
-
-;; Scroll up and down
-(define-key evil-normal-state-map (kbd "C-k") (lambda ()
-						(interactive)
-						(evil-scroll-up nil)))
-(define-key evil-normal-state-map (kbd "C-j") (lambda ()
-						(interactive)
-						(evil-scroll-down nil)))
-
-;; Company is cool
-(define-key evil-normal-state-map (kbd "C-n") 'company-complete)
-(define-key evil-insert-state-map (kbd "C-n") 'company-complete)
-
-(setq evilnc-invert-comment-line-by-line t)
-(evil-leader/set-key
-  "ci" 'evilnc-comment-or-uncomment-lines)
-;;; Evil Mode things end
 
 ;; Javascript settings
 (add-hook 'js-mode-hook 'js2-minor-mode)
@@ -130,9 +41,6 @@
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (setq package-enable-at-startup nil)
 (package-initialize)
-
-;; Unbind clipboard integration (so that I can use the VIM clipboard stuff)
-(setq x-select-enable-clipboard nil)
 
 ;; Helm is the craziest thing ever
 (require 'helm-config)
@@ -172,58 +80,68 @@
 ;; Associate nasm-mode with .asm files
 (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
 
-;; TESTING OMNISHARP STUFF
-(require 'omnisharp)
-;; Example evil-mode config
-(evil-define-key 'insert omnisharp-mode-map (kbd "M-.") 'omnisharp-auto-complete)
-(evil-define-key 'normal omnisharp-mode-map (kbd "<f12>") 'omnisharp-go-to-definition)
-(evil-define-key 'normal omnisharp-mode-map (kbd "gou") 'omniSharp-find-usages)
-(evil-define-key 'normal omnisharp-mode-map (kbd "goi") 'omnisharp-find-implementations) ; g i is taken
-(evil-define-key 'normal omnisharp-mode-map (kbd "god") 'Omnisharp-go-to-definition)
-(evil-define-key 'normal omnisharp-mode-map (kbd "goR") 'omnisharp-run-code-action-refactoring)
-(evil-define-key 'normal omnisharp-mode-map (kbd "gf") 'omnisharp-fix-code-issue-at-point)
-(evil-define-key 'normal omnisharp-mode-map (kbd "gF") 'omnisharp-fix-usings)
-(evil-define-key 'normal omnisharp-mode-map (kbd "gor") 'omnisharp-rename)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", i") 'omnisharp-current-type-information)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", I") 'omnisharp-current-type-documentation)
-(evil-define-key 'insert omnisharp-mode-map (kbd ".") 'omnisharp-add-dot-and-auto-complete)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", n t") 'omnisharp-navigate-to-current-file-member)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", n s") 'omnisharp-navigate-to-solution-member)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", n f") 'omnisharp-navigate-to-solution-file-then-file-member)
-(evil-define-key 'normal Omnisharp-mode-map (kbd ", n F") 'omnisharp-navigate-to-solution-file)
-(evil-define-key 'normal omnisharp-mode-map (kbd ", n r") 'omnisharp-navigate-to-region)
-(evil-define-key 'normal omnisharp-mode-map (kbd "<f12>") 'omnisharp-show-last-auto-complete-result)
-(evil-define-key 'insert omnisharp-mode-map (kbd "<f12>") 'omnisharp-show-last-auto-complete-result)
-(evil-define-key 'normal omnisharp-mode-map (kbd ",.") 'omnisharp-show-overloads-at-point)
-(evil-define-key 'normal omnisharp-mode-map (kbd ",rl") 'recompile)
+;;("f" 'helm-find-files
+;;"b" 'helm-buffers-list
+;;"k" 'kill-buffer
+;;"d" 'dired
+;;"x" 'helm-M-x
+;;"v" 'evil-window-vsplit
+;;"h" 'evil-window-split
+;;"in" 'open-init
+;;"go" 'open-org
+;;"gs" 'magit-status)
 
-(evil-define-key 'normal omnisharp-mode-map (kbd ",rt")
-  (lambda() (interactive) (omnisharp-unit-test "single")))
+;; Clojure mode bindings
+  ;;"e" 'cider-eval-last-sexp
+  ;;"c" 'cider-load-buffer)
 
-(evil-define-key 'normal omnisharp-mode-map
-  (kbd ",rf")
-  (lambda() (interactive) (omnisharp-unit-test "fixture")))
+;; Org-mode settings
+(setq org-log-done 'time)
+(setq org-startup-truncated nil)
+  ;;"," 'org-metaleft
+  ;;"." 'org-metaright
+  ;;"gj" 'org-metadown
+  ;;"gk" 'org-metaup
+  ;;"o" '(lambda ()
+	 ;;(interactive)
+	 ;;(evil-append-line 1)
+	 ;;(org-meta-return)
+	 ;;(evil-normal-state))
+  ;;"gt" 'org-todo
+  ;;"st" '(lambda ()
+	  ;;(interactive)
+	  ;;(evil-append-line 1)
+	  ;;(insert-char ?\s 1)
+	  ;;(org-timer)
+	  ;;(evil-normal-state))
+  ;;"gi" 'org-clock-in
+  ;;"go" 'org-clock-out
+  ;;"gl" 'org-open-at-point
+  ;;"c" 'org-toggle-checkbox)
+;;(evil-define-key 'insert org-mode-map (kbd "M-a") 'org-time-stamp) ; This was backward-sentence
 
-(evil-define-key 'normal omnisharp-mode-map
-  (kbd ",ra")
-  (lambda() (interactive) (omnisharp-unit-test "all")))
+;; M-j is indent-new-comment-line  
+;; M-k is kill-sentence                       ; REBIND THESE THINGS MAYBE
+;; M-h is mark-paragraph
+;; M-l is downcase-word
+;; Took the i3 switch window bindings + normal C-tab thing
+;;(global-set-key (kbd "M-j") 'windmove-down)
+;;(global-set-key (kbd "M-k") 'windmove-up)
+;;(global-set-key (kbd "M-h") 'windmove-left)
+;;(global-set-key (kbd "M-l") 'windmove-right)
+;;(global-set-key (kbd "<C-tab>") 'other-window)
 
-;; Set the curl path.
-(setq omnisharp--curl-executable-path "~/curl/curl.exe")
-(setq omnisharp-server-executable-path "~/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+;; Company is cool
+;;(define-key evil-normal-state-map (kbd "C-n") 'company-complete)
+;;(define-key evil-insert-state-map (kbd "C-n") 'company-complete)
 
-;; Automatically start omnisharp-emacs when editing csharp files.
-(add-hook 'csharp-mode-hook 'omnisharp-mode)
-;; END OF TESTING OMNISHARP STUFF
+  ;;"ci" 'evilnc-comment-or-uncomment-lines)
+
+;;;;;;;;;;;; SOME GUI VOODOO HERE ;;;;;;;;;;;;;;;;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/.emacs.d/org/Schedule-Senior-1.org"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+ '(org-agenda-files (quote ("~/.emacs.d/org/Schedule-Senior-1.org")))
+(custom-set-faces))
