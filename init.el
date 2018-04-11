@@ -22,6 +22,13 @@
   (windmove-right)
   (find-file "~/.emacs.d/init.el"))
 
+;; Open and focus my keybinds file, two-heaven-mode.el
+(defun open-thm ()
+  (interactive)
+  (split-window-right)
+  (windmove-right)
+  (find-file "~/.emacs.d/my-lisp/two-heaven-mode.el"))
+
 ;; Open and focus my main org mode file
 (defun open-org ()
   (interactive)
@@ -45,7 +52,6 @@
 ;; Helm is the craziest thing ever
 (require 'helm-config)
 (helm-mode t)
-(global-set-key (kbd "M-x") 'helm-M-x)
 
 ;; We're in good company now
 (add-hook 'after-init-hook 'global-company-mode)
@@ -79,6 +85,13 @@
 
 ;; Associate nasm-mode with .asm files
 (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
+
+;; Use undo-tree for undo
+(global-undo-tree-mode 1)
+
+;; Load two-heaven-mode, which holds all my custom keybindings
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/my-lisp/"))
+(load "two-heaven-mode")
 
 ;;("f" 'helm-find-files
 ;;"b" 'helm-buffers-list
