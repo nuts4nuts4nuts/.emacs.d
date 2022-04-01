@@ -1,0 +1,212 @@
+#+title: Emacs configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+
+* Org file that makes an el file
+
+Hello! This is an org-mode file that automatically generates an init.el file for emacs configuration. Cool, huh?
+
+** Basic settings
+
+These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
+
+#+begin_src emacs-lisp
+
+  ;; command is a lot more ergonomic than option
+  ;; also, less confusing when going back and forth between mac and windows
+  (setq mac-command-modifier 'meta)
+
+  ;; C-c h to open this file, my config
+  (defun dkj/open-config ()
+    "Open this file"
+    (interactive)
+    (find-file "~/.emacs.d/config.org"))
+  (global-set-key (kbd "C-c h") 'dkj/open-config)
+
+  ;; Not having equivalents to Vim o/O is killing me
+  (defun dkj/open-next-line ()
+    (interactive)
+    (move-end-of-line nil)
+    (newline-and-indent))
+  (global-set-key (kbd "C-o") 'dkj/open-next-line)
+
+  (defun dkj/open-previous-line ()
+    (interactive)
+    (previous-line)
+    (move-end-of-line nil)
+    (newline-and-indent))
+  (global-set-key (kbd "C-S-o") 'dkj/open-previous-line)
+
+  ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
+  (setq view-read-only t)
+
+  ;; Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
+  (load-theme 'modus-vivendi)
+
+  ;; Improve minibuffer completion
+  (setq completion-styles '(partial-completion flex)) ; > Emacs 27.1
+  (setq completion-cycle-threshold 3)
+
+  ;; Turn off the beeping with visible-bell
+  (setq visible-bell t)
+
+  ;; Turn off all the bars
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (toggle-scroll-bar -1)
+
+  ;; Always prompt before exiting
+  (setq confirm-kill-emacs 'yes-or-no-p)
+
+  ;; Hippie-expand (kinda like vim mucomplete) with C-<tab>
+  (setq hippie-expand-try-functions-list
+	'(try-complete-file-name-partially
+	  try-complete-file-name
+	  try-expand-dabbrev
+	  try-expand-dabbrev-all-buffers
+	  try-expand-dabbrev-from-kill))
+  (global-set-key (kbd "C-<tab>") 'hippie-expand)
+
+  ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
+  (setq send-mail-function 'mailclient-send-it)
+
+#+end_src
+
+** Auto-tangle Configuration Files
+
+This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+
+#+begin_src emacs-lisp
+
+  ;; Automatically tangle our config.org config file when we save it
+  (defun dkj/org-babel-tangle-config ()
+    (when (string-equal (file-name-directory (buffer-file-name))
+			(expand-file-name user-emacs-directory))
+      ;; Dynamic scoping to the rescue
+      (let ((org-confirm-babel-evaluate nil))
+	(org-babel-tangle))))
+
+  (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
+
+#+end_src
+
+** Using packages
+
+Packages are hip and cool and emacs is pretty good at using them.
+
+#+begin_src emacs-lisp
+
+  ;; Initialize package sources
+  (require 'package)
+
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			   ("org" . "https://orgmode.org/elpa/")
+			   ("elpa" . "https://elpa.gnu.org/packages/")))
+
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  ;; Initialize use-package on non-Linux platforms
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+
+#+end_src
+
+*** Automatic Package Updates
+
+The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
+
+You can also use =M-x auto-package-update-now= to update right now!
+
+#+begin_src emacs-lisp
+
+  (use-package auto-package-update
+    :custom
+    (auto-package-update-interval 7)
+    (auto-package-update-prompt-before-update t)
+    (auto-package-update-hide-results t)
+    :config
+    (auto-package-update-maybe)
+    (auto-package-update-at-time "09:00"))
+
+#+end_src
+
+** Org mode stuff
+
+Org-mode is cool. That's an understatement, org-mode is one of the main reasons to use Emacs.
+
+*** org-mode general settings
+
+#+begin_src emacs-lisp
+
+  (setq org-directory "~/Documents/org/")
+  (setq org-agenda-files '("~/Documents/org/"))
+
+#+end_src
+
+*** Markdown export
+
+Markdown is still useful, so we need a backend to export to it.
+
+#+begin_src emacs-lisp
+  
+  (setq org-export-backends '(ascii html icalendar latex md odt))
+
+#+end_src
+
+*** org-drill
+
+Spaced repetition in org-mode
+
+#+begin_src emacs-lisp
+
+  (use-package org-drill)
+
+#+end_src
+
+*** org-journal
+
+Make journals in org-mode. Replacing Obsidian stuff(?)
+
+#+begin_src emacs-lisp
+
+  (use-package org-journal)
+  (with-eval-after-load 'org-journal 
+    (setq org-journal-dir "~/Documents/org/journal/")
+    (add-to-list 'org-agenda-files (expand-file-name "~/Documents/org/journal/"))
+    (setq org-journal-file-format "%Y-%m-%d.org"))
+    
+#+end_src
+
+** Which-key
+
+=which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
+
+#+begin_src emacs-lisp
+
+  (use-package which-key)
+  (require 'which-key)
+  (which-key-mode)
+  
+#+end_src
+
+** Magit
+
+Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+** Markdown support
+
+In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
+
+#+begin_src emacs-lisp
+  
+  (use-package markdown-mode)
+
+#+end_src
