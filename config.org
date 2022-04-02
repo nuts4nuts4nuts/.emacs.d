@@ -10,7 +10,6 @@ Hello! This is an org-mode file that automatically generates an init.el file for
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
 #+begin_src emacs-lisp
-
   ;; command is a lot more ergonomic than option
   ;; also, less confusing when going back and forth between mac and windows
   (setq mac-command-modifier 'meta)
@@ -24,17 +23,34 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Not having equivalents to Vim o/O is killing me
   (defun dkj/open-next-line ()
+    "Equivalent of Vim's o"
     (interactive)
     (move-end-of-line nil)
     (newline-and-indent))
   (global-set-key (kbd "C-o") 'dkj/open-next-line)
 
   (defun dkj/open-previous-line ()
+    "Equivalent of Vim's O"
     (interactive)
     (previous-line)
     (move-end-of-line nil)
     (newline-and-indent))
   (global-set-key (kbd "C-S-o") 'dkj/open-previous-line)
+
+  ;; We want to follow new windows we create
+  (defun dkj/split-window-below-follow ()
+    "Split the window horizontally and move into the new window"
+    (interactive)
+    (split-window-below)
+    (windmove-down))
+  (global-set-key (kbd "C-x 2") 'dkj/split-window-below-follow)
+
+  (defun dkj/split-window-right-follow ()
+    "Split the window vertically and move into the new window"
+    (interactive)
+    (split-window-right)
+    (windmove-right))
+  (global-set-key (kbd "C-x 3") 'dkj/split-window-right-follow)
 
   ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
   (setq view-read-only t)
@@ -57,6 +73,15 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Always prompt before exiting
   (setq confirm-kill-emacs 'yes-or-no-p)
 
+  ;; Automatically move to help windows when they're opened
+  (setq help-window-select t)
+
+  ;; isearch with regexp by default. Swap bindings with plain isearch
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+
   ;; Hippie-expand (kinda like vim mucomplete) with C-<tab>
   (setq hippie-expand-try-functions-list
 	'(try-complete-file-name-partially
@@ -68,7 +93,6 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
   (setq send-mail-function 'mailclient-send-it)
-
 #+end_src
 
 ** Auto-tangle Configuration Files
@@ -76,9 +100,8 @@ These are some basic settings to make life a little better. They don't relate to
 This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
 
 #+begin_src emacs-lisp
-
-  ;; Automatically tangle our config.org config file when we save it
   (defun dkj/org-babel-tangle-config ()
+    "Automatically tangle our config.org config file when we save it"
     (when (string-equal (file-name-directory (buffer-file-name))
 			(expand-file-name user-emacs-directory))
       ;; Dynamic scoping to the rescue
@@ -86,7 +109,6 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 	(org-babel-tangle))))
 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
-
 #+end_src
 
 ** Using packages
@@ -94,7 +116,6 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 Packages are hip and cool and emacs is pretty good at using them.
 
 #+begin_src emacs-lisp
-
   ;; Initialize package sources
   (require 'package)
 
@@ -112,7 +133,6 @@ Packages are hip and cool and emacs is pretty good at using them.
 
   (require 'use-package)
   (setq use-package-always-ensure t)
-
 #+end_src
 
 *** Automatic Package Updates
@@ -122,7 +142,6 @@ The auto-package-update package helps us keep our Emacs packages up to date!  It
 You can also use =M-x auto-package-update-now= to update right now!
 
 #+begin_src emacs-lisp
-
   (use-package auto-package-update
     :custom
     (auto-package-update-interval 7)
@@ -131,7 +150,6 @@ You can also use =M-x auto-package-update-now= to update right now!
     :config
     (auto-package-update-maybe)
     (auto-package-update-at-time "09:00"))
-
 #+end_src
 
 ** Org mode stuff
@@ -141,10 +159,9 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 *** org-mode general settings
 
 #+begin_src emacs-lisp
-
   (setq org-directory "~/Documents/org/")
   (setq org-agenda-files '("~/Documents/org/"))
-
+  (setq org-startup-truncated nil)
 #+end_src
 
 *** Markdown export
@@ -152,9 +169,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 Markdown is still useful, so we need a backend to export to it.
 
 #+begin_src emacs-lisp
-  
   (setq org-export-backends '(ascii html icalendar latex md odt))
-
 #+end_src
 
 *** org-drill
@@ -162,9 +177,7 @@ Markdown is still useful, so we need a backend to export to it.
 Spaced repetition in org-mode
 
 #+begin_src emacs-lisp
-
   (use-package org-drill)
-
 #+end_src
 
 *** org-journal
@@ -172,25 +185,55 @@ Spaced repetition in org-mode
 Make journals in org-mode. Replacing Obsidian stuff(?)
 
 #+begin_src emacs-lisp
-
   (use-package org-journal)
   (with-eval-after-load 'org-journal 
-    (setq org-journal-dir "~/Documents/org/journal/")
-    (add-to-list 'org-agenda-files (expand-file-name "~/Documents/org/journal/"))
-    (setq org-journal-file-format "%Y-%m-%d.org"))
-    
+    (setq org-journal-dir "~/Documents/org/")
+    (setq org-journal-file-format "%Y-%m-%d.org")
+    (setq org-journal-date-prefix "#+TITLE: "))
+
+  (global-set-key (kbd "C-c j") 'org-journal-new-entry)
 #+end_src
+
+*** Org execute other languages inline
+
+With C-c C-c
+
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (python . t)
+     ))
+
+  (setq org-babel-python-command "python3")
+#+end_src
+
+**** Item :drill:
+SCHEDULED: <2022-04-06 Wed>
+:PROPERTIES:
+:ID:       135AB3A6-BE51-4A37-8E07-3A74DCCC0BE5
+:DRILL_LAST_INTERVAL: 4.14
+:DRILL_REPEATS_SINCE_FAIL: 2
+:DRILL_TOTAL_REPEATS: 1
+:DRILL_FAILURE_COUNT: 0
+:DRILL_AVERAGE_QUALITY: 5.0
+:DRILL_EASE: 2.6
+:DRILL_LAST_QUALITY: 5
+:DRILL_LAST_REVIEWED: [2022-04-02 Sat 10:04]
+:END:
+How can you use a custom python interpreter with org-babel?
+
+***** Answer
+By setting =org-babel-python-command= to the path to an interpreter
 
 ** Which-key
 
 =which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
 
 #+begin_src emacs-lisp
-
   (use-package which-key)
   (require 'which-key)
   (which-key-mode)
-  
 #+end_src
 
 ** Magit
@@ -206,7 +249,5 @@ Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, th
 In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
 
 #+begin_src emacs-lisp
-  
   (use-package markdown-mode)
-
 #+end_src
