@@ -40,6 +40,9 @@
   (windmove-right))
 (global-set-key (kbd "C-x 3") 'dkj/split-window-right-follow)
 
+;; I can't see a god damn at this small font size
+(set-face-attribute 'default nil :height 160)
+
 ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
 (setq view-read-only t)
 
@@ -134,6 +137,8 @@
   (setq org-journal-date-prefix "#+TITLE: "))
 
 (global-set-key (kbd "C-c j") 'org-journal-new-entry)
+
+(use-package org-roam)
 
 (org-babel-do-load-languages
  'org-babel-load-languages

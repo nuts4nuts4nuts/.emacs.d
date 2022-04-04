@@ -52,6 +52,9 @@ These are some basic settings to make life a little better. They don't relate to
     (windmove-right))
   (global-set-key (kbd "C-x 3") 'dkj/split-window-right-follow)
 
+  ;; I can't see a god damn at this small font size
+  (set-face-attribute 'default nil :height 160)
+
   ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
   (setq view-read-only t)
 
@@ -193,7 +196,13 @@ Make journals in org-mode. Replacing Obsidian stuff(?)
 
   (global-set-key (kbd "C-c j") 'org-journal-new-entry)
 #+end_src
+*** org-roam
 
+Get backlinks and other zettelkasten-type features in org-mode.
+
+#+begin_src emacs-lisp
+  (use-package org-roam)
+#+end_src
 *** Org execute other languages inline
 
 With C-c C-c
