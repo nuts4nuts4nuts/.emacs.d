@@ -74,15 +74,6 @@
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
-;; Hippie-expand (kinda like vim mucomplete) with C-<tab>
-(setq hippie-expand-try-functions-list
-      '(try-complete-file-name-partially
-	try-complete-file-name
-	try-expand-dabbrev
-	try-expand-dabbrev-all-buffers
-	try-expand-dabbrev-from-kill))
-(global-set-key (kbd "C-<tab>") 'hippie-expand)
-
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
 (setq send-mail-function 'mailclient-send-it)
 
@@ -131,15 +122,19 @@
 
 (use-package org-drill)
 
-(use-package org-journal)
-(with-eval-after-load 'org-journal 
-  (setq org-journal-dir "~/Documents/org/")
-  (setq org-journal-file-format "%Y-%m-%d.org")
-  (setq org-journal-date-prefix "#+TITLE: "))
-
-(global-set-key (kbd "C-c j") 'org-journal-new-entry)
-
 (use-package org-roam)
+(setq org-roam-directory (file-truename "~/Documents/org"))
+(org-roam-db-autosync-mode)
+
+(setq org-roam-dailies-directory "journal/")
+(global-set-key (kbd "C-c j") 'org-roam-dailies-goto-today)
+(global-set-key (kbd "C-c b") 'org-roam-dailies-goto-previous-note)
+(global-set-key (kbd "C-c f") 'org-roam-dailies-goto-next-note)
+(defun dkj/current-time-string ()
+  (format-time-string "%H:%M"))
+(setq org-roam-dailies-capture-templates '(
+					   ("d" "default" entry "* %(dkj/current-time-string) %?" :target
+					    (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>"))))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -156,3 +151,8 @@
 (use-package magit)
 
 (use-package markdown-mode)
+
+(use-package company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0.1)
+(add-to-list 'company-backends 'company-capf)
