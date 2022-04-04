@@ -18,6 +18,7 @@ These are some basic settings to make life a little better. They don't relate to
   (defun dkj/open-config ()
     "Open this file"
     (interactive)
+    (push-mark)
     (find-file "~/.emacs.d/config.org"))
   (global-set-key (kbd "C-c h") 'dkj/open-config)
 
@@ -217,7 +218,7 @@ With C-c C-c
   (setq org-babel-python-command "python3")
 #+end_src
 
-**** Item :drill:
+**** Item                                                             :drill:
 SCHEDULED: <2022-04-06 Wed>
 :PROPERTIES:
 :ID:       135AB3A6-BE51-4A37-8E07-3A74DCCC0BE5

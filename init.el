@@ -6,6 +6,7 @@
 (defun dkj/open-config ()
   "Open this file"
   (interactive)
+  (push-mark)
   (find-file "~/.emacs.d/config.org"))
 (global-set-key (kbd "C-c h") 'dkj/open-config)
 
