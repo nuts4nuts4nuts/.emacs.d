@@ -59,9 +59,6 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
   (setq view-read-only t)
 
-  ;; Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
-  (load-theme 'modus-vivendi)
-
   ;; Improve minibuffer completion
   (setq completion-styles '(partial-completion flex)) ; > Emacs 27.1
   (setq completion-cycle-threshold 3)
@@ -104,6 +101,15 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 	(org-babel-tangle))))
 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
+#+end_src
+
+** Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
+
+#+begin_src emacs-lisp
+  (use-package modus-themes) ;; package is needed before Emacs 28
+  (require 'modus-themes)
+  (modus-themes-load-themes)
+  (modus-themes-load-vivendi)
 #+end_src
 
 ** Using packages
@@ -156,6 +162,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 #+begin_src emacs-lisp
   (setq org-directory "~/Documents/org/")
   (setq org-agenda-files '("~/Documents/org/"))
+  (setq org-id-locations-file "~/Documents/org/.org-id-locations")
   (setq org-startup-truncated nil)
 #+end_src
 
@@ -182,6 +189,7 @@ Get backlinks and other zettelkasten-type features in org-mode.
 #+begin_src emacs-lisp
   (use-package org-roam)
   (setq org-roam-directory (file-truename "~/Documents/org"))
+  (setq org-roam-db-location (file-truename "~/Documents/org/org-roam.db"))
   (org-roam-db-autosync-mode)
 #+end_src
 

@@ -47,9 +47,6 @@
 ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
 (setq view-read-only t)
 
-;; Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
-(load-theme 'modus-vivendi)
-
 ;; Improve minibuffer completion
 (setq completion-styles '(partial-completion flex)) ; > Emacs 27.1
 (setq completion-cycle-threshold 3)
@@ -87,6 +84,11 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
+(use-package modus-themes) ;; package is needed before Emacs 28
+(require 'modus-themes)
+(modus-themes-load-themes)
+(modus-themes-load-vivendi)
+
 ;; Initialize package sources
 (require 'package)
 
@@ -116,6 +118,7 @@
 
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files '("~/Documents/org/"))
+(setq org-id-locations-file "~/Documents/org/.org-id-locations")
 (setq org-startup-truncated nil)
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
@@ -124,6 +127,7 @@
 
 (use-package org-roam)
 (setq org-roam-directory (file-truename "~/Documents/org"))
+(setq org-roam-db-location (file-truename "~/Documents/org/org-roam.db"))
 (org-roam-db-autosync-mode)
 
 (setq org-roam-dailies-directory "journal/")
