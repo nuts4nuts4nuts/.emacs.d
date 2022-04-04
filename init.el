@@ -84,11 +84,6 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
-(use-package modus-themes) ;; package is needed before Emacs 28
-(require 'modus-themes)
-(modus-themes-load-themes)
-(modus-themes-load-vivendi)
-
 ;; Initialize package sources
 (require 'package)
 
@@ -115,6 +110,11 @@
   :config
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
+
+(use-package modus-themes) ;; package is needed before Emacs 28
+(require 'modus-themes)
+(modus-themes-load-themes)
+(modus-themes-load-vivendi)
 
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files '("~/Documents/org/"))
