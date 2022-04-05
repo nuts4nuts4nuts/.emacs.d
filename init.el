@@ -41,6 +41,12 @@
   (windmove-right))
 (global-set-key (kbd "C-x 3") 'dkj/split-window-right-follow)
 
+(defun dkj/kill-line-backwards ()
+  "Kill the line backwards. Like the opposite of C-k"
+  (interactive)
+  (kill-line 0))
+(global-set-key (kbd "M-DEL") 'dkj/kill-line-backwards)
+
 ;; I can't see a god damn at this small font size
 (set-face-attribute 'default nil :height 160)
 
@@ -128,6 +134,7 @@
 
 (setq org-roam-dailies-directory "journal/")
 (global-set-key (kbd "C-c j") 'org-roam-dailies-goto-today)
+(global-set-key (kbd "C-c n") 'org-roam-dailies-capture-today)
 (global-set-key (kbd "C-c b") 'org-roam-dailies-goto-previous-note)
 (global-set-key (kbd "C-c f") 'org-roam-dailies-goto-next-note)
 (defun dkj/current-time-string ()
