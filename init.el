@@ -47,6 +47,18 @@
   (kill-line 0))
 (global-set-key (kbd "M-DEL") 'dkj/kill-line-backwards)
 
+(defun dkj/next-chunk ()
+  "Scroll down a bunch of lines"
+  (interactive)
+  (next-line 20))
+(global-set-key (kbd "M-n") 'dkj/next-chunk)
+
+(defun dkj/previous-chunk ()
+  "Scroll up a bunch of lines"
+  (interactive)
+  (previous-line 20))
+(global-set-key (kbd "M-p") 'dkj/previous-chunk)
+
 ;; I can't see a god damn at this small font size
 (set-face-attribute 'default nil :height 160)
 
