@@ -27,7 +27,7 @@
   "Open this file"
   (interactive)
   (push-mark)
-  (find-file "~/.emacs.d/config.org"))
+  (find-file "~/.emacs.d/README.org"))
 (global-set-key (kbd "C-c h") 'dkj/open-config)
 
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
@@ -70,10 +70,7 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(use-package modus-themes) ;; package is needed before Emacs 28
-(require 'modus-themes)
-(modus-themes-load-themes)
-(modus-themes-load-vivendi)
+(load-theme 'modus-vivendi t)
 
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files '("~/Documents/org/"))

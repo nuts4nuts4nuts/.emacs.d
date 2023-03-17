@@ -39,7 +39,7 @@ These are some basic settings to make life a little better. They don't relate to
     "Open this file"
     (interactive)
     (push-mark)
-    (find-file "~/.emacs.d/config.org"))
+    (find-file "~/.emacs.d/README.org"))
   (global-set-key (kbd "C-c h") 'dkj/open-config)
   
   ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
@@ -106,10 +106,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 ** Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
 
 #+begin_src emacs-lisp
-  (use-package modus-themes) ;; package is needed before Emacs 28
-  (require 'modus-themes)
-  (modus-themes-load-themes)
-  (modus-themes-load-vivendi)
+  (load-theme 'modus-vivendi t)
 #+end_src
 
 ** Org mode stuff
