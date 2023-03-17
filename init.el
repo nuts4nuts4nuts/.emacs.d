@@ -1,32 +1,6 @@
-;; Turn off all the bars
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-;; Turn off the beeping with visible-bell
-(setq visible-bell t)
-
-;; Always prompt before exiting
-(setq confirm-kill-emacs 'yes-or-no-p)
-
 ;; command is a lot more ergonomic than option
 ;; also, less confusing when going back and forth between mac and windows
 (setq mac-command-modifier 'meta)
-
-;; I can't see a god damn at this small font size
-(set-face-attribute 'default nil :height 160)
-
-;; isearch with regexp by default. Swap bindings with plain isearch
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-
-;; Set a cool theme
-(load-theme 'modus-vivendi t)
-
-;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
-(setq send-mail-function 'mailclient-send-it)
 
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
@@ -35,6 +9,27 @@
   (push-mark)
   (find-file "~/.emacs.d/config.org"))
 (global-set-key (kbd "C-c h") 'dkj/open-config)
+;; I can't see a god damn at this small font size
+(set-face-attribute 'default nil :height 160)
+;; Turn off the beeping with visible-bell
+(setq visible-bell t)
+
+;; Turn off all the bars
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; Always prompt before exiting
+(setq confirm-kill-emacs 'yes-or-no-p)
+
+;; isearch with regexp by default. Swap bindings with plain isearch
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+
+;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
+(setq send-mail-function 'mailclient-send-it)
 
 (defun dkj/org-babel-tangle-config ()
   "Automatically tangle our config.org config file when we save it"
@@ -72,6 +67,18 @@
   :config
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
+
+(use-package modus-themes) ;; package is needed before Emacs 28
+(require 'modus-themes)
+(modus-themes-load-themes)
+(modus-themes-load-vivendi)
+
+(setq org-directory "~/Documents/org/")
+(setq org-agenda-files '("~/Documents/org/"))
+(setq org-id-locations-file "~/Documents/org/.org-id-locations")
+(setq org-startup-truncated nil)
+
+(setq org-export-backends '(ascii html icalendar latex md odt))
 
 (org-babel-do-load-languages
  'org-babel-load-languages

@@ -21,62 +21,8 @@ These are some basic settings to make life a little better. They don't relate to
     (push-mark)
     (find-file "~/.emacs.d/config.org"))
   (global-set-key (kbd "C-c h") 'dkj/open-config)
-
-  ;; Not having equivalents to Vim o/O is killing me
-  (defun dkj/open-next-line ()
-    "Equivalent of Vim's o"
-    (interactive)
-    (move-end-of-line nil)
-    (newline-and-indent))
-  (global-set-key (kbd "C-o") 'dkj/open-next-line)
-
-  (defun dkj/open-previous-line ()
-    "Equivalent of Vim's O"
-    (interactive)
-    (previous-line)
-    (move-end-of-line nil)
-    (newline-and-indent))
-  (global-set-key (kbd "C-S-o") 'dkj/open-previous-line)
-
-  ;; We want to follow new windows we create
-  (defun dkj/split-window-below-follow ()
-    "Split the window horizontally and move into the new window"
-    (interactive)
-    (split-window-below)
-    (windmove-down))
-  (global-set-key (kbd "C-x 2") 'dkj/split-window-below-follow)
-
-  (defun dkj/split-window-right-follow ()
-    "Split the window vertically and move into the new window"
-    (interactive)
-    (split-window-right)
-    (windmove-right))
-  (global-set-key (kbd "C-x 3") 'dkj/split-window-right-follow)
-
-  (defun dkj/kill-line-backwards ()
-    "Kill the line backwards. Like the opposite of C-k"
-    (interactive)
-    (kill-line 0))
-  (global-set-key (kbd "M-DEL") 'dkj/kill-line-backwards)
-
-  (defun dkj/next-chunk ()
-    "Scroll down a bunch of lines"
-    (interactive)
-    (next-line 20))
-  (global-set-key (kbd "M-n") 'dkj/next-chunk)
-
-  (defun dkj/previous-chunk ()
-    "Scroll up a bunch of lines"
-    (interactive)
-    (previous-line 20))
-  (global-set-key (kbd "M-p") 'dkj/previous-chunk)
-
   ;; I can't see a god damn at this small font size
   (set-face-attribute 'default nil :height 160)
-
-  ;; Automatically support view-mode when we're in readonly-mode. From here: https://karthinks.com/software/batteries-included-with-emacs/#view-mode--m-x-view-mode
-  (setq view-read-only t)
-
   ;; Turn off the beeping with visible-bell
   (setq visible-bell t)
 
@@ -87,9 +33,6 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Always prompt before exiting
   (setq confirm-kill-emacs 'yes-or-no-p)
-
-  ;; Automatically move to help windows when they're opened
-  (setq help-window-select t)
 
   ;; isearch with regexp by default. Swap bindings with plain isearch
   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -103,7 +46,7 @@ These are some basic settings to make life a little better. They don't relate to
 
 ** Auto-tangle Configuration Files
 
-This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is the file you're looking at right now, and if so, automatically exports the configuration here to the associated output files.
+This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is in my .emacs.d directory and, if so, automatically exports the configuration here to the associated output files.
 
 #+begin_src emacs-lisp
   (defun dkj/org-babel-tangle-config ()
@@ -188,41 +131,6 @@ Markdown is still useful, so we need a backend to export to it.
   (setq org-export-backends '(ascii html icalendar latex md odt))
 #+end_src
 
-*** org-drill
-
-Spaced repetition in org-mode
-
-#+begin_src emacs-lisp
-  (use-package org-drill)
-#+end_src
-
-*** org-roam
-
-Get backlinks and other zettelkasten-type features in org-mode.
-
-#+begin_src emacs-lisp
-  (use-package org-roam)
-  (setq org-roam-directory (file-truename "~/Documents/org"))
-  (setq org-roam-db-location (file-truename "~/Documents/org/org-roam.db"))
-  (org-roam-db-autosync-mode)
-#+end_src
-
-**** org-roam dailies settings
-
-These are org-roam's implementation of journals.
-
-#+begin_src emacs-lisp
-  (setq org-roam-dailies-directory "journal/")
-  (global-set-key (kbd "C-c j") 'org-roam-dailies-goto-today)
-  (global-set-key (kbd "C-c n") 'org-roam-dailies-capture-today)
-  (global-set-key (kbd "C-c b") 'org-roam-dailies-goto-previous-note)
-  (global-set-key (kbd "C-c f") 'org-roam-dailies-goto-next-note)
-  (defun dkj/current-time-string ()
-    (format-time-string "%H:%M"))
-  (setq org-roam-dailies-capture-templates '(
-					     ("d" "default" entry "* %(dkj/current-time-string) %?" :target
-					      (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>"))))
-#+end_src
 *** Org execute other languages inline
 
 With C-c C-c
@@ -236,24 +144,6 @@ With C-c C-c
 
   (setq org-babel-python-command "python3")
 #+end_src
-
-**** Item                                                             :drill:
-SCHEDULED: <2022-04-06 Wed>
-:PROPERTIES:
-:ID:       135AB3A6-BE51-4A37-8E07-3A74DCCC0BE5
-:DRILL_LAST_INTERVAL: 4.14
-:DRILL_REPEATS_SINCE_FAIL: 2
-:DRILL_TOTAL_REPEATS: 1
-:DRILL_FAILURE_COUNT: 0
-:DRILL_AVERAGE_QUALITY: 5.0
-:DRILL_EASE: 2.6
-:DRILL_LAST_QUALITY: 5
-:DRILL_LAST_REVIEWED: [2022-04-02 Sat 10:04]
-:END:
-How can you use a custom python interpreter with org-babel?
-
-***** Answer
-By setting =org-babel-python-command= to the path to an interpreter
 
 ** Which-key
 
@@ -279,47 +169,4 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
 
 #+begin_src emacs-lisp
   (use-package markdown-mode)
-#+end_src
-
-** Completion stuff
-
-I tried to love hippie expand. But completion in Emacs is a complicated beast.
-
-#+begin_src emacs-lisp
-  (use-package corfu
-    ;; Optional customizations
-    :custom
-    (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-    (corfu-auto t)                 ;; Enable auto completion
-    ;; (corfu-separator ?\s)          ;; Orderless field separator
-    ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-    ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-    ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-    ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
-    ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-    ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
-    ;; (corfu-scroll-margin 5)        ;; Use scroll margin
-
-    ;; You may want to enable Corfu only for certain modes.
-    ;; :hook ((prog-mode . corfu-mode)
-    ;;        (shell-mode . corfu-mode)
-    ;;        (eshell-mode . corfu-mode))
-
-    ;; Recommended: Enable Corfu globally.
-    ;; This is recommended since dabbrev can be used globally (M-/).
-    :init
-    (corfu-global-mode))
-
-  ;; Optionally use the `orderless' completion style. See `+orderless-dispatch'
-  ;; in the Consult wiki for an advanced Orderless style dispatcher.
-  ;; Enable `partial-completion' for files to allow path expansion.
-  ;; You may prefer to use `initials' instead of `partial-completion'.
-  (use-package orderless
-    :init
-    ;; Configure a custom style dispatcher (see the Consult wiki)
-    ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
-    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-    (setq completion-styles '(orderless)))
-
-  (setq tab-always-indent 'complete)
 #+end_src
