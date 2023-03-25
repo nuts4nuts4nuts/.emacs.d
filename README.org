@@ -5,47 +5,6 @@
 
 Hello! This is an org-mode file that automatically generates an init.el file for emacs configuration. Cool, huh?
 
-** Basic settings
-
-These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
-
-#+begin_src emacs-lisp
-  ;; Turn off all the bars
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-
-  ;; Always prompt before exiting
-  (setq confirm-kill-emacs 'yes-or-no-p)
-
-  ;; Turn off the beeping with visible-bell
-  (setq visible-bell t)
-
-  ;; command is a lot more ergonomic than option
-  ;; also, less confusing when going back and forth between mac and windows
-  (setq mac-command-modifier 'meta)
-
-  ;; I can't see a god damn at this small font size
-  (set-face-attribute 'default nil :height 140)
-
-  ;; isearch with regexp by default. Swap bindings with plain isearch
-  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") 'isearch-forward)
-  (global-set-key (kbd "C-M-r") 'isearch-backward)
-
-  ;; C-c h to open this file, my config
-  (defun dkj/open-config ()
-    "Open this file"
-    (interactive)
-    (push-mark)
-    (find-file "~/.emacs.d/README.org"))
-  (global-set-key (kbd "C-c h") 'dkj/open-config)
-  
-  ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
-  (setq send-mail-function 'mailclient-send-it)
-#+end_src
-
 ** Auto-tangle Configuration Files
 
 This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is in my .emacs.d directory and, if so, automatically exports the configuration here to the associated output files.
@@ -62,31 +21,115 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 #+end_src
 
-** Using packages
+** Personal customization
+*** Settings
+
+These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
+
+#+begin_src emacs-lisp
+  ;; Turn off all the bars
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  ;; Always prompt before exiting
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (setq confirm-kill-emacs 'y-or-n-p)
+
+  ;; Turn off the beeping with visible-bell
+  (setq visible-bell t)
+
+  ;; command is a lot more ergonomic than option
+  ;; also, less confusing when going back and forth between mac and windows
+  (setq mac-command-modifier 'meta)
+
+  ;; I can't see a god damn at this small font size
+  (set-face-attribute 'default nil :height 130)
+
+  ;; Use bar cursor since it matches the emacs model better
+  (setq-default cursor-type 'bar)
+
+  ;; Add more context when scrolling around
+  (setq next-screen-context-lines 15)
+
+  ;; Move to the top or bottom of the buffer when scrolling
+  (setq scroll-error-top-bottom 1)
+
+  ;; Bigger global mark ring
+  (setq global-mark-ring-max 50)
+
+  ;; Show column 80
+  (setq fill-column 80)
+  (global-display-fill-column-indicator-mode)
+
+  ;; Backup to the ~/.emacs.d/backups directory
+  (setq backup-directory-alist
+	`(("." . ,(concat user-emacs-directory "backups"))))
+  
+  ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
+  (setq send-mail-function 'mailclient-send-it)
+#+end_src
+
+*** Remappings
+#+begin_src emacs-lisp
+  ;; Reserve this for tmux. Previously toggle-input-method
+  (global-unset-key (kbd "C-\\"))
+
+  ;; isearch with regexp by default. Swap bindings with plain isearch
+  (global-set-key (kbd "C-s") #'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") #'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") #'isearch-forward)
+  (global-set-key (kbd "C-M-r") #'isearch-backward)
+
+  ;; Easier window movement
+  (global-set-key (kbd "C-x C-1") #'delete-other-windows)
+  (global-set-key (kbd "C-x C-2") #'split-window-below)
+  (global-set-key (kbd "C-x C-3") #'split-window-right)
+  (global-set-key (kbd "C-x C-0") #'delete-window)
+  (global-set-key (kbd "C-x C-o") #'other-window)
+
+  ;; Kill line backwards
+  (global-set-key (kbd "M-<backspace>") (lambda () (interactive) (kill-line 0)))
+
+  ;; Use dwim versions instead of char/word/region-specific verions
+  (global-set-key (kbd "M-u") #'upcase-dwim)
+  (global-set-key (kbd "M-l") #'downcase-dwim)
+#+end_src
+
+*** Functions
+#+begin_src emacs-lisp
+  ;; C-c h to open this file, my config
+  (defun dkj/open-config ()
+    "Open this file"
+    (interactive)
+    (push-mark)
+    (find-file "~/.emacs.d/README.org"))
+  (global-set-key (kbd "C-c h") #'dkj/open-config)
+#+end_src
+  
+** Packages
+*** Using packages
 
 Packages are hip and cool and emacs is pretty good at using them.
 
 #+begin_src emacs-lisp
   ;; Initialize package sources
   (require 'package)
-
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")
 			   ("elpa" . "https://elpa.gnu.org/packages/")))
-
   (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
 
   ;; Initialize use-package on non-Linux platforms
   (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
     (package-install 'use-package))
-
+  
   (require 'use-package)
-  (setq use-package-always-ensure t)
+  (setq use-package-always-ensure 't)
 #+end_src
 
-*** Automatic Package Updates
+**** Automatic Package Updates
 
 The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
 
@@ -103,27 +146,68 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-at-time "09:00"))
 #+end_src
 
-** Use gruvbox
+*** Use gruvbox
 
 #+begin_src emacs-lisp
   (use-package gruvbox-theme)
   (load-theme 'gruvbox-dark-hard t)
 #+end_src
 
-** Org mode stuff
+*** Which-key
+
+=which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :config
+    (which-key-mode))
+#+end_src
+
+*** Magit
+
+Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+*** Markdown support
+
+In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode)
+#+end_src
+
+*** Beacon mode
+Beacon helps me not get lost
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :ensure t
+    :config
+    (beacon-mode 1)
+    (setq beacon-color 0.5))
+#+end_src
+
+*** Org mode stuff
 
 Org-mode is cool. That's an understatement, org-mode is one of the main reasons to use Emacs.
 
-*** org-mode general settings
+**** org-mode general settings
 
 #+begin_src emacs-lisp
-  (setq org-directory "~/Documents/org/")
-  (setq org-agenda-files '("~/Documents/org/"))
-  (setq org-id-locations-file "~/Documents/org/.org-id-locations")
-  (setq org-startup-truncated nil)
+  (setq org-directory "~/org/"
+	org-agenda-files '("~/org/")
+	org-id-locations-file "~/org/.org-id-locations"
+	org-startup-truncated nil)
+
+  ;; Make inserting new list items a little cleaner
+  (with-eval-after-load "org"
+    (define-key org-mode-map (kbd "M-<return>") #'org-insert-item))
 #+end_src
 
-*** Markdown export
+**** Markdown export
 
 Markdown is still useful, so we need a backend to export to it.
 
@@ -131,7 +215,7 @@ Markdown is still useful, so we need a backend to export to it.
   (setq org-export-backends '(ascii html icalendar latex md odt))
 #+end_src
 
-*** Org execute other languages inline
+**** Org execute other languages inline
 
 With C-c C-c
 
@@ -145,28 +229,18 @@ With C-c C-c
   (setq org-babel-python-command "python3")
 #+end_src
 
-** Which-key
-
-=which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
-
-#+begin_src emacs-lisp
-  (use-package which-key)
-  (require 'which-key)
-  (which-key-mode)
-#+end_src
-
-** Magit
-
-Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
+** Load other files
+I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
 #+begin_src emacs-lisp
-  (use-package magit)
+  ;; Load Google stuff
+  (let ((googel (concat user-emacs-directory "google.el")))
+    (when (file-exists-p googel)
+      (load googel)))
+
+  ;; Load customize stuff
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (when (file-exists-p custom-file)
+    (load custom-file))
 #+end_src
 
-** Markdown support
-
-In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
-
-#+begin_src emacs-lisp
-  (use-package markdown-mode)
-#+end_src

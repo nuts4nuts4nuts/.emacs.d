@@ -1,38 +1,3 @@
-;; Turn off all the bars
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
-;; Always prompt before exiting
-(setq confirm-kill-emacs 'yes-or-no-p)
-
-;; Turn off the beeping with visible-bell
-(setq visible-bell t)
-
-;; command is a lot more ergonomic than option
-;; also, less confusing when going back and forth between mac and windows
-(setq mac-command-modifier 'meta)
-
-;; I can't see a god damn at this small font size
-(set-face-attribute 'default nil :height 140)
-
-;; isearch with regexp by default. Swap bindings with plain isearch
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-
-;; C-c h to open this file, my config
-(defun dkj/open-config ()
-  "Open this file"
-  (interactive)
-  (push-mark)
-  (find-file "~/.emacs.d/README.org"))
-(global-set-key (kbd "C-c h") 'dkj/open-config)
-
-;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
-(setq send-mail-function 'mailclient-send-it)
-
 (defun dkj/org-babel-tangle-config ()
   "Automatically tangle our config.org config file when we save it"
   (when (string-equal (file-name-directory (buffer-file-name))
@@ -43,23 +8,93 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
+;; Turn off all the bars
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+;; Always prompt before exiting
+(defalias 'yes-or-no-p 'y-or-n-p)
+(setq confirm-kill-emacs 'y-or-n-p)
+
+;; Turn off the beeping with visible-bell
+(setq visible-bell t)
+
+;; command is a lot more ergonomic than option
+;; also, less confusing when going back and forth between mac and windows
+(setq mac-command-modifier 'meta)
+
+;; I can't see a god damn at this small font size
+(set-face-attribute 'default nil :height 130)
+
+;; Use bar cursor since it matches the emacs model better
+(setq-default cursor-type 'bar)
+
+;; Add more context when scrolling around
+(setq next-screen-context-lines 15)
+
+;; Move to the top or bottom of the buffer when scrolling
+(setq scroll-error-top-bottom 1)
+
+;; Bigger global mark ring
+(setq global-mark-ring-max 50)
+
+;; Show column 80
+(setq fill-column 80)
+(global-display-fill-column-indicator-mode)
+
+;; Backup to the ~/.emacs.d/backups directory
+(setq backup-directory-alist
+      `(("." . ,(concat user-emacs-directory "backups"))))
+
+;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
+(setq send-mail-function 'mailclient-send-it)
+
+;; Reserve this for tmux. Previously toggle-input-method
+(global-unset-key (kbd "C-\\"))
+
+;; isearch with regexp by default. Swap bindings with plain isearch
+(global-set-key (kbd "C-s") #'isearch-forward-regexp)
+(global-set-key (kbd "C-r") #'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") #'isearch-forward)
+(global-set-key (kbd "C-M-r") #'isearch-backward)
+
+;; Easier window movement
+(global-set-key (kbd "C-x C-1") #'delete-other-windows)
+(global-set-key (kbd "C-x C-2") #'split-window-below)
+(global-set-key (kbd "C-x C-3") #'split-window-right)
+(global-set-key (kbd "C-x C-0") #'delete-window)
+(global-set-key (kbd "C-x C-o") #'other-window)
+
+;; Kill line backwards
+(global-set-key (kbd "M-<backspace>") (lambda () (interactive) (kill-line 0)))
+
+;; Use dwim versions instead of char/word/region-specific verions
+(global-set-key (kbd "M-u") #'upcase-dwim)
+(global-set-key (kbd "M-l") #'downcase-dwim)
+
+;; C-c h to open this file, my config
+(defun dkj/open-config ()
+  "Open this file"
+  (interactive)
+  (push-mark)
+  (find-file "~/.emacs.d/README.org"))
+(global-set-key (kbd "C-c h") #'dkj/open-config)
+
 ;; Initialize package sources
 (require 'package)
-
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
-
 (package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
 
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure t)
+(setq use-package-always-ensure 't)
 
 (use-package auto-package-update
   :custom
@@ -73,10 +108,28 @@
 (use-package gruvbox-theme)
 (load-theme 'gruvbox-dark-hard t)
 
-(setq org-directory "~/Documents/org/")
-(setq org-agenda-files '("~/Documents/org/"))
-(setq org-id-locations-file "~/Documents/org/.org-id-locations")
-(setq org-startup-truncated nil)
+(use-package which-key
+  :config
+  (which-key-mode))
+
+(use-package magit)
+
+(use-package markdown-mode)
+
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1)
+  (setq beacon-color 0.5))
+
+(setq org-directory "~/org/"
+      org-agenda-files '("~/org/")
+      org-id-locations-file "~/org/.org-id-locations"
+      org-startup-truncated nil)
+
+;; Make inserting new list items a little cleaner
+(with-eval-after-load "org"
+  (define-key org-mode-map (kbd "M-<return>") #'org-insert-item))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
@@ -88,10 +141,12 @@
 
 (setq org-babel-python-command "python3")
 
-(use-package which-key)
-(require 'which-key)
-(which-key-mode)
+;; Load Google stuff
+(let ((googel (concat user-emacs-directory "google.el")))
+  (when (file-exists-p googel)
+    (load googel)))
 
-(use-package magit)
-
-(use-package markdown-mode)
+;; Load customize stuff
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
