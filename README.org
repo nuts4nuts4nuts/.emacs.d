@@ -26,7 +26,7 @@ These are some basic settings to make life a little better. They don't relate to
   (setq mac-command-modifier 'meta)
 
   ;; I can't see a god damn at this small font size
-  (set-face-attribute 'default nil :height 160)
+  (set-face-attribute 'default nil :height 140)
 
   ;; isearch with regexp by default. Swap bindings with plain isearch
   (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -103,10 +103,11 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-at-time "09:00"))
 #+end_src
 
-** Use the modus-vivendi theme - https://protesilaos.com/emacs/modus-themes
+** Use gruvbox
 
 #+begin_src emacs-lisp
-  (load-theme 'modus-vivendi t)
+  (use-package gruvbox-theme)
+  (load-theme 'gruvbox-dark-hard t)
 #+end_src
 
 ** Org mode stuff

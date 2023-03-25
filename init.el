@@ -14,7 +14,7 @@
 (setq mac-command-modifier 'meta)
 
 ;; I can't see a god damn at this small font size
-(set-face-attribute 'default nil :height 160)
+(set-face-attribute 'default nil :height 140)
 
 ;; isearch with regexp by default. Swap bindings with plain isearch
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -70,7 +70,8 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(load-theme 'modus-vivendi t)
+(use-package gruvbox-theme)
+(load-theme 'gruvbox-dark-hard t)
 
 (setq org-directory "~/Documents/org/")
 (setq org-agenda-files '("~/Documents/org/"))
