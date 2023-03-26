@@ -54,6 +54,9 @@
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
 (setq send-mail-function 'mailclient-send-it)
 
+;; Put the menu bar in the tab bar, to help with discoverability
+(add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 

@@ -24,6 +24,7 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 ** Personal customization
 *** Settings
 
+
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
 #+begin_src emacs-lisp
@@ -72,6 +73,9 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
   (setq send-mail-function 'mailclient-send-it)
+
+  ;; Put the menu bar in the tab bar, to help with discoverability
+  (add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
 #+end_src
 
 *** Remappings
