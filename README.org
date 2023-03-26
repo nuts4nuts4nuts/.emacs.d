@@ -44,7 +44,7 @@ These are some basic settings to make life a little better. They don't relate to
   (setq mac-command-modifier 'meta)
 
   ;; I can't see a god damn at this small font size
-  (set-face-attribute 'default nil :height 130)
+  (set-face-attribute 'default nil :height 160)
 
   ;; Use bar cursor since it matches the emacs model better
   (setq-default cursor-type 'bar)
@@ -62,10 +62,14 @@ These are some basic settings to make life a little better. They don't relate to
   (setq fill-column 80)
   (global-display-fill-column-indicator-mode)
 
+  ;; Prefer vertical splits in more cases
+  (setq split-width-threshold 100)
+  (setq split-height-threshold 100)
+
   ;; Backup to the ~/.emacs.d/backups directory
   (setq backup-directory-alist
 	`(("." . ,(concat user-emacs-directory "backups"))))
-  
+
   ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
   (setq send-mail-function 'mailclient-send-it)
 #+end_src

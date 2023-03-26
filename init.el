@@ -25,7 +25,7 @@
 (setq mac-command-modifier 'meta)
 
 ;; I can't see a god damn at this small font size
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 160)
 
 ;; Use bar cursor since it matches the emacs model better
 (setq-default cursor-type 'bar)
@@ -42,6 +42,10 @@
 ;; Show column 80
 (setq fill-column 80)
 (global-display-fill-column-indicator-mode)
+
+;; Prefer vertical splits in more cases
+(setq split-width-threshold 100)
+(setq split-height-threshold 100)
 
 ;; Backup to the ~/.emacs.d/backups directory
 (setq backup-directory-alist
