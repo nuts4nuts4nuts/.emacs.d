@@ -9,3 +9,4 @@ transient/
 persist/
 eshell/
 /racket-mode/
+custom.el

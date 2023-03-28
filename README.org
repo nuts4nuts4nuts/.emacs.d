@@ -179,8 +179,8 @@ You can also use =M-x auto-package-update-now= to update right now!
 *** Kitty Keyboard Protocol
 
 Keyboard handling in terminals is all messed up.
-There are a few ways to fix it, detailed in [[https://invisible-island.net/xterm/modified-keys.html][this post by =xterm= maintainer Thomas Dickey]].
-There seems to be an even more recent attempt to fix it once-and-for-all, building on the work detailed in that post, by [[https://sw.kovidgoyal.net/kitty/keyboard-protocol/][the =kitty= maintainer Kovid Goyal]].
+There are a few ways to fix it, detailed in [[https://invisible-island.net/xterm/modified-keys.html][this post by xterm maintainer Thomas Dickey]].
+There seems to be an even more recent attempt to fix it once-and-for-all, building on the work detailed in that post, by [[https://sw.kovidgoyal.net/kitty/keyboard-protocol/][the kitty maintainer Kovid Goyal]].
 This is a package that does the Emacs side of the fix.
 
 #+begin_src emacs-lisp
