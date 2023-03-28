@@ -30,7 +30,16 @@
 (xterm-mouse-mode 1)
 
 ;; I can't see a god damn at this small font size
-(set-face-attribute 'default nil :height 160)
+(defun font-height (height)
+  "Prompts the user for a height and sets the font height.
+Uses the prefix arg if one is provided."
+  (interactive "NHeight: ")
+  (set-face-attribute 'default nil :height height))
+(font-height 140)
+
+;; Automatically set view-mode when in a readonly buffer
+;; Set a buffer as readonly with C-x C-q
+(setq view-read-only t)
 
 ;; Use bar cursor since it matches the emacs model better
 (setq-default cursor-type 'bar)
@@ -109,7 +118,7 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-ensure 't)
+(setq use-package-always-ensure t)
 
 (use-package auto-package-update
   :custom

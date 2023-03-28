@@ -24,7 +24,6 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 ** Personal customization
 *** Settings
 
-
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
 #+begin_src emacs-lisp
@@ -50,7 +49,16 @@ These are some basic settings to make life a little better. They don't relate to
   (xterm-mouse-mode 1)
 
   ;; I can't see a god damn at this small font size
-  (set-face-attribute 'default nil :height 160)
+  (defun font-height (height)
+    "Prompts the user for a height and sets the font height.
+  Uses the prefix arg if one is provided."
+    (interactive "NHeight: ")
+    (set-face-attribute 'default nil :height height))
+  (font-height 140)
+
+  ;; Automatically set view-mode when in a readonly buffer
+  ;; Set a buffer as readonly with C-x C-q
+  (setq view-read-only t)
 
   ;; Use bar cursor since it matches the emacs model better
   (setq-default cursor-type 'bar)
@@ -84,6 +92,7 @@ These are some basic settings to make life a little better. They don't relate to
 #+end_src
 
 *** Remappings
+
 #+begin_src emacs-lisp
   ;; Reserve this for tmux. Previously toggle-input-method
   (global-unset-key (kbd "C-\\"))
@@ -113,6 +122,7 @@ These are some basic settings to make life a little better. They don't relate to
 #+end_src
 
 *** Functions
+
 #+begin_src emacs-lisp
   ;; C-c h to open this file, my config
   (defun dkj/open-config ()
@@ -142,7 +152,7 @@ Packages are hip and cool and emacs is pretty good at using them.
     (package-install 'use-package))
   
   (require 'use-package)
-  (setq use-package-always-ensure 't)
+  (setq use-package-always-ensure t)
 #+end_src
 
 **** Automatic Package Updates
