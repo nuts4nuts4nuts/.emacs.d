@@ -24,7 +24,6 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 ** Personal customization
 *** Settings
 
-
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
 #+begin_src emacs-lisp
@@ -32,6 +31,8 @@ These are some basic settings to make life a little better. They don't relate to
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  ;; Except the tab bar ;)
+  (tab-bar-mode 1)
 
   ;; Always prompt before exiting
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -44,8 +45,20 @@ These are some basic settings to make life a little better. They don't relate to
   ;; also, less confusing when going back and forth between mac and windows
   (setq mac-command-modifier 'meta)
 
+  ;; Allow the mouse in terminal mode
+  (xterm-mouse-mode 1)
+
   ;; I can't see a god damn at this small font size
-  (set-face-attribute 'default nil :height 160)
+  (defun font-height (height)
+    "Prompts the user for a height and sets the font height.
+  Uses the prefix arg if one is provided."
+    (interactive "NHeight: ")
+    (set-face-attribute 'default nil :height height))
+  (font-height 140)
+
+  ;; Automatically set view-mode when in a readonly buffer
+  ;; Set a buffer as readonly with C-x C-q
+  (setq view-read-only t)
 
   ;; Use bar cursor since it matches the emacs model better
   (setq-default cursor-type 'bar)
@@ -79,6 +92,7 @@ These are some basic settings to make life a little better. They don't relate to
 #+end_src
 
 *** Remappings
+
 #+begin_src emacs-lisp
   ;; Reserve this for tmux. Previously toggle-input-method
   (global-unset-key (kbd "C-\\"))
@@ -102,9 +116,13 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Use dwim versions instead of char/word/region-specific verions
   (global-set-key (kbd "M-u") #'upcase-dwim)
   (global-set-key (kbd "M-l") #'downcase-dwim)
+
+  ;; Open TODO.org buffer
+  (global-set-key (kbd "C-c t") (lambda () (interactive) (switch-to-buffer "TODO.org")))
 #+end_src
 
 *** Functions
+
 #+begin_src emacs-lisp
   ;; C-c h to open this file, my config
   (defun dkj/open-config ()
@@ -134,7 +152,7 @@ Packages are hip and cool and emacs is pretty good at using them.
     (package-install 'use-package))
   
   (require 'use-package)
-  (setq use-package-always-ensure 't)
+  (setq use-package-always-ensure t)
 #+end_src
 
 **** Automatic Package Updates
@@ -154,7 +172,7 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-at-time "09:00"))
 #+end_src
 
-*** Use gruvbox
+*** Pretty colors
 
 #+begin_src emacs-lisp
   (use-package gruvbox-theme)
@@ -210,6 +228,17 @@ Beacon helps me not get lost
     :config
     (beacon-mode 1)
     (setq beacon-color 0.5))
+#+end_src
+
+*** Workgroups2
+This lets use save and restore frame layouts, for use with =emacs --daemon= and emacsclient
+
+#+begin_src emacs-lisp
+  (use-package workgroups2
+    :ensure t
+    :config
+    (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+    (workgroups-mode 1))
 #+end_src
 
 *** Org mode stuff
