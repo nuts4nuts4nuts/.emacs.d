@@ -12,6 +12,8 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+;; Except the tab bar ;)
+(tab-bar-mode 1)
 
 ;; Always prompt before exiting
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -23,6 +25,9 @@
 ;; command is a lot more ergonomic than option
 ;; also, less confusing when going back and forth between mac and windows
 (setq mac-command-modifier 'meta)
+
+;; Allow the mouse in terminal mode
+(xterm-mouse-mode 1)
 
 ;; I can't see a god damn at this small font size
 (set-face-attribute 'default nil :height 160)
@@ -80,6 +85,9 @@
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "M-l") #'downcase-dwim)
 
+;; Open TODO.org buffer
+(global-set-key (kbd "C-c t") (lambda () (interactive) (switch-to-buffer "TODO.org")))
+
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
   "Open this file"
@@ -133,6 +141,12 @@
   :config
   (beacon-mode 1)
   (setq beacon-color 0.5))
+
+(use-package workgroups2
+  :ensure t
+  :config
+  (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+  (workgroups-mode 1))
 
 (setq org-directory "~/org/"
       org-agenda-files '("~/org/")

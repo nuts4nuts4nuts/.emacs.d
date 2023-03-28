@@ -32,6 +32,8 @@ These are some basic settings to make life a little better. They don't relate to
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  ;; Except the tab bar ;)
+  (tab-bar-mode 1)
 
   ;; Always prompt before exiting
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -43,6 +45,9 @@ These are some basic settings to make life a little better. They don't relate to
   ;; command is a lot more ergonomic than option
   ;; also, less confusing when going back and forth between mac and windows
   (setq mac-command-modifier 'meta)
+
+  ;; Allow the mouse in terminal mode
+  (xterm-mouse-mode 1)
 
   ;; I can't see a god damn at this small font size
   (set-face-attribute 'default nil :height 160)
@@ -102,6 +107,9 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Use dwim versions instead of char/word/region-specific verions
   (global-set-key (kbd "M-u") #'upcase-dwim)
   (global-set-key (kbd "M-l") #'downcase-dwim)
+
+  ;; Open TODO.org buffer
+  (global-set-key (kbd "C-c t") (lambda () (interactive) (switch-to-buffer "TODO.org")))
 #+end_src
 
 *** Functions
@@ -154,7 +162,7 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-at-time "09:00"))
 #+end_src
 
-*** Use gruvbox
+*** Pretty colors
 
 #+begin_src emacs-lisp
   (use-package gruvbox-theme)
@@ -210,6 +218,17 @@ Beacon helps me not get lost
     :config
     (beacon-mode 1)
     (setq beacon-color 0.5))
+#+end_src
+
+*** Workgroups2
+This lets use save and restore frame layouts, for use with =emacs --daemon= and emacsclient
+
+#+begin_src emacs-lisp
+  (use-package workgroups2
+    :ensure t
+    :config
+    (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
+    (workgroups-mode 1))
 #+end_src
 
 *** Org mode stuff
