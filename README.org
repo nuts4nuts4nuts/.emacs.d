@@ -116,9 +116,6 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Use dwim versions instead of char/word/region-specific verions
   (global-set-key (kbd "M-u") #'upcase-dwim)
   (global-set-key (kbd "M-l") #'downcase-dwim)
-
-  ;; Open TODO.org buffer
-  (global-set-key (kbd "C-c t") (lambda () (interactive) (switch-to-buffer "TODO.org")))
 #+end_src
 
 *** Functions

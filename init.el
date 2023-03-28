@@ -94,9 +94,6 @@ Uses the prefix arg if one is provided."
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "M-l") #'downcase-dwim)
 
-;; Open TODO.org buffer
-(global-set-key (kbd "C-c t") (lambda () (interactive) (switch-to-buffer "TODO.org")))
-
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
   "Open this file"
