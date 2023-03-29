@@ -69,7 +69,11 @@ Uses the prefix arg if one is provided."
 (setq send-mail-function 'mailclient-send-it)
 
 ;; Put the menu bar in the tab bar, to help with discoverability
-(add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
+(defun dkj/tab-bar-format-menu-bar ()
+"Produce the Menu button (denoted as λ) for the tab bar that shows the menu bar."
+`((menu-bar menu-item (propertize "λ" 'face 'tab-bar-tab-inactive)
+   tab-bar-menu-bar :help "Menu Bar")))
+(add-to-list 'tab-bar-format #'dkj/tab-bar-format-menu-bar)
 
 ;; Winner mode remembers my window layouts
 (winner-mode 1)
