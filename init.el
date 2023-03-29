@@ -129,11 +129,6 @@ Uses the prefix arg if one is provided."
 (use-package gruvbox-theme)
 (load-theme 'gruvbox-dark-hard t)
 
-(use-package kkp
-  :ensure t
-  :config
-  (global-kkp-mode +1))
-
 (use-package which-key
   :config
   (which-key-mode))

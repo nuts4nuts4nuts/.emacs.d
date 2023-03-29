@@ -176,20 +176,6 @@ You can also use =M-x auto-package-update-now= to update right now!
   (load-theme 'gruvbox-dark-hard t)
 #+end_src
 
-*** Kitty Keyboard Protocol
-
-Keyboard handling in terminals is all messed up.
-There are a few ways to fix it, detailed in [[https://invisible-island.net/xterm/modified-keys.html][this post by xterm maintainer Thomas Dickey]].
-There seems to be an even more recent attempt to fix it once-and-for-all, building on the work detailed in that post, by [[https://sw.kovidgoyal.net/kitty/keyboard-protocol/][the kitty maintainer Kovid Goyal]].
-This is a package that does the Emacs side of the fix.
-
-#+begin_src emacs-lisp
-  (use-package kkp
-    :ensure t
-    :config
-    (global-kkp-mode +1))
-#+end_src
-
 *** Which-key
 
 =which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
