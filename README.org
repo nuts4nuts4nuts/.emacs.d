@@ -96,6 +96,9 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Winner mode remembers my window layouts
   (winner-mode 1)
+
+  ;; Save minibuffer history across sessions
+  (savehist-mode 1)
 #+end_src
 
 *** Remappings

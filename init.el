@@ -78,6 +78,9 @@ Uses the prefix arg if one is provided."
 ;; Winner mode remembers my window layouts
 (winner-mode 1)
 
+;; Save minibuffer history across sessions
+(savehist-mode 1)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
