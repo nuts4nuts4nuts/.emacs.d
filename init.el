@@ -71,6 +71,9 @@ Uses the prefix arg if one is provided."
 ;; Put the menu bar in the tab bar, to help with discoverability
 (add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
 
+;; Winner mode remembers my window layouts
+(winner-mode 1)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
@@ -142,12 +145,6 @@ Uses the prefix arg if one is provided."
   :config
   (beacon-mode 1)
   (setq beacon-color 0.5))
-
-(use-package workgroups2
-  :ensure t
-  :config
-  (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-  (workgroups-mode 1))
 
 (setq org-directory "~/org/"
       org-agenda-files '("~/org/")

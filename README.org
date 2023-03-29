@@ -89,6 +89,9 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Put the menu bar in the tab bar, to help with discoverability
   (add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
+
+  ;; Winner mode remembers my window layouts
+  (winner-mode 1)
 #+end_src
 
 *** Remappings
@@ -211,17 +214,6 @@ Beacon helps me not get lost
     :config
     (beacon-mode 1)
     (setq beacon-color 0.5))
-#+end_src
-
-*** Workgroups2
-This lets use save and restore frame layouts, for use with =emacs --daemon= and emacsclient
-
-#+begin_src emacs-lisp
-  (use-package workgroups2
-    :ensure t
-    :config
-    (setq wg-session-file "~/.emacs.d/.emacs_workgroups")
-    (workgroups-mode 1))
 #+end_src
 
 *** Org mode stuff
