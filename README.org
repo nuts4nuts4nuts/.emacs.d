@@ -99,6 +99,11 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Save minibuffer history across sessions
   (savehist-mode 1)
+
+  ;; Automatically pull changes to files from disk
+  (global-auto-revert-mode 1)
+  ;; Same for non-file buffers (like dired, maybe magit?)
+  (setq global-auto-revert-non-file-buffers t)
 #+end_src
 
 *** Remappings
@@ -288,4 +293,3 @@ I like to keep everything in one file, but sometimes stuff needs to go in other 
   (when (file-exists-p custom-file)
     (load custom-file))
 #+end_src
-

@@ -81,6 +81,11 @@ Uses the prefix arg if one is provided."
 ;; Save minibuffer history across sessions
 (savehist-mode 1)
 
+;; Automatically pull changes to files from disk
+(global-auto-revert-mode 1)
+;; Same for non-file buffers (like dired, maybe magit?)
+(setq global-auto-revert-non-file-buffers t)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
