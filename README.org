@@ -201,14 +201,6 @@ Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, th
   (use-package magit)
 #+end_src
 
-*** Markdown support
-
-In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
-
-#+begin_src emacs-lisp
-  (use-package markdown-mode)
-#+end_src
-
 *** Beacon mode
 Beacon helps me not get lost
 
@@ -218,6 +210,26 @@ Beacon helps me not get lost
     :config
     (beacon-mode 1)
     (setq beacon-color 0.5))
+#+end_src
+
+*** Language support
+
+Packages for configuring support of various computer languages
+
+**** Markdown
+
+In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode)
+#+end_src
+
+**** Racket
+
+racket-mode is so good dude. I can't go back to vim.
+
+#+begin_src emacs-lisp
+  (use-package racket-mode)
 #+end_src
 
 *** Org mode stuff
