@@ -283,13 +283,13 @@ With C-c C-c
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
 #+begin_src emacs-lisp
-  ;; Load Google stuff
-  (let ((googel (concat user-emacs-directory "google.el")))
-    (when (file-exists-p googel)
-      (load googel)))
-
   ;; Load customize stuff
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (when (file-exists-p custom-file)
     (load custom-file))
+
+  ;; Load Google stuff
+  (let ((googel (concat user-emacs-directory "google.el")))
+    (when (file-exists-p googel)
+      (load googel)))
 #+end_src
