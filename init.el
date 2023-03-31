@@ -30,12 +30,12 @@
 (xterm-mouse-mode 1)
 
 ;; I can't see a god damn at this small font size
-(defun font-height (height)
+(defun dkj/font-height (height)
   "Prompts the user for a height and sets the font height.
 Uses the prefix arg if one is provided."
   (interactive "NHeight: ")
   (set-face-attribute 'default nil :height height))
-(font-height 140)
+(dkj/font-height 140)
 
 ;; Automatically set view-mode when in a readonly buffer
 ;; Set a buffer as readonly with C-x C-q
@@ -58,7 +58,7 @@ Uses the prefix arg if one is provided."
 (global-display-fill-column-indicator-mode)
 
 ;; Prefer vertical splits in more cases
-(setq split-width-threshold 100)
+(setq split-width-threshold 90)
 (setq split-height-threshold 100)
 
 ;; Backup to the ~/.emacs.d/backups directory
@@ -110,9 +110,13 @@ Uses the prefix arg if one is provided."
 ;; Kill line backwards
 (global-set-key (kbd "M-<backspace>") (lambda () (interactive) (kill-line 0)))
 
-;; Use dwim versions instead of char/word/region-specific verions
+;; Use dwim versions of upcase and downcase instead of char/word/region-specific verions
 (global-set-key (kbd "M-u") #'upcase-dwim)
 (global-set-key (kbd "M-l") #'downcase-dwim)
+
+;; Use cycle-spacing since it replaces just-one-space,
+;; delete-horizontal-space, and delete-blank-lines all in one
+(global-set-key (kbd "M-SPC") #'cycle-spacing)
 
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
@@ -123,13 +127,13 @@ Uses the prefix arg if one is provided."
 (global-set-key (kbd "C-c h") #'dkj/open-config)
 
 ;; Pulse the line when making big movements
-(defun pulse-line (&rest _)
+(defun dkj/pulse-line (&rest _)
     "Pulse the current line."
     (pulse-momentary-highlight-one-line (point)))
 
 (dolist (command '(scroll-up-command scroll-down-command
 		   recenter-top-bottom other-window))
-  (advice-add command :after #'pulse-line))
+  (advice-add command :after #'dkj/pulse-line))
 
 ;; Initialize package sources
 (require 'package)
