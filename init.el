@@ -44,9 +44,6 @@ Uses the prefix arg if one is provided."
 ;; Use bar cursor since it matches the emacs model better
 (setq-default cursor-type 'bar)
 
-;; Add more context when scrolling around
-(setq next-screen-context-lines 15)
-
 ;; Move to the top or bottom of the buffer when scrolling
 (setq scroll-error-top-bottom 1)
 
