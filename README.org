@@ -109,7 +109,7 @@ These are some basic settings to make life a little better. They don't relate to
 *** Remappings
 
 #+begin_src emacs-lisp
-   ;; Reserve this for tmux. Previously toggle-input-method
+  ;; Reserve this for tmux. Previously toggle-input-method
   (global-unset-key (kbd "C-\\"))
 
   ;; isearch with regexp by default. Swap bindings with plain isearch
