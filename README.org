@@ -63,6 +63,9 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Use bar cursor since it matches the emacs model better
   (setq-default cursor-type 'bar)
 
+  ;; Add more context when scrolling around
+  (setq next-screen-context-lines 10)
+
   ;; Move to the top or bottom of the buffer when scrolling
   (setq scroll-error-top-bottom 1)
 
@@ -146,23 +149,14 @@ These are some basic settings to make life a little better. They don't relate to
     (find-file "~/.emacs.d/README.org"))
   (global-set-key (kbd "C-c h") #'dkj/open-config)
 
-  ;; Scroll by half-windows
-  (defun window-half-height ()
-    (max 1
-	 (/ (- (window-height) 1)
-	    2)))
+  ;; Pulse the line when making big movements
+  (defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
 
-  (defun scroll-up-half ()
-    (interactive)
-    (scroll-up (window-half-height))
-    (move-to-window-line 0))
-  (global-set-key (kbd "C-v") #'scroll-up-half)
-
-  (defun scroll-down-half ()
-    (interactive)
-    (scroll-down (window-half-height))
-    (move-to-window-line 0))
-  (global-set-key (kbd "M-v") #'scroll-down-half)
+  (dolist (command '(scroll-up-command scroll-down-command
+		     recenter-top-bottom other-window))
+    (advice-add command :after #'pulse-line))
 #+end_src
   
 ** Packages

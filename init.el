@@ -44,6 +44,9 @@ Uses the prefix arg if one is provided."
 ;; Use bar cursor since it matches the emacs model better
 (setq-default cursor-type 'bar)
 
+;; Add more context when scrolling around
+(setq next-screen-context-lines 10)
+
 ;; Move to the top or bottom of the buffer when scrolling
 (setq scroll-error-top-bottom 1)
 
@@ -119,23 +122,14 @@ Uses the prefix arg if one is provided."
   (find-file "~/.emacs.d/README.org"))
 (global-set-key (kbd "C-c h") #'dkj/open-config)
 
-;; Scroll by half-windows
-(defun window-half-height ()
-  (max 1
-       (/ (- (window-height) 1)
-	  2)))
+;; Pulse the line when making big movements
+(defun pulse-line (&rest _)
+    "Pulse the current line."
+    (pulse-momentary-highlight-one-line (point)))
 
-(defun scroll-up-half ()
-  (interactive)
-  (scroll-up (window-half-height))
-  (move-to-window-line 0))
-(global-set-key (kbd "C-v") #'scroll-up-half)
-
-(defun scroll-down-half ()
-  (interactive)
-  (scroll-down (window-half-height))
-  (move-to-window-line 0))
-(global-set-key (kbd "M-v") #'scroll-down-half)
+(dolist (command '(scroll-up-command scroll-down-command
+		   recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line))
 
 ;; Initialize package sources
 (require 'package)
@@ -200,12 +194,12 @@ Uses the prefix arg if one is provided."
 
 (setq org-babel-python-command "python3")
 
-;; Load Google stuff
-(let ((googel (concat user-emacs-directory "google.el")))
-  (when (file-exists-p googel)
-    (load googel)))
-
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;; Load Google stuff
+(let ((googel (concat user-emacs-directory "google.el")))
+  (when (file-exists-p googel)
+    (load googel)))
