@@ -95,6 +95,11 @@ Uses the prefix arg if one is provided."
 (global-set-key (kbd "C-M-s") #'isearch-forward)
 (global-set-key (kbd "C-M-r") #'isearch-backward)
 
+;; query replace with regexp by default
+;; Swap bindings with plain query replace
+(global-set-key (kbd "M-%") #'query-replace-regexp)
+(global-set-key (kbd "C-M-%") #'query-replace)
+
 ;; Easier window movement
 (global-set-key (kbd "C-x C-1") #'delete-other-windows)
 (global-set-key (kbd "C-x C-2") #'split-window-below)
@@ -116,6 +121,24 @@ Uses the prefix arg if one is provided."
   (push-mark)
   (find-file "~/.emacs.d/README.org"))
 (global-set-key (kbd "C-c h") #'dkj/open-config)
+
+;; Scroll by half-windows
+(defun window-half-height ()
+  (max 1
+       (/ (- (window-height) 1)
+	  2)))
+
+(defun scroll-up-half ()
+  (interactive)
+  (scroll-up (window-half-height))
+  (move-to-window-line 0))
+(global-set-key (kbd "C-v") #'scroll-up-half)
+
+(defun scroll-down-half ()
+  (interactive)
+  (scroll-down (window-half-height))
+  (move-to-window-line 0))
+(global-set-key (kbd "M-v") #'scroll-down-half)
 
 ;; Initialize package sources
 (require 'package)
@@ -150,11 +173,12 @@ Uses the prefix arg if one is provided."
 
 (use-package magit)
 
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode 1)
-  (setq beacon-color 0.5))
+(when (not (display-graphic-p))
+  (add-to-list 'package-archives
+               '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+  (use-package term-keys
+    :config
+    (term-keys-mode t)))
 
 (use-package markdown-mode)
 
