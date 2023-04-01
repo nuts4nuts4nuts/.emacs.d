@@ -86,14 +86,13 @@ Uses the prefix arg if one is provided."
 ;; Same for non-file buffers (like dired, maybe magit?)
 (setq global-auto-revert-non-file-buffers t)
 
+;; Default to lax whitespace in isearch and match any char
+(setq search-whitespace-regexp ".*")
+(setq isearch-lax-whitespace t)
+(setq isearch-regexp-lax-whitespace nil)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
-
-;; isearch with regexp by default. Swap bindings with plain isearch
-(global-set-key (kbd "C-s") #'isearch-forward-regexp)
-(global-set-key (kbd "C-r") #'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") #'isearch-forward)
-(global-set-key (kbd "C-M-r") #'isearch-backward)
 
 ;; query replace with regexp by default
 ;; Swap bindings with plain query replace

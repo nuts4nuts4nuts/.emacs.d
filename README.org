@@ -104,6 +104,11 @@ These are some basic settings to make life a little better. They don't relate to
   (global-auto-revert-mode 1)
   ;; Same for non-file buffers (like dired, maybe magit?)
   (setq global-auto-revert-non-file-buffers t)
+
+  ;; Default to lax whitespace in isearch and match any char
+  (setq search-whitespace-regexp ".*")
+  (setq isearch-lax-whitespace t)
+  (setq isearch-regexp-lax-whitespace nil)
 #+end_src
 
 *** Remappings
@@ -111,12 +116,6 @@ These are some basic settings to make life a little better. They don't relate to
 #+begin_src emacs-lisp
   ;; Reserve this for tmux. Previously toggle-input-method
   (global-unset-key (kbd "C-\\"))
-
-  ;; isearch with regexp by default. Swap bindings with plain isearch
-  (global-set-key (kbd "C-s") #'isearch-forward-regexp)
-  (global-set-key (kbd "C-r") #'isearch-backward-regexp)
-  (global-set-key (kbd "C-M-s") #'isearch-forward)
-  (global-set-key (kbd "C-M-r") #'isearch-backward)
 
   ;; query replace with regexp by default
   ;; Swap bindings with plain query replace
