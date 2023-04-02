@@ -221,7 +221,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 
 *** Which-key
 
-=which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
+[[https://github.com/justbur/emacs-which-key][which-key]] is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
 
 #+begin_src emacs-lisp
   (use-package which-key
@@ -232,7 +232,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 *** term-keys
 
 Terminal emacs is hell.
-When we have to use it, term-keys helps.
+When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] helps.
 
 #+begin_src emacs-lisp
   (when (not (display-graphic-p))
@@ -252,13 +252,14 @@ When we have to use it, term-keys helps.
 
 *** Magit
 
-Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
+[[https://github.com/magit/magit][Magit]] is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
 
 #+begin_src emacs-lisp
   (use-package magit)
 #+end_src
 
 *** Marginalia
+
 [[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
 
 #+begin_src emacs-lisp
@@ -269,7 +270,8 @@ Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, th
 #+end_src
 
 *** Embark
-Embark is a right-click menu for the keyboard.
+
+[[https://github.com/oantolin/embark][Embark]] is a right-click menu for the keyboard.
 
 #+begin_src emacs-lisp
   (use-package embark
@@ -307,7 +309,7 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
 
 **** Racket
 
-racket-mode is so good dude. I can't go back to vim.
+[[https://www.racket-mode.com/][racket-mode]] is so good dude. I can't go back to vim.
 
 #+begin_src emacs-lisp
   (use-package racket-mode)
