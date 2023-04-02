@@ -91,6 +91,9 @@ Uses the prefix arg if one is provided."
 (setq isearch-lax-whitespace t)
 (setq isearch-regexp-lax-whitespace nil)
 
+(define-prefix-command 'dkj-keys)
+(global-set-key (kbd "C-z") #'dkj-keys)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
@@ -117,22 +120,27 @@ Uses the prefix arg if one is provided."
 ;; delete-horizontal-space, and delete-blank-lines all in one
 (global-set-key (kbd "M-SPC") #'cycle-spacing)
 
+;; Bind M-v to go from the completions buffer to the minibuffer,
+;; mirroring the minubuffer binding to go to completions
+(define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
+
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
   "Open this file"
   (interactive)
   (push-mark)
   (find-file "~/.emacs.d/README.org"))
-(global-set-key (kbd "C-c h") #'dkj/open-config)
+(define-key dkj-keys (kbd "C-h") #'dkj/open-config)
 
 ;; Pulse for a little longer than the default
 (setq pulse-delay 0.1)
 ;; Pulse the line when I get lost
 (defun dkj/pulse-line (&rest _)
-  (interactive)
   "Pulse the current line."
   (pulse-momentary-highlight-one-line (point)))
-(global-set-key (kbd "C-z") #'dkj/pulse-line)
+(dolist (command '(scroll-up-command scroll-down-command
+				     recenter-top-bottom other-window))
+  (advice-add command :after #'dkj/pulse-line))
 
 ;; Initialize package sources
 (require 'package)
@@ -158,14 +166,9 @@ Uses the prefix arg if one is provided."
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(use-package gruvbox-theme)
-(load-theme 'gruvbox-dark-hard t)
-
 (use-package which-key
   :config
   (which-key-mode))
-
-(use-package magit)
 
 (when (not (display-graphic-p))
   (add-to-list 'package-archives
@@ -173,6 +176,15 @@ Uses the prefix arg if one is provided."
   (use-package term-keys
     :config
     (term-keys-mode t)))
+
+(use-package gruvbox-theme)
+(load-theme 'gruvbox-dark-hard t)
+
+(use-package magit)
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
 (use-package markdown-mode)
 

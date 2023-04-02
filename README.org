@@ -111,7 +111,20 @@ These are some basic settings to make life a little better. They don't relate to
   (setq isearch-regexp-lax-whitespace nil)
 #+end_src
 
-*** Remappings
+*** Mappings
+
+**** C-z as my personal keymap
+By default, =C-c <letter>= is supposed to be reserved for user-defined commands.
+This is not my favorite for a couple of reasons:
+1. Some modes map =C-c <letter>= for some =<letter>= s
+2. =C-c <letter>= is harder to press quickly than =C-c C-<letter>=, and =C-c C-<letter>= is explicitly reserved for modes to map.
+
+So I want to make a own prefix, on which I can bind anything I like.
+I've chosen =C-z= for this, since suspending Emacs is not something I intend on doing very often.
+#+begin_src emacs-lisp
+  (define-prefix-command 'dkj-keys)
+  (global-set-key (kbd "C-z") #'dkj-keys)
+#+end_src
 
 #+begin_src emacs-lisp
   ;; Reserve this for tmux. Previously toggle-input-method
@@ -139,6 +152,10 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Use cycle-spacing since it replaces just-one-space,
   ;; delete-horizontal-space, and delete-blank-lines all in one
   (global-set-key (kbd "M-SPC") #'cycle-spacing)
+
+  ;; Bind M-v to go from the completions buffer to the minibuffer,
+  ;; mirroring the minubuffer binding to go to completions
+  (define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
 #+end_src
 
 *** Functions
@@ -150,16 +167,17 @@ These are some basic settings to make life a little better. They don't relate to
     (interactive)
     (push-mark)
     (find-file "~/.emacs.d/README.org"))
-  (global-set-key (kbd "C-c h") #'dkj/open-config)
+  (define-key dkj-keys (kbd "C-h") #'dkj/open-config)
 
   ;; Pulse for a little longer than the default
   (setq pulse-delay 0.1)
   ;; Pulse the line when I get lost
   (defun dkj/pulse-line (&rest _)
-    (interactive)
     "Pulse the current line."
     (pulse-momentary-highlight-one-line (point)))
-  (global-set-key (kbd "C-z") #'dkj/pulse-line)
+  (dolist (command '(scroll-up-command scroll-down-command
+				       recenter-top-bottom other-window))
+    (advice-add command :after #'dkj/pulse-line))
 #+end_src
   
 ** Packages
@@ -201,13 +219,6 @@ You can also use =M-x auto-package-update-now= to update right now!
     (auto-package-update-at-time "09:00"))
 #+end_src
 
-*** Pretty colors
-
-#+begin_src emacs-lisp
-  (use-package gruvbox-theme)
-  (load-theme 'gruvbox-dark-hard t)
-#+end_src
-
 *** Which-key
 
 =which-key= is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
@@ -216,14 +227,6 @@ You can also use =M-x auto-package-update-now= to update right now!
   (use-package which-key
     :config
     (which-key-mode))
-#+end_src
-
-*** Magit
-
-Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
-
-#+begin_src emacs-lisp
-  (use-package magit)
 #+end_src
 
 *** term-keys
@@ -239,6 +242,31 @@ When we have to use it, term-keys helps.
       :config
       (term-keys-mode t)))
 #+end_src
+
+*** Pretty colors
+
+#+begin_src emacs-lisp
+  (use-package gruvbox-theme)
+  (load-theme 'gruvbox-dark-hard t)
+#+end_src
+
+*** Magit
+
+Magit is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+*** Marginalia
+[[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :init
+    (marginalia-mode))
+#+end_src
+*** Embark
 
 *** Language support
 
