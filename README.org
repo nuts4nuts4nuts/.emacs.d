@@ -204,8 +204,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 *** Pretty colors
 
 #+begin_src emacs-lisp
-  (use-package gruvbox-theme)
-  (load-theme 'gruvbox-dark-hard t)
+  (load-theme 'modus-vivendi t)
 #+end_src
 
 *** Which-key

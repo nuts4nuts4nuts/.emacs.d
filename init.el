@@ -158,8 +158,7 @@ Uses the prefix arg if one is provided."
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(use-package gruvbox-theme)
-(load-theme 'gruvbox-dark-hard t)
+(load-theme 'modus-vivendi t)
 
 (use-package which-key
   :config
