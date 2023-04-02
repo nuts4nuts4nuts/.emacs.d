@@ -125,14 +125,14 @@ Uses the prefix arg if one is provided."
   (find-file "~/.emacs.d/README.org"))
 (global-set-key (kbd "C-c h") #'dkj/open-config)
 
-;; Pulse the line when making big movements
+;; Pulse for a little longer than the default
+(setq pulse-delay 0.1)
+;; Pulse the line when I get lost
 (defun dkj/pulse-line (&rest _)
-    "Pulse the current line."
-    (pulse-momentary-highlight-one-line (point)))
-
-(dolist (command '(scroll-up-command scroll-down-command
-		   recenter-top-bottom other-window))
-  (advice-add command :after #'dkj/pulse-line))
+  (interactive)
+  "Pulse the current line."
+  (pulse-momentary-highlight-one-line (point)))
+(global-set-key (kbd "C-z") #'dkj/pulse-line)
 
 ;; Initialize package sources
 (require 'package)
@@ -158,7 +158,8 @@ Uses the prefix arg if one is provided."
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
-(load-theme 'modus-vivendi t)
+(use-package gruvbox-theme)
+(load-theme 'gruvbox-dark-hard t)
 
 (use-package which-key
   :config
