@@ -266,7 +266,10 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
   (use-package marginalia
     :ensure t
     :config
-    (marginalia-mode))
+    (marginalia-mode)
+    :bind
+    (:map minibuffer-local-map
+	  ("M-A" . marginalia-cycle)))
 #+end_src
 
 *** Embark

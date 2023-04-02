@@ -185,7 +185,10 @@ Uses the prefix arg if one is provided."
 (use-package marginalia
   :ensure t
   :config
-  (marginalia-mode))
+  (marginalia-mode)
+  :bind
+  (:map minibuffer-local-map
+	("M-A" . marginalia-cycle)))
 
 (use-package embark
 :ensure t
