@@ -109,11 +109,15 @@ These are some basic settings to make life a little better. They don't relate to
   (setq search-whitespace-regexp ".*")
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
+
+  ;; Override disabled commands
+  (put 'narrow-to-region 'disabled nil)
 #+end_src
 
 *** Mappings
 
 **** C-z as my personal keymap
+
 By default, =C-c <letter>= is supposed to be reserved for user-defined commands.
 This is not my favorite for a couple of reasons:
 1. Some modes map =C-c <letter>= for some =<letter>= s
@@ -121,10 +125,13 @@ This is not my favorite for a couple of reasons:
 
 So I want to make a own prefix, on which I can bind anything I like.
 I've chosen =C-z= for this, since suspending Emacs is not something I intend on doing very often.
+
 #+begin_src emacs-lisp
   (define-prefix-command 'dkj-keys)
   (global-set-key (kbd "C-z") #'dkj-keys)
 #+end_src
+
+**** Bunch of mappings
 
 #+begin_src emacs-lisp
   ;; Reserve this for tmux. Previously toggle-input-method
@@ -229,7 +236,9 @@ You can also use =M-x auto-package-update-now= to update right now!
     (which-key-mode))
 #+end_src
 
-*** term-keys
+*** Terminal fixes
+
+**** term-keys
 
 Terminal emacs is hell.
 When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] helps.
@@ -241,6 +250,17 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
     (use-package term-keys
       :config
       (term-keys-mode t)))
+#+end_src
+
+**** Clipetty mode
+
+[[https://github.com/spudlyo/clipetty][Clipetty]] is a minor mode that makes copying from terminal emacs and pasting in other applications work better.
+
+#+begin_src emacs-lisp
+  (when (not (display-graphic-p))
+    (use-package clipetty
+    :ensure t
+    :hook (after-init . global-clipetty-mode)))
 #+end_src
 
 *** Pretty colors

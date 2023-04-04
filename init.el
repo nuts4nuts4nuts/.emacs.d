@@ -91,6 +91,9 @@ Uses the prefix arg if one is provided."
 (setq isearch-lax-whitespace t)
 (setq isearch-regexp-lax-whitespace nil)
 
+;; Override disabled commands
+(put 'narrow-to-region 'disabled nil)
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
@@ -176,6 +179,11 @@ Uses the prefix arg if one is provided."
   (use-package term-keys
     :config
     (term-keys-mode t)))
+
+(when (not (display-graphic-p))
+  (use-package clipetty
+  :ensure t
+  :hook (after-init . global-clipetty-mode)))
 
 (use-package gruvbox-theme)
 (load-theme 'gruvbox-dark-hard t)
