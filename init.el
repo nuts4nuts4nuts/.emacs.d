@@ -211,12 +211,14 @@ Uses the prefix arg if one is provided."
 ;; strategy, if you want to see the documentation from multiple providers.
 (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
 ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+;; Use the minimal indicator instead of the default mixed indicator
+(setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
 :config
 ;; Hide the mode line of the Embark live/completions buffers
 (add-to-list 'display-buffer-alist
-             '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-               nil
-               (window-parameters (mode-line-format . none)))))
+	     '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+	       nil
+	       (window-parameters (mode-line-format . none)))))
 
 (use-package markdown-mode)
 
