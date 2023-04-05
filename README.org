@@ -306,10 +306,6 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
-  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-  ;; strategy, if you want to see the documentation from multiple providers.
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
   ;; Use the minimal indicator instead of the default mixed indicator
   (setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
   :config
@@ -348,7 +344,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 
 #+begin_src emacs-lisp
   (setq org-directory "~/org/"
-	org-agenda-files '("~/org/")
+	org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
 	org-id-locations-file "~/org/.org-id-locations"
 	org-startup-truncated nil)
 
