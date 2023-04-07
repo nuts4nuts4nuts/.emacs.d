@@ -97,6 +97,9 @@ Uses the prefix arg if one is provided."
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
+;; Easily store links to things in org-mode format
+(define-key dkj-keys (kbd "C-c") #'org-store-link)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 

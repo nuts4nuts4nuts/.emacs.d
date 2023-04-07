@@ -129,6 +129,9 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
 #+begin_src emacs-lisp
   (define-prefix-command 'dkj-keys)
   (global-set-key (kbd "C-z") #'dkj-keys)
+
+  ;; Easily store links to things in org-mode format
+  (define-key dkj-keys (kbd "C-c") #'org-store-link)
 #+end_src
 
 **** Bunch of mappings
