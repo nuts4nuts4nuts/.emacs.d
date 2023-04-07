@@ -100,11 +100,6 @@ Uses the prefix arg if one is provided."
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
-;; query replace with regexp by default
-;; Swap bindings with plain query replace
-(global-set-key (kbd "M-%") #'query-replace-regexp)
-(global-set-key (kbd "C-M-%") #'query-replace)
-
 ;; Easier window movement
 (global-set-key (kbd "C-x C-1") #'delete-other-windows)
 (global-set-key (kbd "C-x C-2") #'split-window-below)
@@ -210,10 +205,6 @@ Uses the prefix arg if one is provided."
 :init
 ;; Optionally replace the key help with a completing-read interface
 (setq prefix-help-command #'embark-prefix-help-command)
-;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-;; strategy, if you want to see the documentation from multiple providers.
-(add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
 ;; Use the minimal indicator instead of the default mixed indicator
 (setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
 :config
@@ -228,7 +219,7 @@ Uses the prefix arg if one is provided."
 (use-package racket-mode)
 
 (setq org-directory "~/org/"
-      org-agenda-files '("~/org/")
+      org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil)
 

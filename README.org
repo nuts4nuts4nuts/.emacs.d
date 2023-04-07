@@ -137,11 +137,6 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
   ;; Reserve this for tmux. Previously toggle-input-method
   (global-unset-key (kbd "C-\\"))
 
-  ;; query replace with regexp by default
-  ;; Swap bindings with plain query replace
-  (global-set-key (kbd "M-%") #'query-replace-regexp)
-  (global-set-key (kbd "C-M-%") #'query-replace)
-
   ;; Easier window movement
   (global-set-key (kbd "C-x C-1") #'delete-other-windows)
   (global-set-key (kbd "C-x C-2") #'split-window-below)
