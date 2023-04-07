@@ -163,6 +163,9 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
   ;; Bind M-v to go from the completions buffer to the minibuffer,
   ;; mirroring the minubuffer binding to go to completions
   (define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
+
+  ;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
+  (global-set-key (kbd "M-/") #'hippie-expand)
 #+end_src
 
 *** Functions

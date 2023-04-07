@@ -127,6 +127,9 @@ Uses the prefix arg if one is provided."
 ;; mirroring the minubuffer binding to go to completions
 (define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
 
+;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
+(global-set-key (kbd "M-/") #'hippie-expand)
+
 ;; C-c h to open this file, my config
 (defun dkj/open-config ()
   "Open this file"
