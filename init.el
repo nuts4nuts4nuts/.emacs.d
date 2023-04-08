@@ -98,7 +98,9 @@ Uses the prefix arg if one is provided."
 (global-set-key (kbd "C-z") #'dkj-keys)
 
 ;; Easily store links to things in org-mode format
-(define-key dkj-keys (kbd "C-c") #'org-store-link)
+(define-key dkj-keys (kbd "C-l") #'org-store-link)
+;; Capture something
+(define-key dkj-keys (kbd "C-c") #'org-capture)
 
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
@@ -222,13 +224,35 @@ Uses the prefix arg if one is provided."
 (use-package racket-mode)
 
 (setq org-directory "~/org/"
+      org-default-notes-file "~/org/inbox.org"
       org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil)
 
+
+
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item))
+
+;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file "~/git/org/refile.org")
+	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+	      ("r" "respond" entry (file "~/git/org/refile.org")
+	       "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
+	      ("n" "note" entry (file "~/git/org/refile.org")
+	       "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
+	      ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+	       "* %?\n%U\n" :clock-in t :clock-resume t)
+	      ("w" "org-protocol" entry (file "~/git/org/refile.org")
+	       "* TODO Review %c\n%U\n" :immediate-finish t)
+	      ("m" "Meeting" entry (file "~/git/org/refile.org")
+	       "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+	      ("p" "Phone call" entry (file "~/git/org/refile.org")
+	       "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
+	      ("h" "Habit" entry (file "~/git/org/refile.org")
+	       "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
