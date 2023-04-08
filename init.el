@@ -101,6 +101,8 @@ Uses the prefix arg if one is provided."
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
 (define-key dkj-keys (kbd "C-c") #'org-capture)
+;; Open the agenda
+(define-key dkj-keys (kbd "C-a") #'org-agenda)
 
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
@@ -223,9 +225,9 @@ Uses the prefix arg if one is provided."
 
 (use-package racket-mode)
 
-(setq org-directory "~/org/"
+(setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
-      org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
+      org-agenda-files (directory-files-recursively "~/org" "\\.org$")
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil)
 
@@ -237,21 +239,21 @@ Uses the prefix arg if one is provided."
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/git/org/refile.org")
+      (quote (("t" "todo" entry (file "~/org/inbox.org")
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-	      ("r" "respond" entry (file "~/git/org/refile.org")
+	      ("r" "respond" entry (file "~/org/inbox.org")
 	       "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-	      ("n" "note" entry (file "~/git/org/refile.org")
+	      ("n" "note" entry (file "~/org/inbox.org")
 	       "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-	      ("j" "Journal" entry (file+datetree "~/git/org/diary.org")
+	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
 	       "* %?\n%U\n" :clock-in t :clock-resume t)
-	      ("w" "org-protocol" entry (file "~/git/org/refile.org")
+	      ("w" "org-protocol" entry (file "~/org/inbox.org")
 	       "* TODO Review %c\n%U\n" :immediate-finish t)
-	      ("m" "Meeting" entry (file "~/git/org/refile.org")
+	      ("m" "Meeting" entry (file "~/org/inbox.org")
 	       "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
-	      ("p" "Phone call" entry (file "~/git/org/refile.org")
+	      ("p" "Phone call" entry (file "~/org/inbox.org")
 	       "* PHONE %? :PHONE:\n%U" :clock-in t :clock-resume t)
-	      ("h" "Habit" entry (file "~/git/org/refile.org")
+	      ("h" "Habit" entry (file "~/org/inbox.org")
 	       "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
