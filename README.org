@@ -350,15 +350,14 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 #+begin_src emacs-lisp
   (setq org-directory "~/org"
 	org-default-notes-file "~/org/inbox.org"
-	org-agenda-files (directory-files-recursively "~/org" "\\.org$")
+	org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
 	org-id-locations-file "~/org/.org-id-locations"
 	org-startup-truncated nil)
-  
-
 
   ;; Make inserting new list items a little cleaner
   (with-eval-after-load "org"
-    (define-key org-mode-map (kbd "M-<return>") #'org-insert-item))
+    (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
+    (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 #+end_src
 
 **** Capture templates

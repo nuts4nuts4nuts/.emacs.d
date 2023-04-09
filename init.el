@@ -227,15 +227,14 @@ Uses the prefix arg if one is provided."
 
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
-      org-agenda-files (directory-files-recursively "~/org" "\\.org$")
+      org-agenda-files (directory-files-recursively "~/org/" "\\.org$")
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil)
 
-
-
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
-  (define-key org-mode-map (kbd "M-<return>") #'org-insert-item))
+  (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
+  (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
 (setq org-capture-templates
