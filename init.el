@@ -253,7 +253,7 @@ t)))
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 (setq org-capture-templates
-      (quote (("t" "todo" entry (file "~/org/inbox.org")
+      (quote (("t" "Todo" entry (file "~/org/inbox.org")
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
 	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
 	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
