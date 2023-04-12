@@ -191,6 +191,18 @@ Uses the prefix arg if one is provided."
   :hook (after-init . global-clipetty-mode)))
 
 (use-package gruvbox-theme)
+
+(defun dkj/swap-themes ()
+  (interactive)
+  (progn
+    (setq current-theme (car custom-enabled-themes))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme (cond
+ ((eq current-theme 'gruvbox-dark-hard) 'gruvbox-light-hard)
+ ((eq current-theme 'gruvbox-light-hard) 'gruvbox-dark-hard))
+t)))
+(define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
+
 (load-theme 'gruvbox-dark-hard t)
 
 (use-package magit)
@@ -227,7 +239,10 @@ Uses the prefix arg if one is provided."
 
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
-      org-agenda-files (cons "~/org" (directory-files-recursively "~/org/projects" "^[^.]+$" t)) ; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
+      ; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
+      org-agenda-files (cons "~/org"
+			     (cons "~/org/projects"
+				   (directory-files-recursively "~/org/projects" "^[^.]+$" t)))
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
@@ -237,22 +252,15 @@ Uses the prefix arg if one is provided."
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
-;; Capture templates for: TODO tasks, Notes, appointments, meetings, and org-protocol
 (setq org-capture-templates
       (quote (("t" "todo" entry (file "~/org/inbox.org")
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-	      ("r" "respond" entry (file "~/org/inbox.org")
-	       "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n" :clock-in t :clock-resume t :immediate-finish t)
-	      ("n" "note" entry (file "~/org/inbox.org")
-	       "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
 	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
-	       "* %?\n%U\n" :clock-in t :clock-resume t)
+	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
 	      ("m" "Meeting" entry (file+datetree "~/org/journal.org")
 	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-	      ("w" "org-protocol" entry (file "~/org/inbox.org")
-	       "* TODO Review %c\n%U\n" :immediate-finish t)
-	      ("h" "Habit" entry (file "~/org/inbox.org")
-	       "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
+	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
+	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
