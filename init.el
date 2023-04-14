@@ -83,8 +83,6 @@ Uses the prefix arg if one is provided."
 
 ;; Automatically pull changes to files from disk
 (global-auto-revert-mode 1)
-;; Same for non-file buffers (like dired, maybe magit?)
-(setq global-auto-revert-non-file-buffers t)
 
 ;; Default to lax whitespace in isearch and match any char
 (setq search-whitespace-regexp ".*")
@@ -242,7 +240,7 @@ t)))
       ; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
       org-agenda-files (cons "~/org"
 			     (cons "~/org/projects"
-				   (directory-files-recursively "~/org/projects" "^[^.]+$" t)))
+				   (directory-files-recursively "~/org/projects/" "^[^.]+$" t)))
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
