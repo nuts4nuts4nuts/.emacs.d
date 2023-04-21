@@ -51,7 +51,7 @@ These are some basic settings to make life a little better. They don't relate to
   ;; I can't see a god damn at this small font size
   (defun dkj/font-height (height)
     "Prompts the user for a height and sets the font height.
-  Uses the prefix arg if one is provided."
+     Uses the prefix arg if one is provided."
     (interactive "NHeight: ")
     (set-face-attribute 'default nil :height height))
   (dkj/font-height 140)
@@ -89,9 +89,9 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Put the menu bar in the tab bar, to help with discoverability
   (defun dkj/tab-bar-format-menu-bar ()
-  "Produce the Menu button (denoted as λ) for the tab bar that shows the menu bar."
-  `((menu-bar menu-item (propertize "λ" 'face 'tab-bar-tab-inactive)
-     tab-bar-menu-bar :help "Menu Bar")))
+    "Produce the Menu button (denoted as λ) for the tab bar that shows the menu bar."
+    `((menu-bar menu-item (propertize "λ" 'face 'tab-bar-tab-inactive)
+		tab-bar-menu-bar :help "Menu Bar")))
   (add-to-list 'tab-bar-format #'dkj/tab-bar-format-menu-bar)
 
   ;; Winner mode remembers my window layouts
@@ -110,6 +110,18 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Override disabled commands
   (put 'narrow-to-region 'disabled nil)
+
+  ;; fido settings
+  ;; fido mode uses the built-in icomplete to emulate ido in every completing read interface
+  ;; help:completing-read
+  (fido-mode t)
+  (define-key icomplete-fido-mode-map (kbd "C-.") nil)
+  (define-key icomplete-fido-mode-map (kbd "C-,") nil)
+  (define-key icomplete-minibuffer-map (kbd "C-.") nil)
+  (define-key icomplete-minibuffer-map (kbd "C-,") nil)
+  (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
+  (setq completion-cycle-threshold 5)
+
 #+end_src
 
 *** Mappings
