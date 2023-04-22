@@ -246,13 +246,13 @@ t)))
 
 (use-package racket-mode)
 
-(setq org-directory "~/org"
-      org-default-notes-file "~/org/inbox.org"
-      ; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
-      org-agenda-files (cons "~/org"
-			     (cons "~/org/projects"
-				   (directory-files-recursively "~/org/projects/" "^[^.]+$" t)))
-      org-id-locations-file "~/org/.org-id-locations"
+(setq org-directory "~/Documents/org"
+      org-default-notes-file "~/Documents/org/inbox.org"
+      ; ~/Documents/org and all subdirectories (assuming they don't have any .s in their names!) recursively
+      org-agenda-files (cons "~/Documents/org"
+			     (cons "~/Documents/org/projects"
+				   (directory-files-recursively "~/Documents/org/projects/" "^[^.]+$" t)))
+      org-id-locations-file "~/Documents/org/.org-id-locations"
       org-startup-truncated nil
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 
@@ -262,13 +262,13 @@ t)))
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 (setq org-capture-templates
-      (quote (("t" "Todo" entry (file "~/org/inbox.org")
+      (quote (("t" "Todo" entry (file "~/Documents/org/inbox.org")
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
+	      ("j" "Journal" entry (file+datetree "~/Documents/org/journal.org")
 	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
-	      ("m" "Meeting" entry (file+datetree "~/org/journal.org")
+	      ("m" "Meeting" entry (file+datetree "~/Documents/org/journal.org")
 	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
+	      ("i" "Interrupt" entry (file+datetree "~/Documents/org/journal.org")
 	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
