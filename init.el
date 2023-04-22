@@ -271,6 +271,37 @@ t)))
 	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
 	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 
+;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+(setq org-clock-history-length 10)
+;; Resume clocking task on clock-in if the clock is open
+(setq org-clock-in-resume t)
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+
+;; Define things that show up as issues in clock check (v c in org-agenda)
+;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
+;; and lowering the default max-duration from 10 hours to 5 hours.
+(setq org-clock-consistency-checks '(:max-duration "5:00"
+   :min-duration 0
+   :max-gap "0:01"
+   :gap-ok-around
+   ("4:00")
+   :default-face
+   ((:background "DarkRed")
+    (:foreground "white"))
+   :overlap-face nil
+   :gap-face nil
+   :no-end-time-face nil
+   :long-face nil
+   :short-face nil))
+
+(defun dkj/global-clock-in ()
+  (interactive)
+  (org-clock-in '(4)))
+(define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
+
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
 (org-babel-do-load-languages
