@@ -248,12 +248,10 @@ t)))
 
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
-      ; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
-      org-agenda-files (cons "~/org"
-			     (cons "~/org/projects"
-				   (directory-files-recursively "~/org/projects/" "^[^.]+$" t)))
+					; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
+      org-agenda-files (append '("~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 
 ;; Make inserting new list items a little cleaner
