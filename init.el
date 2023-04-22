@@ -310,6 +310,12 @@ t)))
 
 (setq org-babel-python-command "python3")
 
+(use-package gptel
+  :config
+  (setq gptel-api-key (lambda () (getenv "OPENAIKEY"))))
+
+(define-key dkj-keys (kbd "C-<return>") #'gptel-send)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)

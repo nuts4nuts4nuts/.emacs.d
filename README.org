@@ -463,6 +463,20 @@ With C-c C-c
   (setq org-babel-python-command "python3")
 #+end_src
 
+*** GPTel
+
+OpenAI GPT in emacs
+
+#+begin_src emacs-lisp
+  (use-package gptel
+    :config
+    (setq gptel-api-key (lambda () (getenv "OPENAIKEY"))))
+
+  (define-key dkj-keys (kbd "C-<return>") #'gptel-send)
+#+end_src
+
+What does the above code do?
+
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
