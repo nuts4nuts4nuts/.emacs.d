@@ -370,13 +370,13 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 **** org-mode general settings
 
 #+begin_src emacs-lisp
-  (setq org-directory "~/Documents/org"
-	org-default-notes-file "~/Documents/org/inbox.org"
-	; ~/Documents/org and all subdirectories (assuming they don't have any .s in their names!) recursively
-	org-agenda-files (cons "~/Documents/org"
-			       (cons "~/Documents/org/projects"
-				     (directory-files-recursively "~/Documents/org/projects/" "^[^.]+$" t)))
-	org-id-locations-file "~/Documents/org/.org-id-locations"
+  (setq org-directory "~/org"
+	org-default-notes-file "~/org/inbox.org"
+	; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
+	org-agenda-files (cons "~/org"
+			       (cons "~/org/projects"
+				     (directory-files-recursively "~/org/projects/" "^[^.]+$" t)))
+	org-id-locations-file "~/org/.org-id-locations"
 	org-startup-truncated nil
 	org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 
@@ -392,13 +392,13 @@ Quick cap
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
-	(quote (("t" "Todo" entry (file "~/Documents/org/inbox.org")
+	(quote (("t" "Todo" entry (file "~/org/inbox.org")
 		 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-		("j" "Journal" entry (file+datetree "~/Documents/org/journal.org")
+		("j" "Journal" entry (file+datetree "~/org/journal.org")
 		 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
-		("m" "Meeting" entry (file+datetree "~/Documents/org/journal.org")
+		("m" "Meeting" entry (file+datetree "~/org/journal.org")
 		 "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-		("i" "Interrupt" entry (file+datetree "~/Documents/org/journal.org")
+		("i" "Interrupt" entry (file+datetree "~/org/journal.org")
 		 "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 #+end_src
 
