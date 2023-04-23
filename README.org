@@ -384,6 +384,15 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
     (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 #+end_src
 
+**** Todo settings
+
+#+begin_src emacs-lisp
+  (setq org-todo-keywords
+	'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+	  (sequence "|" "CANCELED(c)")
+	  (sequence "|" "HABIT(h)")))
+#+end_src
+
 **** Capture templates
 
 Quick cap

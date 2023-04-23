@@ -259,6 +259,11 @@ t)))
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+	(sequence "|" "CANCELED(c)")
+	(sequence "|" "HABIT(h)")))
+
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
