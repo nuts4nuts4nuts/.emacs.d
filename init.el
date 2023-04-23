@@ -260,9 +260,11 @@ t)))
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-	(sequence "|" "CANCELED(c)")
-	(sequence "|" "HABIT(h)")))
+      '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
+	(sequence "|" "CANCELED(c!)")
+	(sequence "|" "HABIT(h!)"))
+      org-clock-into-drawer t
+      org-log-into-drawer t)
 
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")

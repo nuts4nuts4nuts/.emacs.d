@@ -388,9 +388,11 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-	'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-	  (sequence "|" "CANCELED(c)")
-	  (sequence "|" "HABIT(h)")))
+	'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
+	  (sequence "|" "CANCELED(c!)")
+	  (sequence "|" "HABIT(h!)"))
+	org-clock-into-drawer t
+	org-log-into-drawer t)
 #+end_src
 
 **** Capture templates
