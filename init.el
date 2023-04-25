@@ -110,8 +110,11 @@
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
 (define-key dkj-keys (kbd "C-c") #'org-capture)
+
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
+;; Also map the main view to f12 since I use it all of the time
+(global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "n")))
 
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))

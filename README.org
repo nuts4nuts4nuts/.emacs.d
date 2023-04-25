@@ -144,8 +144,11 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
   (define-key dkj-keys (kbd "C-l") #'org-store-link)
   ;; Capture something
   (define-key dkj-keys (kbd "C-c") #'org-capture)
+
   ;; Open the agenda
   (define-key dkj-keys (kbd "C-a") #'org-agenda)
+  ;; Also map the main view to f12 since I use it all of the time
+  (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "n")))
 #+end_src
 
 **** Bunch of mappings
