@@ -101,7 +101,6 @@
 (define-key icomplete-minibuffer-map (kbd "C-.") nil)
 (define-key icomplete-minibuffer-map (kbd "C-,") nil)
 (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
-(setq completion-cycle-threshold 5)
 
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
@@ -261,6 +260,11 @@ t)))
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
+
+(setq org-agenda-custom-commands '(("n"
+    "Day agenda and all TODOs"
+    ((agenda #1="" ((org-agenda-span 1)))
+     (alltodo #1#)))))
 
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")

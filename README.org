@@ -120,7 +120,6 @@ These are some basic settings to make life a little better. They don't relate to
   (define-key icomplete-minibuffer-map (kbd "C-.") nil)
   (define-key icomplete-minibuffer-map (kbd "C-,") nil)
   (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
-  (setq completion-cycle-threshold 5)
 
 #+end_src
 
@@ -385,6 +384,17 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
     (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
+#+end_src
+
+**** Agenda settings
+
+All flows from the agenda
+
+#+begin_src emacs-lisp
+  (setq org-agenda-custom-commands '(("n"
+      "Day agenda and all TODOs"
+      ((agenda #1="" ((org-agenda-span 1)))
+       (alltodo #1#)))))
 #+end_src
 
 **** Todo settings
