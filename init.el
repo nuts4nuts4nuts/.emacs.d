@@ -161,93 +161,6 @@
 				     recenter-top-bottom other-window))
   (advice-add command :after #'dkj/pulse-line))
 
-;; Initialize package sources
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
-(package-initialize)
-
-;; Initialize use-package on non-Linux platforms
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-(use-package auto-package-update
-  :custom
-  (auto-package-update-interval 7)
-  (auto-package-update-prompt-before-update t)
-  (auto-package-update-hide-results t)
-  :config
-  (auto-package-update-maybe)
-  (auto-package-update-at-time "09:00"))
-
-(use-package which-key
-  :config
-  (which-key-mode))
-
-(when (not (display-graphic-p))
-  (add-to-list 'package-archives
-               '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
-  (use-package term-keys
-    :config
-    (term-keys-mode t)))
-
-(when (not (display-graphic-p))
-  (use-package clipetty
-  :ensure t
-  :hook (after-init . global-clipetty-mode)))
-
-(use-package gruvbox-theme)
-
-(defun dkj/swap-themes ()
-  (interactive)
-  (progn
-    (setq current-theme (car custom-enabled-themes))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme (cond
- ((eq current-theme 'gruvbox-dark-hard) 'gruvbox-light-hard)
- ((eq current-theme 'gruvbox-light-hard) 'gruvbox-dark-hard))
-t)))
-(define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
-
-(load-theme 'gruvbox-dark-hard t)
-
-(use-package magit)
-
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode)
-  :bind
-  (:map minibuffer-local-map
-	("M-A" . marginalia-cycle)))
-
-(use-package embark
-:ensure t
-:bind
-(("C-." . embark-act)         ;; pick some comfortable binding
- ("C-;" . embark-dwim)        ;; good alternative: M-.
- ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-:init
-;; Optionally replace the key help with a completing-read interface
-(setq prefix-help-command #'embark-prefix-help-command)
-;; Use the minimal indicator instead of the default mixed indicator
-(setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
-:config
-;; Hide the mode line of the Embark live/completions buffers
-(add-to-list 'display-buffer-alist
-	     '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-	       nil
-	       (window-parameters (mode-line-format . none)))))
-
-(use-package markdown-mode)
-
-(use-package racket-mode)
-
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
 					; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
@@ -269,9 +182,16 @@ t)))
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
 	(sequence "|" "CANCELED(c!)")
-	(sequence "|" "HABIT(h!)"))
+	(sequence "HABIT(h!)" "|" "DONE(d!)"))
       org-clock-into-drawer t
       org-log-into-drawer t)
+
+;; Set :STYLE: habit for HABIT todos
+(defun dkj/org-set-habit ()
+  (interactive)
+  (when (equal (org-get-todo-state) "HABIT")
+    (org-set-property "STYLE" "habit")))
+(add-hook 'org-after-todo-state-change-hook #'dkj/org-set-habit)
 
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")
@@ -324,18 +244,113 @@ t)))
 
 (setq org-babel-python-command "python3")
 
-(use-package gptel
-  :config
-  (setq gptel-api-key (lambda () (getenv "OPENAIKEY"))))
+;; Initialize package sources
+(require 'package)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("org" . "https://orgmode.org/elpa/")
+			 ("elpa" . "https://elpa.gnu.org/packages/")))
+(package-initialize)
 
-(define-key dkj-keys (kbd "C-<return>") #'gptel-send)
+;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+(use-package auto-package-update
+  :custom
+  (auto-package-update-interval 7)
+  (auto-package-update-prompt-before-update t)
+  (auto-package-update-hide-results t)
+  :config
+  (auto-package-update-maybe)
+  (auto-package-update-at-time "09:00"))
+
+(use-package which-key
+  :config
+  (which-key-mode))
+
+(when (not (display-graphic-p))
+  (add-to-list 'package-archives
+               '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+  (use-package term-keys
+    :config
+    (term-keys-mode t)))
+
+(when (not (display-graphic-p))
+  (use-package clipetty
+  :ensure t
+  :hook (after-init . global-clipetty-mode)))
+
+;; Themes that I like to have available
+(use-package gruvbox-theme)
+(use-package material-theme)
+
+;; Light and dark themes I'm using currently
+(setq dkj/theme-light 'material-light)
+(setq dkj/theme-dark 'material)
+
+;; Function to swap between light and dark theme
+(defun dkj/swap-themes ()
+  (interactive)
+  (let ((current-theme (car custom-enabled-themes)))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme (cond
+ ((eq current-theme dkj/theme-light) dkj/theme-dark)
+ ((eq current-theme dkj/theme-dark) dkj/theme-light))
+t)))
+
+;; Bind swapping between light and dark theme to "C-z C-\"
+(define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
+
+;; Default to dark theme
+(load-theme dkj/theme-dark t)
+
+(use-package magit)
+
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode)
+  :bind
+  (:map minibuffer-local-map
+	("M-A" . marginalia-cycle)))
+
+(use-package embark
+:ensure t
+:bind
+(("C-." . embark-act)         ;; pick some comfortable binding
+ ("C-;" . embark-dwim)        ;; good alternative: M-.
+ ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+:init
+;; Optionally replace the key help with a completing-read interface
+(setq prefix-help-command #'embark-prefix-help-command)
+;; Use the minimal indicator instead of the default mixed indicator
+(setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
+:config
+;; Hide the mode line of the Embark live/completions buffers
+(add-to-list 'display-buffer-alist
+	     '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+	       nil
+	       (window-parameters (mode-line-format . none)))))
+
+(use-package markdown-mode)
+
+(use-package racket-mode)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
   (load custom-file))
 
-;; Load Google stuff
+;; Load Google stuff if it exists
 (let ((googel (concat user-emacs-directory "google.el")))
   (when (file-exists-p googel)
     (load googel)))
+
+;; Load non-Google stuff if it exists
+(let ((noogel (concat user-emacs-directory "noogle.el")))
+  (when (file-exists-p noogel)
+    (load noogel)))
