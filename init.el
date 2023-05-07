@@ -179,6 +179,13 @@
     ((agenda #1="" ((org-agenda-span 1)))
      (alltodo #1#)))))
 
+;; Make it so that spamming f12 makes agenda the only window
+(define-key org-agenda-mode-map (kbd "<f12>") (lambda ()
+(interactive)
+(progn
+  (delete-other-windows)
+  (org-agenda-redo-all))))
+
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
 	(sequence "|" "CANCELED(c!)")
