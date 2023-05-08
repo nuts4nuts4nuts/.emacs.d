@@ -172,7 +172,7 @@
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 ;; ~/org/ and all subdirectories (assuming they don't have any .s in their names!) recursively
-(setq org-agenda-files (append '("~/org") (directory-files-recursively "~/org/" "^[^.]+$" t)) 
+(setq org-agenda-files (append '("~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 
 ;; Open my custom agenda view
@@ -182,11 +182,12 @@
 				     (alltodo #1#)))))
 
 ;; Make it so that spamming f12 makes agenda the only window
-(define-key org-agenda-mode-map (kbd "<f12>") (lambda ()
-						(interactive)
-						(progn
-						  (delete-other-windows)
-						  (org-agenda-redo-all))))
+(with-eval-after-load "org-agenda"
+  (define-key org-agenda-mode-map (kbd "<f12>") (lambda ()
+						  (interactive)
+						  (progn
+						    (delete-other-windows)
+						    (org-agenda-redo-all)))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
