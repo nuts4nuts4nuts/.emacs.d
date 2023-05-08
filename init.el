@@ -143,7 +143,7 @@
 ;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
 (global-set-key (kbd "M-/") #'hippie-expand)
 
-;; C-c h to open this file, my config
+;; C-z C-h to open this file, my config
 (defun dkj/open-config ()
   "Open this file"
   (interactive)
@@ -163,17 +163,19 @@
 
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
-					; ~/org and all subdirectories (assuming they don't have any .s in their names!) recursively
       org-id-locations-file "~/org/.org-id-locations"
-      org-startup-truncated nil
-      org-agenda-files (append '("~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
-      org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+      org-startup-truncated nil)
 
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
+;; ~/org/ and all subdirectories (assuming they don't have any .s in their names!) recursively
+(setq org-agenda-files (append '("~/org") (directory-files-recursively "~/org/" "^[^.]+$" t)) 
+      org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+
+;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "Day agenda and all TODOs"
 				    ((agenda #1="" ((org-agenda-span 1)))
