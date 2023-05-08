@@ -308,8 +308,8 @@
 (use-package material-theme)
 
 ;; Light and dark themes I'm using currently
-(setq dkj/theme-light 'material-light)
-(setq dkj/theme-dark 'material)
+(setq dkj/theme-light 'modus-operandi)
+(setq dkj/theme-dark 'modus-vivendi)
 
 ;; Function to swap between light and dark theme
 (defun dkj/swap-themes ()
