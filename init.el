@@ -175,16 +175,22 @@
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 (setq org-agenda-custom-commands '(("n"
-    "Day agenda and all TODOs"
-    ((agenda #1="" ((org-agenda-span 1)))
-     (alltodo #1#)))))
+				    "Day agenda and all TODOs"
+				    ((agenda #1="" ((org-agenda-span 1)))
+				     (alltodo #1#)))))
 
 ;; Make it so that spamming f12 makes agenda the only window
 (define-key org-agenda-mode-map (kbd "<f12>") (lambda ()
-(interactive)
-(progn
-  (delete-other-windows)
-  (org-agenda-redo-all))))
+						(interactive)
+						(progn
+						  (delete-other-windows)
+						  (org-agenda-redo-all))))
+
+;; Agenda sorting order
+(setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
+				    (todo todo-state-down priority-down scheduled-down ts-down category-keep)
+				    (tags priority-down category-keep)
+				    (search category-keep)))
 
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
@@ -223,23 +229,27 @@
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
 ;; and lowering the default max-duration from 10 hours to 5 hours.
 (setq org-clock-consistency-checks '(:max-duration "5:00"
-   :min-duration 0
-   :max-gap "0:01"
-   :gap-ok-around
-   ("4:00")
-   :default-face
-   ((:background "DarkRed")
-    (:foreground "white"))
-   :overlap-face nil
-   :gap-face nil
-   :no-end-time-face nil
-   :long-face nil
-   :short-face nil))
+						   :min-duration 0
+						   :max-gap "0:01"
+						   :gap-ok-around
+						   ("4:00")
+						   :default-face
+						   ((:background "DarkRed")
+						    (:foreground "white"))
+						   :overlap-face nil
+						   :gap-face nil
+						   :no-end-time-face nil
+						   :long-face nil
+						   :short-face nil))
 
 (defun dkj/global-clock-in ()
   (interactive)
   (org-clock-in '(4)))
 (define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
+
+(setq org-export-with-sub-superscripts nil
+      org-export-with-section-numbers nil
+      org-export-with-toc nil)
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
@@ -281,15 +291,15 @@
 
 (when (not (display-graphic-p))
   (add-to-list 'package-archives
-               '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+	       '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
   (use-package term-keys
     :config
     (term-keys-mode t)))
 
 (when (not (display-graphic-p))
   (use-package clipetty
-  :ensure t
-  :hook (after-init . global-clipetty-mode)))
+    :ensure t
+    :hook (after-init . global-clipetty-mode)))
 
 ;; Themes that I like to have available
 (use-package gruvbox-theme)
@@ -305,9 +315,9 @@
   (let ((current-theme (car custom-enabled-themes)))
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme (cond
- ((eq current-theme dkj/theme-light) dkj/theme-dark)
- ((eq current-theme dkj/theme-dark) dkj/theme-light))
-t)))
+		 ((eq current-theme dkj/theme-light) dkj/theme-dark)
+		 ((eq current-theme dkj/theme-dark) dkj/theme-light))
+		t)))
 
 ;; Bind swapping between light and dark theme to "C-z C-\"
 (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
@@ -326,22 +336,22 @@ t)))
 	("M-A" . marginalia-cycle)))
 
 (use-package embark
-:ensure t
-:bind
-(("C-." . embark-act)         ;; pick some comfortable binding
- ("C-;" . embark-dwim)        ;; good alternative: M-.
- ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-:init
-;; Optionally replace the key help with a completing-read interface
-(setq prefix-help-command #'embark-prefix-help-command)
-;; Use the minimal indicator instead of the default mixed indicator
-(setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
-:config
-;; Hide the mode line of the Embark live/completions buffers
-(add-to-list 'display-buffer-alist
-	     '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-	       nil
-	       (window-parameters (mode-line-format . none)))))
+  :ensure t
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; Use the minimal indicator instead of the default mixed indicator
+  (setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		 nil
+		 (window-parameters (mode-line-format . none)))))
 
 (use-package markdown-mode)
 
