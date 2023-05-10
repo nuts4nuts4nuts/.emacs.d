@@ -164,7 +164,8 @@
 (setq org-directory "~/org"
       org-default-notes-file "~/org/inbox.org"
       org-id-locations-file "~/org/.org-id-locations"
-      org-startup-truncated nil)
+      org-startup-truncated nil
+      org-id-link-to-org-use-id t)
 
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
