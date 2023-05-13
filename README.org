@@ -37,7 +37,7 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Always prompt before exiting
   (defalias 'yes-or-no-p 'y-or-n-p)
   (setq confirm-kill-emacs 'y-or-n-p)
-  
+
   ;; Turn off the beeping with visible-bell
   (setq visible-bell t)
 
@@ -251,6 +251,9 @@ All flows from the agenda
 				      (todo todo-state-down priority-down scheduled-down ts-down category-keep)
 				      (tags priority-down category-keep)
 				      (search category-keep)))
+
+  ;; Agenda clockreport settings
+  (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
 #+end_src
 
 *** Todo settings

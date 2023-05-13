@@ -196,6 +196,9 @@
 				    (tags priority-down category-keep)
 				    (search category-keep)))
 
+;; Agenda clockreport settings
+(setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
+
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
 	(sequence "|" "CANCELED(c!)")
