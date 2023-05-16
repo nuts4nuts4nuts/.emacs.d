@@ -231,6 +231,8 @@
 (setq org-clock-out-remove-zero-time-clocks t)
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
 (setq org-clock-persist t)
+;; Set clock duration format to never aggregate up to days
+(setq org-duration-format (quote h:mm))
 
 ;; Define things that show up as issues in clock check (v c in org-agenda)
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
