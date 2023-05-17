@@ -173,7 +173,7 @@
   (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 ;; ~/org/ and all subdirectories (assuming they don't have any .s in their names!) recursively
-(setq org-agenda-files (append '("~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
+(setq org-agenda-files (append '("~/Documents/12lang/arielle-lang" "~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
 
 ;; Open my custom agenda view
@@ -191,8 +191,8 @@
 						    (org-agenda-redo-all)))))
 
 ;; Agenda sorting order
-(setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
-				    (todo todo-state-down priority-down scheduled-down ts-down category-keep)
+(setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
+				    (todo todo-state-down category-keep)
 				    (tags priority-down category-keep)
 				    (search category-keep)))
 
