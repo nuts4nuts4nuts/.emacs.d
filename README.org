@@ -281,11 +281,11 @@ All flows from the agenda
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
- (sequence "|" "CANCELED(c!)")
- (sequence "HABIT(h!)" "|" "DONE(d!)"))
-org-clock-into-drawer t
-org-log-into-drawer t)
+	'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
+	  (sequence "|" "CANCELED(c!)")
+	  (sequence "HABIT(h!)" "|" "DONE(d!)"))
+	org-clock-into-drawer t
+	org-log-into-drawer t)
 
   ;; Set :STYLE: habit for HABIT todos
   (defun dkj/org-set-habit ()
@@ -301,12 +301,14 @@ Quick cap
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
-(quote (("t" "Todo" entry (file "~/org/inbox.org")
-"* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-("m" "Meeting" entry (file+datetree "~/org/meetings.org")
-"* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-("i" "Interrupt" entry (file+datetree "~/org/interrupts.org")
-"* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
+	(quote (("t" "Todo" entry (file "~/org/inbox.org")
+		 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+		("m" "Meeting" entry (file+datetree "~/org/meetings.org")
+		 "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+		("i" "Interrupt" entry (file+datetree "~/org/journal.org")
+		 "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t)
+		("j" "Journal" entry (file+datetree "~/org/journal.org")
+		 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
 #+end_src
 
 *** Clock settings
@@ -333,18 +335,18 @@ Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
   ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
   ;; and lowering the default max-duration from 10 hours to 5 hours.
   (setq org-clock-consistency-checks '(:max-duration "5:00"
-    :min-duration 0
-    :max-gap "0:01"
-    :gap-ok-around
-    ("4:00")
-    :default-face
-    ((:background "DarkRed")
-     (:foreground "white"))
-    :overlap-face nil
-    :gap-face nil
-    :no-end-time-face nil
-    :long-face nil
-    :short-face nil))
+						     :min-duration 0
+						     :max-gap "0:01"
+						     :gap-ok-around
+						     ("4:00")
+						     :default-face
+						     ((:background "DarkRed")
+						      (:foreground "white"))
+						     :overlap-face nil
+						     :gap-face nil
+						     :no-end-time-face nil
+						     :long-face nil
+						     :short-face nil))
 
   (defun dkj/global-clock-in ()
     (interactive)
@@ -359,8 +361,8 @@ Use defaults that make sense for me.
 
 #+begin_src emacs-lisp
   (setq org-export-with-sub-superscripts nil
-org-export-with-section-numbers nil
-org-export-with-toc nil)
+	org-export-with-section-numbers nil
+	org-export-with-toc nil)
 #+end_src
 
 *** Markdown export
@@ -394,8 +396,8 @@ Packages are hip and cool and emacs is pretty good at using them.
   ;; Initialize package sources
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-  ("org" . "https://orgmode.org/elpa/")
-  ("elpa" . "https://elpa.gnu.org/packages/")))
+			   ("org" . "https://orgmode.org/elpa/")
+			   ("elpa" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
 
   ;; Initialize use-package on non-Linux platforms
@@ -444,7 +446,7 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
 #+begin_src emacs-lisp
   (when (not (display-graphic-p))
     (add-to-list 'package-archives
-'("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+		 '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
     (use-package term-keys
       :config
       (term-keys-mode t)))
@@ -478,9 +480,9 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
     (let ((current-theme (car custom-enabled-themes)))
       (mapc #'disable-theme custom-enabled-themes)
       (load-theme (cond
-  ((eq current-theme dkj/theme-light) dkj/theme-dark)
-  ((eq current-theme dkj/theme-dark) dkj/theme-light))
- t)))
+		   ((eq current-theme dkj/theme-light) dkj/theme-dark)
+		   ((eq current-theme dkj/theme-dark) dkj/theme-light))
+		  t)))
 
   ;; Bind swapping between light and dark theme to "C-z C-\"
   (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
@@ -529,8 +531,8 @@ Orderless completion.
   (use-package orderless
     :init
     (setq completion-styles '(orderless initials basic)
- completion-category-defaults nil
- completion-category-overrides '((file (styles partial-completion)))))
+	  completion-category-defaults nil
+	  completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
 *** Marginalia
@@ -544,7 +546,7 @@ Orderless completion.
     (marginalia-mode)
     :bind
     (:map minibuffer-local-map
- ("M-A" . marginalia-cycle)))
+	  ("M-A" . marginalia-cycle)))
 #+end_src
 
 *** Embark
@@ -566,9 +568,9 @@ Orderless completion.
     :config
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist
-'("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-  nil
-  (window-parameters (mode-line-format . none)))))
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		   nil
+		   (window-parameters (mode-line-format . none)))))
 #+end_src
 
 *** Language support

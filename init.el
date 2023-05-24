@@ -219,26 +219,28 @@
 	(search . " %i %-12:c")))
 
 (setq org-todo-keywords
-'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
- (sequence "|" "CANCELED(c!)")
- (sequence "HABIT(h!)" "|" "DONE(d!)"))
-org-clock-into-drawer t
-org-log-into-drawer t)
+      '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
+	(sequence "|" "CANCELED(c!)")
+	(sequence "HABIT(h!)" "|" "DONE(d!)"))
+      org-clock-into-drawer t
+      org-log-into-drawer t)
 
-  ;; Set :STYLE: habit for HABIT todos
-  (defun dkj/org-set-habit ()
-    (interactive)
-    (when (equal (org-get-todo-state) "HABIT")
-      (org-set-property "STYLE" "habit")))
-  (add-hook 'org-after-todo-state-change-hook #'dkj/org-set-habit)
+;; Set :STYLE: habit for HABIT todos
+(defun dkj/org-set-habit ()
+  (interactive)
+  (when (equal (org-get-todo-state) "HABIT")
+    (org-set-property "STYLE" "habit")))
+(add-hook 'org-after-todo-state-change-hook #'dkj/org-set-habit)
 
 (setq org-capture-templates
-(quote (("t" "Todo" entry (file "~/org/inbox.org")
-"* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-("m" "Meeting" entry (file+datetree "~/org/meetings.org")
-"* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-("i" "Interrupt" entry (file+datetree "~/org/interrupts.org")
-"* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
+      (quote (("t" "Todo" entry (file "~/org/inbox.org")
+	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+	      ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
+	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
+	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t)
+	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
+	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
 (setq org-clock-history-length 10)
@@ -255,18 +257,18 @@ org-log-into-drawer t)
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
 ;; and lowering the default max-duration from 10 hours to 5 hours.
 (setq org-clock-consistency-checks '(:max-duration "5:00"
-  :min-duration 0
-  :max-gap "0:01"
-  :gap-ok-around
-  ("4:00")
-  :default-face
-  ((:background "DarkRed")
-   (:foreground "white"))
-  :overlap-face nil
-  :gap-face nil
-  :no-end-time-face nil
-  :long-face nil
-  :short-face nil))
+						   :min-duration 0
+						   :max-gap "0:01"
+						   :gap-ok-around
+						   ("4:00")
+						   :default-face
+						   ((:background "DarkRed")
+						    (:foreground "white"))
+						   :overlap-face nil
+						   :gap-face nil
+						   :no-end-time-face nil
+						   :long-face nil
+						   :short-face nil))
 
 (defun dkj/global-clock-in ()
   (interactive)
@@ -274,8 +276,8 @@ org-log-into-drawer t)
 (define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
 
 (setq org-export-with-sub-superscripts nil
-org-export-with-section-numbers nil
-org-export-with-toc nil)
+      org-export-with-section-numbers nil
+      org-export-with-toc nil)
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
@@ -290,8 +292,8 @@ org-export-with-toc nil)
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-("org" . "https://orgmode.org/elpa/")
-("elpa" . "https://elpa.gnu.org/packages/")))
+			 ("org" . "https://orgmode.org/elpa/")
+			 ("elpa" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 ;; Initialize use-package on non-Linux platforms
@@ -316,11 +318,11 @@ org-export-with-toc nil)
   (which-key-mode))
 
 (when (not (display-graphic-p))
-    (add-to-list 'package-archives
-'("cselpa" . "https://elpa.thecybershadow.net/packages/"))
-    (use-package term-keys
-      :config
-      (term-keys-mode t)))
+  (add-to-list 'package-archives
+	       '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+  (use-package term-keys
+    :config
+    (term-keys-mode t)))
 
 (when (not (display-graphic-p))
   (use-package clipetty
@@ -328,28 +330,28 @@ org-export-with-toc nil)
     :hook (after-init . global-clipetty-mode)))
 
 ;; Themes that I like to have available
- (use-package gruvbox-theme)
- (use-package material-theme)
+(use-package gruvbox-theme)
+(use-package material-theme)
 
- ;; Light and dark themes I'm using currently
- (setq dkj/theme-light 'modus-operandi)
- (setq dkj/theme-dark 'modus-vivendi)
+;; Light and dark themes I'm using currently
+(setq dkj/theme-light 'modus-operandi)
+(setq dkj/theme-dark 'modus-vivendi)
 
- ;; Function to swap between light and dark theme
- (defun dkj/swap-themes ()
-   (interactive)
-   (let ((current-theme (car custom-enabled-themes)))
-     (mapc #'disable-theme custom-enabled-themes)
-     (load-theme (cond
- ((eq current-theme dkj/theme-light) dkj/theme-dark)
- ((eq current-theme dkj/theme-dark) dkj/theme-light))
-t)))
+;; Function to swap between light and dark theme
+(defun dkj/swap-themes ()
+  (interactive)
+  (let ((current-theme (car custom-enabled-themes)))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme (cond
+		 ((eq current-theme dkj/theme-light) dkj/theme-dark)
+		 ((eq current-theme dkj/theme-dark) dkj/theme-light))
+		t)))
 
- ;; Bind swapping between light and dark theme to "C-z C-\"
- (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
+;; Bind swapping between light and dark theme to "C-z C-\"
+(define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
 
- ;; Default to dark theme
- (load-theme dkj/theme-dark t)
+;; Default to dark theme
+(load-theme dkj/theme-dark t)
 
 (use-package magit)
 
@@ -372,36 +374,36 @@ t)))
   )
 
 (use-package orderless
-   :init
-   (setq completion-styles '(orderless initials basic)
-completion-category-defaults nil
-completion-category-overrides '((file (styles partial-completion)))))
+  :init
+  (setq completion-styles '(orderless initials basic)
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion)))))
 
 (use-package marginalia
-   :ensure t
-   :config
-   (marginalia-mode)
-   :bind
-   (:map minibuffer-local-map
-("M-A" . marginalia-cycle)))
+  :ensure t
+  :config
+  (marginalia-mode)
+  :bind
+  (:map minibuffer-local-map
+	("M-A" . marginalia-cycle)))
 
 (use-package embark
-    :ensure t
-    :bind
-    (("C-." . embark-act)         ;; pick some comfortable binding
-     ("C-;" . embark-dwim)        ;; good alternative: M-.
-     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-    :init
-    ;; Optionally replace the key help with a completing-read interface
-    (setq prefix-help-command #'embark-prefix-help-command)
-    ;; Use the minimal indicator instead of the default mixed indicator
-    (setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
-    :config
-    ;; Hide the mode line of the Embark live/completions buffers
-    (add-to-list 'display-buffer-alist
-'("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-  nil
-  (window-parameters (mode-line-format . none)))))
+  :ensure t
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+  ;; Use the minimal indicator instead of the default mixed indicator
+  (setq embark-indicators '(embark-minimal-indicator embark-highlight-indicator embark-isearch-highlight-indicator))
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		 nil
+		 (window-parameters (mode-line-format . none)))))
 
 (use-package markdown-mode)
 
