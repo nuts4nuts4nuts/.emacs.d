@@ -51,7 +51,7 @@ These are some basic settings to make life a little better. They don't relate to
   ;; I can't see a god damn at this small font size
   (defun dkj/font-height (height)
     "Prompts the user for a height and sets the font height.
-     Uses the prefix arg if one is provided."
+       Uses the prefix arg if one is provided."
     (interactive "NHeight: ")
     (set-face-attribute 'default nil :height height))
   (dkj/font-height 140)
@@ -111,16 +111,8 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Override disabled commands
   (put 'narrow-to-region 'disabled nil)
 
-  ;; fido settings
-  ;; fido mode uses the built-in icomplete to emulate ido in every completing read interface
-  ;; help:completing-read
-  (fido-mode t)
-  (define-key icomplete-fido-mode-map (kbd "C-.") nil)
-  (define-key icomplete-fido-mode-map (kbd "C-,") nil)
-  (define-key icomplete-minibuffer-map (kbd "C-.") nil)
-  (define-key icomplete-minibuffer-map (kbd "C-,") nil)
-  (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
-
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t)
 #+end_src
 
 *** Mappings
@@ -146,8 +138,6 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
 
   ;; Open the agenda
   (define-key dkj-keys (kbd "C-a") #'org-agenda)
-  ;; Also map the main view to f12 since I use it all of the time
-  (global-set-key (kbd "<f12>") (lambda () (interactive) (org-agenda nil "n")))
 #+end_src
 
 **** Bunch of mappings
@@ -187,7 +177,7 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
 #+begin_src emacs-lisp
   ;; C-z C-h to open this file, my config
   (defun dkj/open-config ()
-    "Open this file"
+    "Open this file."
     (interactive)
     (push-mark)
     (find-file "~/.emacs.d/README.org"))
@@ -203,7 +193,7 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
 				       recenter-top-bottom other-window))
     (advice-add command :after #'dkj/pulse-line))
 #+end_src
-  
+ 
 ** Org mode stuff
 
 Org-mode is cool. That's an understatement, org-mode is one of the main reasons to use Emacs.
@@ -224,27 +214,51 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 #+end_src
 
 *** Agenda settings
+:PROPERTIES:
+:ID:       C0A40428-DE44-44F5-8FA0-D01458CB2DBF
+:END:
 
 All flows from the agenda
 
 #+begin_src emacs-lisp
-  ;; ~/org/ and all subdirectories (assuming they don't have any .s in their names!) recursively
-  (setq org-agenda-files (append '("~/Documents/12lang/arielle-lang" "~/org" "~/org/projects") (directory-files-recursively "~/org/projects/" "^[^.]+$" t)) 
-	org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+  (defun dkj/present-agenda-and-clocked ()
+    "Open the agenda and the currently clocked task side by side."
+    (interactive)
+    (progn
+      (org-agenda nil "n")
+      (delete-other-windows)
+      (split-window-right)
+      (other-window 1)
+      (org-clock-goto)
+      (outline-next-visible-heading 1)))
+
+  (defun dkj/open-agenda-main-view (prefix)
+    "Open the main view of my agenda."
+    (interactive "P")
+    (progn
+      (setq current-prefix-arg nil)
+      (cond
+       ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
+       ((equal major-mode 'org-agenda-mode) (progn
+					      (delete-other-windows)
+					      (org-agenda-redo-all)))
+       (t (org-agenda nil "n")))))
+
+  ;; Open the main view of the agenda with f12
+  (global-set-key (kbd "<f12>") #'dkj/open-agenda-main-view)
+
+
+  ;; ~/org for agenda and refile settings
+  (setq org-agenda-files (append '("~/Documents/12lang/arielle-lang" "~/org"))
+	org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
+	org-outline-path-complete-in-steps nil
+	org-refile-use-outline-path 'file)
 
   ;; Open my custom agenda view
   (setq org-agenda-custom-commands '(("n"
 				      "Day agenda and all TODOs"
 				      ((agenda #1="" ((org-agenda-span 1)))
 				       (alltodo #1#)))))
-
-  ;; Make it so that spamming f12 makes agenda the only window
-  (with-eval-after-load "org-agenda"
-    (define-key org-agenda-mode-map (kbd "<f12>") (lambda ()
-						    (interactive)
-						    (progn
-						      (delete-other-windows)
-						      (org-agenda-redo-all)))))
 
   ;; Agenda sorting order
   (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -254,17 +268,24 @@ All flows from the agenda
 
   ;; Agenda clockreport settings
   (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
+
+  ;; Set prefix to use top level header instead of file name in todo list
+  (setq org-agenda-prefix-format
+	'((agenda . " %i %-12:c%?-12t% s")
+	  (todo . " %i %-25:(car (org-get-outline-path))")
+	  (tags . " %i %-12:c")
+	  (search . " %i %-12:c")))
 #+end_src
 
 *** Todo settings
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-	'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
-	  (sequence "|" "CANCELED(c!)")
-	  (sequence "HABIT(h!)" "|" "DONE(d!)"))
-	org-clock-into-drawer t
-	org-log-into-drawer t)
+'((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
+ (sequence "|" "CANCELED(c!)")
+ (sequence "HABIT(h!)" "|" "DONE(d!)"))
+org-clock-into-drawer t
+org-log-into-drawer t)
 
   ;; Set :STYLE: habit for HABIT todos
   (defun dkj/org-set-habit ()
@@ -280,14 +301,12 @@ Quick cap
 
 #+begin_src emacs-lisp
   (setq org-capture-templates
-	(quote (("t" "Todo" entry (file "~/org/inbox.org")
-		 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
-		("j" "Journal" entry (file+datetree "~/org/journal.org")
-		 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
-		("m" "Meeting" entry (file+datetree "~/org/journal.org")
-		 "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-		("i" "Interrupt" entry (file+datetree "~/org/journal.org")
-		 "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
+(quote (("t" "Todo" entry (file "~/org/inbox.org")
+"* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+("m" "Meeting" entry (file+datetree "~/org/meetings.org")
+"* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+("i" "Interrupt" entry (file+datetree "~/org/interrupts.org")
+"* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 #+end_src
 
 *** Clock settings
@@ -314,18 +333,18 @@ Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
   ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
   ;; and lowering the default max-duration from 10 hours to 5 hours.
   (setq org-clock-consistency-checks '(:max-duration "5:00"
-						     :min-duration 0
-						     :max-gap "0:01"
-						     :gap-ok-around
-						     ("4:00")
-						     :default-face
-						     ((:background "DarkRed")
-						      (:foreground "white"))
-						     :overlap-face nil
-						     :gap-face nil
-						     :no-end-time-face nil
-						     :long-face nil
-						     :short-face nil))
+    :min-duration 0
+    :max-gap "0:01"
+    :gap-ok-around
+    ("4:00")
+    :default-face
+    ((:background "DarkRed")
+     (:foreground "white"))
+    :overlap-face nil
+    :gap-face nil
+    :no-end-time-face nil
+    :long-face nil
+    :short-face nil))
 
   (defun dkj/global-clock-in ()
     (interactive)
@@ -340,8 +359,8 @@ Use defaults that make sense for me.
 
 #+begin_src emacs-lisp
   (setq org-export-with-sub-superscripts nil
-	org-export-with-section-numbers nil
-	org-export-with-toc nil)
+org-export-with-section-numbers nil
+org-export-with-toc nil)
 #+end_src
 
 *** Markdown export
@@ -375,8 +394,8 @@ Packages are hip and cool and emacs is pretty good at using them.
   ;; Initialize package sources
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			   ("org" . "https://orgmode.org/elpa/")
-			   ("elpa" . "https://elpa.gnu.org/packages/")))
+  ("org" . "https://orgmode.org/elpa/")
+  ("elpa" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
 
   ;; Initialize use-package on non-Linux platforms
@@ -425,7 +444,7 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
 #+begin_src emacs-lisp
   (when (not (display-graphic-p))
     (add-to-list 'package-archives
-		 '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
+'("cselpa" . "https://elpa.thecybershadow.net/packages/"))
     (use-package term-keys
       :config
       (term-keys-mode t)))
@@ -459,9 +478,9 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
     (let ((current-theme (car custom-enabled-themes)))
       (mapc #'disable-theme custom-enabled-themes)
       (load-theme (cond
-		   ((eq current-theme dkj/theme-light) dkj/theme-dark)
-		   ((eq current-theme dkj/theme-dark) dkj/theme-light))
-		  t)))
+  ((eq current-theme dkj/theme-light) dkj/theme-dark)
+  ((eq current-theme dkj/theme-dark) dkj/theme-light))
+ t)))
 
   ;; Bind swapping between light and dark theme to "C-z C-\"
   (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
@@ -478,6 +497,42 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
   (use-package magit)
 #+end_src
 
+*** Vertico
+
+Vertico is a vertical completing-read interface. It's pretty much the same as fido-vertical-mode, which is built in now, but it's more performant.
+
+#+begin_src emacs-lisp
+  ;; Enable vertico
+  (use-package vertico
+    :init
+    (vertico-mode)
+
+    ;; Different scroll margin
+    ;; (setq vertico-scroll-margin 0)
+
+    ;; Show more candidates
+    ;; (setq vertico-count 20)
+
+    ;; Grow and shrink the Vertico minibuffer
+    ;; (setq vertico-resize t)
+
+    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+    ;; (setq vertico-cycle t)
+    )
+#+end_src
+
+*** Orderless
+
+Orderless completion.
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :init
+    (setq completion-styles '(orderless initials basic)
+ completion-category-defaults nil
+ completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
 *** Marginalia
 
 [[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
@@ -489,7 +544,7 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
     (marginalia-mode)
     :bind
     (:map minibuffer-local-map
-	  ("M-A" . marginalia-cycle)))
+ ("M-A" . marginalia-cycle)))
 #+end_src
 
 *** Embark
@@ -511,9 +566,9 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
     :config
     ;; Hide the mode line of the Embark live/completions buffers
     (add-to-list 'display-buffer-alist
-		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-		   nil
-		   (window-parameters (mode-line-format . none)))))
+'("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+  nil
+  (window-parameters (mode-line-format . none)))))
 #+end_src
 
 *** Language support
