@@ -191,7 +191,7 @@
 
 
 ;; ~/org for agenda and refile settings
-(setq org-agenda-files (append '("~/Documents/12lang/arielle-lang" "~/org"))
+(setq org-agenda-files '("~/org")
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
       org-outline-path-complete-in-steps nil
       org-refile-use-outline-path 'file)
@@ -207,14 +207,18 @@
 				    (todo todo-state-down category-keep)
 				    (tags priority-down category-keep)
 				    (search category-keep)))
-
 ;; Agenda clockreport settings
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
 
+(defun dkj/format-top-level-header ()
+  "Formats the top level header for an org item for my agenda."
+  (let ((tlh (car (org-get-outline-path))))
+    (format "%-15.15s" (if tlh tlh ""))))
+
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-      '((agenda . " %i %-12:c%?-12t% s")
-	(todo . " %i %-25:(car (org-get-outline-path))")
+      '((agenda . " %i %(dkj/format-top-level-header) %?-12t% s")
+	(todo . " %i %(dkj/format-top-level-header) ")
 	(tags . " %i %-12:c")
 	(search . " %i %-12:c")))
 
@@ -242,7 +246,7 @@
 	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
 	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
 
-;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+;; Show lot of clocking history so it's easy to pick items off the C-z C-i list
 (setq org-clock-history-length 10)
 ;; Resume clocking task on clock-in if the clock is open
 (setq org-clock-in-resume t)
