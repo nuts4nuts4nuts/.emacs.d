@@ -210,15 +210,23 @@
 ;; Agenda clockreport settings
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
 
-(defun dkj/format-top-level-header ()
-  "Formats the top level header for an org item for my agenda."
-  (let ((tlh (car (org-get-outline-path))))
-    (format "%-15.15s" (if tlh tlh ""))))
+(defun dkj/format-n-breadcrumbs (n)
+  "Formats the top n headers for an org item for my agenda."
+  (let* ((breadcrumbs (org-get-outline-path))
+	 (first-n (seq-subseq breadcrumbs
+			      0
+			      (min n
+				   (length breadcrumbs)))))
+    (format "%-25.25s" (if first-n
+			   (string-join first-n ">")
+			 ""))))
 
+;; Number of breadcrumbs to format into my agenda prefix
+(setq breadcrumbs-to-format 2)
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-      '((agenda . " %i %(dkj/format-top-level-header) %?-12t% s")
-	(todo . " %i %(dkj/format-top-level-header) ")
+      '((agenda . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
+	(todo . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
 	(tags . " %i %-12:c")
 	(search . " %i %-12:c")))
 
