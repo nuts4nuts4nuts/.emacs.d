@@ -260,19 +260,19 @@
 ;; Define things that show up as issues in clock check (v c in org-agenda)
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
 ;; and lowering the default max-duration from 10 hours to 5 hours.
-(setq org-clock-consistency-checks '(:max-duration "5:00"
-						   :min-duration 0
-						   :max-gap "0:01"
-						   :gap-ok-around
-						   ("4:00")
-						   :default-face
-						   ((:background "DarkRed")
-						    (:foreground "white"))
-						   :overlap-face nil
-						   :gap-face nil
-						   :no-end-time-face nil
-						   :long-face nil
-						   :short-face nil))
+(setq org-agenda-clock-consistency-checks '(:max-duration "5:00"
+							  :min-duration 0
+							  :max-gap "0:01"
+							  :gap-ok-around
+							  ("4:00")
+							  :default-face
+							  ((:background "DarkRed")
+							   (:foreground "white"))
+							  :overlap-face nil
+							  :gap-face nil
+							  :no-end-time-face nil
+							  :long-face nil
+							  :short-face nil))
 
 (defun dkj/global-clock-in ()
   (interactive)
