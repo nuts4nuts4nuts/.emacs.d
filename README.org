@@ -605,6 +605,14 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
   (use-package racket-mode)
 #+end_src
 
+**** Godot engine
+
+GDScript mode!
+
+#+begin_src emacs-lisp
+(use-package gdscript-mode)
+#+end_src
+
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 

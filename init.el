@@ -421,6 +421,8 @@
 
 (use-package racket-mode)
 
+(use-package gdscript-mode)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
