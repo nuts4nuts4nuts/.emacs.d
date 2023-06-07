@@ -374,7 +374,8 @@ Use defaults that make sense for me.
 #+begin_src emacs-lisp
   (setq org-export-with-sub-superscripts nil
 	org-export-with-section-numbers nil
-	org-export-with-toc nil)
+	org-export-with-toc nil
+	org-export-headline-levels 10)
 #+end_src
 
 *** Markdown export
@@ -610,7 +611,7 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
 GDScript mode!
 
 #+begin_src emacs-lisp
-(use-package gdscript-mode)
+  (use-package gdscript-mode)
 #+end_src
 
 ** Load other files

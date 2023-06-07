@@ -289,7 +289,8 @@
 
 (setq org-export-with-sub-superscripts nil
       org-export-with-section-numbers nil
-      org-export-with-toc nil)
+      org-export-with-toc nil
+      org-export-headline-levels 10)
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
