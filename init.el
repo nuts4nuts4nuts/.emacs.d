@@ -173,7 +173,7 @@
     (split-window-right)
     (other-window 1)
     (org-clock-goto)
-    (outline-next-visible-heading 1)))
+    (recenter-top-bottom 0)))
 
 (defun dkj/open-agenda-main-view (prefix)
   "Open the main view of my agenda."
