@@ -505,6 +505,25 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
   (load-theme dkj/theme-dark t)
 #+end_src
 
+*** Dot-mode
+
+~dot-mode~ gives us a function similar to Vim's ~.~, which replays the last sequence of edits.
+
+#+begin_src emacs-lisp
+  (use-package dot-mode
+    :config
+    (dot-mode 1))
+
+  ;; Remap the default dot-mode bindings to not conflict with my Embark bindings
+  (with-eval-after-load "dot-mode"
+    (define-key dot-mode-map (kbd "C-.") nil)
+    (define-key dot-mode-map (kbd "C-M-.") nil)
+    (define-key dot-mode-map (kbd "C-c .") nil)
+    (define-key dot-mode-map (kbd "C-x C-z") #'dot-mode-execute)
+    (define-key dot-mode-map (kbd "C-x C-M-z") #'dot-mode-override)
+    (define-key dot-mode-map (kbd "C-z C-z") #'dot-mode-copy-to-last-kbd-macro))
+#+end_src
+
 *** Magit
 
 [[https://github.com/magit/magit][Magit]] is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
