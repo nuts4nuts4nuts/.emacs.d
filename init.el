@@ -367,6 +367,19 @@
 ;; Default to dark theme
 (load-theme dkj/theme-dark t)
 
+(use-package dot-mode
+  :config
+  (dot-mode 1))
+
+;; Remap the default dot-mode bindings to not conflict with my Embark bindings
+(with-eval-after-load "dot-mode"
+  (define-key dot-mode-map (kbd "C-.") nil)
+  (define-key dot-mode-map (kbd "C-M-.") nil)
+  (define-key dot-mode-map (kbd "C-c .") nil)
+  (define-key dot-mode-map (kbd "C-x C-z") #'dot-mode-execute)
+  (define-key dot-mode-map (kbd "C-x C-M-z") #'dot-mode-override)
+  (define-key dot-mode-map (kbd "C-z C-z") #'dot-mode-copy-to-last-kbd-macro))
+
 (use-package magit)
 
 ;; Enable vertico
