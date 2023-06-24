@@ -212,6 +212,10 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
     (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
+
+  ;; Make the note template use an active timestamp
+  (add-to-list 'org-log-note-headings
+	       '(note . "Note taken on %T"))
 #+end_src
 
 *** Agenda settings
