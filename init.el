@@ -172,7 +172,7 @@
   "Open the agenda and the currently clocked task side by side."
   (interactive)
   (progn
-    (org-agenda nil "n")
+    (org-agenda nil "a")
     (delete-other-windows)
     (split-window-right)
     (other-window 1)
@@ -189,7 +189,7 @@
      ((equal major-mode 'org-agenda-mode) (progn
 					    (delete-other-windows)
 					    (org-agenda-redo-all)))
-     (t (org-agenda nil "n")))))
+     (t (org-agenda nil "a")))))
 
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "<f12>") #'dkj/open-agenda-main-view)
@@ -199,12 +199,13 @@
 (setq org-agenda-files '("~/org")
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
       org-outline-path-complete-in-steps nil
-      org-refile-use-outline-path 'file)
+      org-refile-use-outline-path 'file
+      org-agenda-span 'day)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "Day agenda and all TODOs"
-				    ((agenda #1="" ((org-agenda-span 1)))
+				    ((agenda #1="")
 				     (alltodo #1#)))))
 
 ;; Agenda sorting order
