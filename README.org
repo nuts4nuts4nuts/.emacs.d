@@ -293,6 +293,12 @@ All flows from the agenda
 	  (todo . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
 	  (tags . " %i %-12:c")
 	  (search . " %i %-12:c")))
+
+  ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
+  (with-eval-after-load "org"
+    (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
+
+
 #+end_src
 
 *** Todo settings

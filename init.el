@@ -236,6 +236,10 @@
 	(tags . " %i %-12:c")
 	(search . " %i %-12:c")))
 
+;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
+(with-eval-after-load "org"
+  (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
+
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
 	(sequence "|" "CANCELED(c!)")
