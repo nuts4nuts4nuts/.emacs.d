@@ -131,8 +131,8 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
   (define-prefix-command 'dkj-keys)
   (global-set-key (kbd "C-z") #'dkj-keys)
 
-  ;; Easily store links to things in org-mode format
-  (define-key dkj-keys (kbd "C-l") #'org-store-link)
+  ;; Easily store links to org headers by id
+  (define-key dkj-keys (kbd "C-l") #'org-id-store-link)
   ;; Capture something
   (define-key dkj-keys (kbd "C-c") #'org-capture)
 
@@ -205,7 +205,6 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 	org-default-notes-file "~/org/inbox.org"
 	org-id-locations-file "~/org/.org-id-locations"
 	org-startup-truncated nil
-	org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
 	org-ellipsis "↴")
 
   ;; Make inserting new list items a little cleaner
@@ -523,7 +522,8 @@ When we have to use it, [[https://github.com/CyberShadow/term-keys][term-keys]] 
 #+begin_src emacs-lisp
   (use-package dot-mode
     :config
-    (dot-mode 1))
+    (dot-mode 1)
+    (global-dot-mode 1))
 
   ;; Remap the default dot-mode bindings to not conflict with my Embark bindings
   (with-eval-after-load "dot-mode"

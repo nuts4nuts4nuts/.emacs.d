@@ -98,8 +98,8 @@
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
-;; Easily store links to things in org-mode format
-(define-key dkj-keys (kbd "C-l") #'org-store-link)
+;; Easily store links to org headers by id
+(define-key dkj-keys (kbd "C-l") #'org-id-store-link)
 ;; Capture something
 (define-key dkj-keys (kbd "C-c") #'org-capture)
 
@@ -156,7 +156,6 @@
       org-default-notes-file "~/org/inbox.org"
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
-      org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id
       org-ellipsis "↴")
 
 ;; Make inserting new list items a little cleaner
@@ -378,7 +377,8 @@
 
 (use-package dot-mode
   :config
-  (dot-mode 1))
+  (dot-mode 1)
+  (global-dot-mode 1))
 
 ;; Remap the default dot-mode bindings to not conflict with my Embark bindings
 (with-eval-after-load "dot-mode"
