@@ -331,7 +331,9 @@ Quick cap
 		("i" "Interrupt" entry (file+datetree "~/org/journal.org")
 		 "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t)
 		("j" "Journal" entry (file+datetree "~/org/journal.org")
-		 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
+		 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
+		("s" "Day story" entry (file+datetree "~/org/stories.org")
+		 "* %? \n%U\n" :clock-in t :clock-resume t))))
 #+end_src
 
 *** Clock settings
@@ -344,7 +346,7 @@ Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
 
 #+begin_src emacs-lisp
   ;; Show lot of clocking history so it's easy to pick items off the C-z C-i list
-  (setq org-clock-history-length 10)
+  (setq org-clock-history-length 25)
   ;; Resume clocking task on clock-in if the clock is open
   (setq org-clock-in-resume t)
   ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
