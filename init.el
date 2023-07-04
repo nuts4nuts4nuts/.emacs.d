@@ -449,6 +449,12 @@
 
 (use-package gdscript-mode)
 
+(use-package anki-editor)
+
+;; Create a named command for inserting a hiragana from the clipbard
+(fset 'dkj/anki-insert-hiragana-from-clipboard
+      (kmacro-lambda-form [?\M-x ?a ?n ?k ?i ?- ?e ?d ?i ?t ?o ?r ?- ?i ?n ?d ?e ?r backspace backspace backspace ?s ?e ?r ?t ?- ?n ?o ?t ?e return ?b ?a ?s ?i ?c ?  ?a ?n ?d ?  ?r ?e return ?\C-y return M-S-left ?\C-c ?\C-n ?\C-e return ?\C-y ?\C-n ?\C-e return] 0 "%d"))
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)

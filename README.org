@@ -647,6 +647,21 @@ GDScript mode!
   (use-package gdscript-mode)
 #+end_src
 
+*** Anki editor
+
+Write anki cards in org mode and sync them to Anki.
+Why not use ~org-drill~ or similar?
+It's most convenient to review cards on my phone, and there's no good phone app for ~org-drill~.
+The Anki apps are great.
+
+#+begin_src emacs-lisp
+  (use-package anki-editor)
+
+  ;; Create a named command for inserting a hiragana from the clipbard
+  (fset 'dkj/anki-insert-hiragana-from-clipboard
+	(kmacro-lambda-form [?\M-x ?a ?n ?k ?i ?- ?e ?d ?i ?t ?o ?r ?- ?i ?n ?d ?e ?r backspace backspace backspace ?s ?e ?r ?t ?- ?n ?o ?t ?e return ?b ?a ?s ?i ?c ?  ?a ?n ?d ?  ?r ?e return ?\C-y return M-S-left ?\C-c ?\C-n ?\C-e return ?\C-y ?\C-n ?\C-e return] 0 "%d"))
+#+end_src
+
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
