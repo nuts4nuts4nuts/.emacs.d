@@ -161,11 +161,12 @@
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
-  (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
+  (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading)
+  ;; Make the note template use an active timestamp
+  (add-to-list 'org-log-note-headings
+	       '(note . "Note taken on %T")))
 
-;; Make the note template use an active timestamp
-(add-to-list 'org-log-note-headings
-	     '(note . "Note taken on %T"))
+(require 'org-agenda)
 
 (defun dkj/present-agenda-and-clocked ()
   "Open the agenda and the currently clocked task side by side."
