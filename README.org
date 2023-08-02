@@ -113,6 +113,9 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
+
+  ;; Make bash the default remote shell
+  (setq tramp-default-remote-shell "/bin/bash")
 #+end_src
 
 *** Mappings

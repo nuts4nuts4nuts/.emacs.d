@@ -95,6 +95,9 @@
 ;; Enable recursive minibuffers
 (setq enable-recursive-minibuffers t)
 
+;; Make bash the default remote shell
+(setq tramp-default-remote-shell "/bin/bash")
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
