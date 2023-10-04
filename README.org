@@ -116,6 +116,12 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Make bash the default explicit shell
   (setq explicit-shell-file-name "/bin/bash")
+
+  ;; Don't use a special shell history file in tramp
+  (setq tramp-histfile-override nil)
+
+  ;; Increase shell mode history ring
+  (setq comint-input-ring-size 100000)
 #+end_src
 
 *** Mappings

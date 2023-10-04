@@ -98,6 +98,12 @@
 ;; Make bash the default explicit shell
 (setq explicit-shell-file-name "/bin/bash")
 
+;; Don't use a special shell history file in tramp
+(setq tramp-histfile-override nil)
+
+;; Increase shell mode history ring
+(setq comint-input-ring-size 100000)
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
