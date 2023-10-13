@@ -104,6 +104,9 @@
 ;; Increase shell mode history ring
 (setq comint-input-ring-size 100000)
 
+;; Let xterm-compatible terminals copy-paste from emacs
+(setq xterm-extra-capabilities '(setSelection))
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-z") #'dkj-keys)
 
@@ -124,9 +127,6 @@
 (global-set-key (kbd "C-x C-3") #'split-window-right)
 (global-set-key (kbd "C-x C-0") #'delete-window)
 (global-set-key (kbd "C-x C-o") #'other-window)
-
-;; Kill line backwards
-(global-set-key (kbd "M-<backspace>") (lambda () (interactive) (kill-line 0)))
 
 ;; Use dwim versions of upcase and downcase instead of char/word/region-specific verions
 (global-set-key (kbd "M-u") #'upcase-dwim)
@@ -351,18 +351,6 @@
   :config
   (which-key-mode))
 
-(when (not (display-graphic-p))
-  (add-to-list 'package-archives
-	       '("cselpa" . "https://elpa.thecybershadow.net/packages/"))
-  (use-package term-keys
-    :config
-    (term-keys-mode t)))
-
-(when (not (display-graphic-p))
-  (use-package clipetty
-    :ensure t
-    :hook (after-init . global-clipetty-mode)))
-
 ;; Themes that I like to have available
 (use-package gruvbox-theme)
 (use-package material-theme)
@@ -464,6 +452,25 @@
 ;; Create a named command for inserting a hiragana from the clipbard
 (fset 'dkj/anki-insert-hiragana-from-clipboard
       (kmacro-lambda-form [?\M-x ?a ?n ?k ?i ?- ?e ?d ?i ?t ?o ?r ?- ?i ?n ?d ?e ?r backspace backspace backspace ?s ?e ?r ?t ?- ?n ?o ?t ?e return ?b ?a ?s ?i ?c ?  ?a ?n ?d ?  ?r ?e return ?\C-y return M-S-left ?\C-c ?\C-n ?\C-e return ?\C-y ?\C-n ?\C-e return] 0 "%d"))
+
+;; Back up and autosave into directories, instead of all over the place
+(make-directory "~/.emacs_backups/" t)
+(make-directory "~/.emacs_autosave/" t)
+(setq auto-save-file-name-transforms '((".*" "~/.emacs_autosave/" t)))
+(setq backup-directory-alist '(("." . "~/.emacs_backups/")))
+
+;; Back up by copying instead of moving
+(setq backup-by-copying t)
+
+;; Nobody uses double spaces at the end of sentences anymore
+(setq sentence-end-double-space nil)
+
+;; Guess indent style from the surrounding file and directory
+(unless (package-installed-p 'dtrt-indent) (package-install 'dtrt-indent))
+(setq dtrt-indent-global-mode t)
+
+;; Show trailing whitespace
+(setq show-trailing-whitespace t)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
