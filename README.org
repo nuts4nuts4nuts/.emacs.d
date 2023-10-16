@@ -645,7 +645,9 @@ The Anki apps are great.
 	(kmacro-lambda-form [?\M-x ?a ?n ?k ?i ?- ?e ?d ?i ?t ?o ?r ?- ?i ?n ?d ?e ?r backspace backspace backspace ?s ?e ?r ?t ?- ?n ?o ?t ?e return ?b ?a ?s ?i ?c ?  ?a ?n ?d ?  ?r ?e return ?\C-y return M-S-left ?\C-c ?\C-n ?\C-e return ?\C-y ?\C-n ?\C-e return] 0 "%d"))
 #+end_src
 
-*** https://idiomdrottning.org/bad-emacs-defaults
+*** Bad Emacs Defaults
+
+https://idiomdrottning.org/bad-emacs-defaults
 
 An article with opinions about some emacs defaults.
 Most of them seem good.
@@ -669,6 +671,20 @@ Most of them seem good.
 
   ;; Show trailing whitespace
   (setq show-trailing-whitespace t)
+#+end_src
+
+*** Kitty Keyboard Protocol
+
+[[https://github.com/benjaminor/kkp][KKP]] tells Emacs how to handle [[https://sw.kovidgoyal.net/kitty/keyboard-protocol/][CSI u escape codes]],
+allowing CLI Emacs to use lots of cool key chords that would otherwise
+not work.
+
+#+begin_src emacs-lisp
+  (use-package kkp
+  :ensure t
+  :config
+  ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+  (global-kkp-mode +1))
 #+end_src
 
 ** Load other files

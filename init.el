@@ -472,6 +472,12 @@
 ;; Show trailing whitespace
 (setq show-trailing-whitespace t)
 
+(use-package kkp
+:ensure t
+:config
+;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+(global-kkp-mode +1))
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
