@@ -108,7 +108,7 @@
 (setq xterm-extra-capabilities '(setSelection))
 
 (define-prefix-command 'dkj-keys)
-(global-set-key (kbd "C-z") #'dkj-keys)
+(global-set-key (kbd "C-t") #'dkj-keys)
 
 ;; Easily store links to org headers by id
 (define-key dkj-keys (kbd "C-l") #'org-id-store-link)
@@ -143,7 +143,7 @@
 ;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
 (global-set-key (kbd "M-/") #'hippie-expand)
 
-;; C-z C-h to open this file, my config
+;; C-t C-h to open this file, my config
 (defun dkj/open-config ()
   "Open this file."
   (interactive)
@@ -275,7 +275,7 @@
 	      ("s" "Day story" entry (file+datetree "~/org/stories.org")
 	       "* %? \n%U\n" :clock-in t :clock-resume t))))
 
-;; Show lot of clocking history so it's easy to pick items off the C-z C-i list
+;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
 (setq org-clock-history-length 25)
 ;; Resume clocking task on clock-in if the clock is open
 (setq org-clock-in-resume t)
@@ -369,7 +369,7 @@
 		 ((eq current-theme dkj/theme-dark) dkj/theme-light))
 		t)))
 
-;; Bind swapping between light and dark theme to "C-z C-\"
+;; Bind swapping between light and dark theme to "C-t C-\"
 (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
 
 ;; Default to dark theme
@@ -385,9 +385,9 @@
   (define-key dot-mode-map (kbd "C-.") nil)
   (define-key dot-mode-map (kbd "C-M-.") nil)
   (define-key dot-mode-map (kbd "C-c .") nil)
-  (define-key dot-mode-map (kbd "C-x C-z") #'dot-mode-execute)
-  (define-key dot-mode-map (kbd "C-x C-M-z") #'dot-mode-override)
-  (define-key dot-mode-map (kbd "C-z C-z") #'dot-mode-copy-to-last-kbd-macro))
+  (define-key dot-mode-map (kbd "C-x C-t") #'dot-mode-execute)
+  (define-key dot-mode-map (kbd "C-x C-M-t") #'dot-mode-override)
+  (define-key dot-mode-map (kbd "C-t C-t") #'dot-mode-copy-to-last-kbd-macro))
 
 (use-package magit)
 

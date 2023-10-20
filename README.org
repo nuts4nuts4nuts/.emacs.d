@@ -129,7 +129,7 @@ These are some basic settings to make life a little better. They don't relate to
 
 *** Mappings
 
-**** C-z as my personal keymap
+**** C-t as my personal keymap
 
 By default, =C-c <letter>= is supposed to be reserved for user-defined commands.
 This is not my favorite for a couple of reasons:
@@ -137,11 +137,11 @@ This is not my favorite for a couple of reasons:
 2. =C-c <letter>= is harder to press quickly than =C-c C-<letter>=, and =C-c C-<letter>= is explicitly reserved for modes to map.
 
 So I want to make a own prefix, on which I can bind anything I like.
-I've chosen =C-z= for this, since suspending Emacs is not something I intend on doing very often.
+I've chosen =C-t= for this, since transposing characters is not something I can imagine wanting to do.
 
 #+begin_src emacs-lisp
   (define-prefix-command 'dkj-keys)
-  (global-set-key (kbd "C-z") #'dkj-keys)
+  (global-set-key (kbd "C-t") #'dkj-keys)
 
   ;; Easily store links to org headers by id
   (define-key dkj-keys (kbd "C-l") #'org-id-store-link)
@@ -184,7 +184,7 @@ I've chosen =C-z= for this, since suspending Emacs is not something I intend on 
 *** Functions
 
 #+begin_src emacs-lisp
-  ;; C-z C-h to open this file, my config
+  ;; C-t C-h to open this file, my config
   (defun dkj/open-config ()
     "Open this file."
     (interactive)
@@ -355,7 +355,7 @@ Etc...
 Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
 
 #+begin_src emacs-lisp
-  ;; Show lot of clocking history so it's easy to pick items off the C-z C-i list
+  ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
   (setq org-clock-history-length 25)
   ;; Resume clocking task on clock-in if the clock is open
   (setq org-clock-in-resume t)
@@ -493,7 +493,7 @@ You can also use =M-x auto-package-update-now= to update right now!
 		   ((eq current-theme dkj/theme-dark) dkj/theme-light))
 		  t)))
 
-  ;; Bind swapping between light and dark theme to "C-z C-\"
+  ;; Bind swapping between light and dark theme to "C-t C-\"
   (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
 
   ;; Default to dark theme
@@ -515,9 +515,9 @@ You can also use =M-x auto-package-update-now= to update right now!
     (define-key dot-mode-map (kbd "C-.") nil)
     (define-key dot-mode-map (kbd "C-M-.") nil)
     (define-key dot-mode-map (kbd "C-c .") nil)
-    (define-key dot-mode-map (kbd "C-x C-z") #'dot-mode-execute)
-    (define-key dot-mode-map (kbd "C-x C-M-z") #'dot-mode-override)
-    (define-key dot-mode-map (kbd "C-z C-z") #'dot-mode-copy-to-last-kbd-macro))
+    (define-key dot-mode-map (kbd "C-x C-t") #'dot-mode-execute)
+    (define-key dot-mode-map (kbd "C-x C-M-t") #'dot-mode-override)
+    (define-key dot-mode-map (kbd "C-t C-t") #'dot-mode-copy-to-last-kbd-macro))
 #+end_src
 
 *** Magit
