@@ -478,6 +478,19 @@
 ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
 (global-kkp-mode +1))
 
+(use-package avy
+  :ensure t
+  :config
+  (setq avy-timeout-seconds 0.2)
+  :bind
+  (("C-," . avy-goto-char-timer))
+  (:map org-mode-map
+("C-," . avy-goto-char-timer)))
+
+(define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
+(define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
+(define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)

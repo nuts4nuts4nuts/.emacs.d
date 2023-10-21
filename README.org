@@ -687,6 +687,44 @@ not work.
   (global-kkp-mode +1))
 #+end_src
 
+*** Avy
+
+Avy is one of those "jump to a character on the screen" type of plugins.
+I've never liked these in the past, but let's try it again.
+
+Why is Avy better?
+
+- Searches across all the whole screen (all open windows)
+  replacing, sometimes, multiple window changes and a search
+- Not directional
+- Tags are consistent given the same screen
+  - Because it searches across the whole screen and isn't directional,
+    as long as the text on screen doesn't change, neither do the Avy tags.
+    Therefore, if you mistype your tag to jump to, you can often very quickly
+    jump to the correct tag
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :ensure t
+    :config
+    (setq avy-timeout-seconds 0.2)
+    :bind
+    (("C-," . avy-goto-char-timer))
+    (:map org-mode-map
+  ("C-," . avy-goto-char-timer)))
+
+#+end_src
+
+*** Tetris...
+
+Tetris mapping man...
+
+#+begin_src emacs-lisp
+  (define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
+  (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
+  (define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom)
+#+end_src
+
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
