@@ -433,8 +433,10 @@
   :ensure t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-," . embark-export)     ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  (:map org-mode-map
+	("C-," . embark-export))
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -484,17 +486,6 @@
 ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
 (global-kkp-mode +1))
 
-(use-package avy
-  :ensure t
-  :config
-  (setq avy-timeout-seconds 0.2)
-  :bind
-  (("C-," . avy-goto-char-2))
-  (:map org-mode-map
-	("C-," . avy-goto-char-2))
-  (:map isearch-mode-map
-	("C-," . avy-isearch)))
-
 ;; From https://karthinks.com/software/avy-can-do-anything/
 (defun avy-action-embark (pt)
   (unwind-protect
@@ -504,11 +495,24 @@
     (select-window
      (cdr (ring-ref avy-ring 0))))
   t)
-(setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
 
-(define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
-(define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
-(define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom)
+(use-package avy
+  :ensure t
+  :config
+  (setq avy-timeout-seconds 0.2)
+  :bind
+  (("C-;" . avy-goto-char-2))
+  (:map org-mode-map
+	("C-;" . avy-goto-char-2))
+  (:map isearch-mode-map
+	("C-;" . avy-isearch))
+  :config
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
+
+(with-eval-after-load "tetris-mode"
+  (define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
+  (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
+  (define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
