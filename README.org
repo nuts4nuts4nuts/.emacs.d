@@ -117,6 +117,12 @@ These are some basic settings to make life a little better. They don't relate to
   ;; Make bash the default explicit shell
   (setq explicit-shell-file-name "/bin/bash")
 
+  ;; Use bash_history in shell mode
+  (add-hook 'shell-mode-hook 'my-shell-mode-hook)
+  (defun my-shell-mode-hook ()
+    (setq comint-input-ring-file-name "~/.bash_history")
+    (comint-read-input-ring t))
+
   ;; Don't use a special shell history file in tramp
   (setq tramp-histfile-override nil)
 
@@ -131,13 +137,13 @@ These are some basic settings to make life a little better. They don't relate to
 
 **** C-t as my personal keymap
 
-By default, =C-c <letter>= is supposed to be reserved for user-defined commands.
+By default, ~C-c <letter>~ is supposed to be reserved for user-defined commands.
 This is not my favorite for a couple of reasons:
-1. Some modes map =C-c <letter>= for some =<letter>= s
-2. =C-c <letter>= is harder to press quickly than =C-c C-<letter>=, and =C-c C-<letter>= is explicitly reserved for modes to map.
+1. Some modes map ~C-c <letter>~ for some ~<letter>~ s
+2. ~C-c <letter>~ is harder to press quickly than ~C-c C-<letter>~, and ~C-c C-<letter>~ is explicitly reserved for modes to map.
 
 So I want to make a own prefix, on which I can bind anything I like.
-I've chosen =C-t= for this, since transposing characters is not something I can imagine wanting to do.
+I've chosen ~C-t~ for this, since transposing characters is not something I can imagine wanting to do.
 
 #+begin_src emacs-lisp
   (define-prefix-command 'dkj-keys)
@@ -449,7 +455,7 @@ Packages are hip and cool and emacs is pretty good at using them.
 
 The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
 
-You can also use =M-x auto-package-update-now= to update right now!
+You can also use ~M-x auto-package-update-now~ to update right now!
 
 #+begin_src emacs-lisp
   (use-package auto-package-update
@@ -709,10 +715,22 @@ Why is Avy better?
     :config
     (setq avy-timeout-seconds 0.2)
     :bind
-    (("C-," . avy-goto-char-timer))
+    (("C-," . avy-goto-char-2))
     (:map org-mode-map
-  ("C-," . avy-goto-char-timer)))
+	  ("C-," . avy-goto-char-2))
+    (:map isearch-mode-map
+	  ("C-," . avy-isearch)))
 
+  ;; From https://karthinks.com/software/avy-can-do-anything/
+  (defun avy-action-embark (pt)
+    (unwind-protect
+	(save-excursion
+	  (goto-char pt)
+	  (embark-act))
+      (select-window
+       (cdr (ring-ref avy-ring 0))))
+    t)
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
 #+end_src
 
 *** Tetris...

@@ -98,6 +98,12 @@
 ;; Make bash the default explicit shell
 (setq explicit-shell-file-name "/bin/bash")
 
+;; Use bash_history in shell mode
+(add-hook 'shell-mode-hook 'my-shell-mode-hook)
+(defun my-shell-mode-hook ()
+  (setq comint-input-ring-file-name "~/.bash_history")
+  (comint-read-input-ring t))
+
 ;; Don't use a special shell history file in tramp
 (setq tramp-histfile-override nil)
 
@@ -483,9 +489,22 @@
   :config
   (setq avy-timeout-seconds 0.2)
   :bind
-  (("C-," . avy-goto-char-timer))
+  (("C-," . avy-goto-char-2))
   (:map org-mode-map
-("C-," . avy-goto-char-timer)))
+	("C-," . avy-goto-char-2))
+  (:map isearch-mode-map
+	("C-," . avy-isearch)))
+
+;; From https://karthinks.com/software/avy-can-do-anything/
+(defun avy-action-embark (pt)
+  (unwind-protect
+      (save-excursion
+	(goto-char pt)
+	(embark-act))
+    (select-window
+     (cdr (ring-ref avy-ring 0))))
+  t)
+(setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
 
 (define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
 (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
