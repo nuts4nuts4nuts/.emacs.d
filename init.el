@@ -433,7 +433,7 @@
   :ensure t
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-," . embark-export)     ;; good alternative: M-.
+   ("C-," . embark-export)      ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   (:map org-mode-map
 	("C-," . embark-export))
