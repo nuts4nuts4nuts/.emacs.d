@@ -15,6 +15,9 @@
 ;; Except the tab bar ;)
 (tab-bar-mode 1)
 
+;; Show column number in the modeline
+(column-number-mode 1)
+
 ;; Always prompt before exiting
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq confirm-kill-emacs 'y-or-n-p)
