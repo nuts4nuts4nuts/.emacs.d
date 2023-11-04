@@ -159,6 +159,10 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 
   ;; Open the agenda
   (define-key dkj-keys (kbd "C-a") #'org-agenda)
+
+  ;; Nicer winner-mode bindings
+  (define-key dkj-keys (kbd "C-p") #'winner-undo)
+  (define-key dkj-keys (kbd "C-n") #'winner-redo)
 #+end_src
 
 **** Bunch of mappings

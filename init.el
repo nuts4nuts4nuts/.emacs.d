@@ -127,6 +127,10 @@
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
 
+;; Nicer winner-mode bindings
+(define-key dkj-keys (kbd "C-p") #'winner-undo)
+(define-key dkj-keys (kbd "C-n") #'winner-redo)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
