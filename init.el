@@ -488,10 +488,10 @@
 (setq show-trailing-whitespace t)
 
 (use-package kkp
-:ensure t
-:config
-;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
-(global-kkp-mode +1))
+  :ensure t
+  :config
+  ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+  (global-kkp-mode +1))
 
 ;; From https://karthinks.com/software/avy-can-do-anything/
 (defun avy-action-embark (pt)
