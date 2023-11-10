@@ -119,8 +119,8 @@
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
-;; Easily store links to org headers by id
-(define-key dkj-keys (kbd "C-l") #'org-id-store-link)
+;; Easily store links to org headers
+(define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
 (define-key dkj-keys (kbd "C-c") #'org-capture)
 
@@ -178,7 +178,8 @@
       org-default-notes-file "~/org/inbox.org"
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
-      org-ellipsis "↴")
+      org-ellipsis "↴"
+      org-id-link-to-org-use-id 'create-if-interactive)
 
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
