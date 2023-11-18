@@ -134,6 +134,10 @@ These are some basic settings to make life a little better. They don't relate to
 
   ;; Let xterm-compatible terminals copy-paste from emacs
   (setq xterm-extra-capabilities '(setSelection))
+
+  ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
+  (setq ediff-split-window-function 'split-window-horizontally  ; vert
+	ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 #+end_src
 
 *** Mappings

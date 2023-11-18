@@ -116,6 +116,10 @@
 ;; Let xterm-compatible terminals copy-paste from emacs
 (setq xterm-extra-capabilities '(setSelection))
 
+;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
+(setq ediff-split-window-function 'split-window-horizontally  ; vert
+      ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
