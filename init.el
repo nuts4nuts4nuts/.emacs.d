@@ -135,6 +135,10 @@
 (define-key dkj-keys (kbd "C-p") #'winner-undo)
 (define-key dkj-keys (kbd "C-n") #'winner-redo)
 
+;; Better macro bindings
+(define-key dkj-keys (kbd "C-9") #'kmacro-start-macro-or-insert-counter)
+(define-key dkj-keys (kbd "C-0") #'kmacro-end-or-call-macro)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
@@ -219,7 +223,7 @@
      (t (org-agenda nil "a")))))
 
 ;; Open the main view of the agenda with f12
-(global-set-key (kbd "<f12>") #'dkj/open-agenda-main-view)
+(global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
 
 
 ;; ~/org for agenda and refile settings
