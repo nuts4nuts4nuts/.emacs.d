@@ -530,6 +530,13 @@
   (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
   (define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom))
 
+(use-package pdf-tools
+  :ensure t
+  :init
+  (pdf-tools-install))
+
+(use-package org-noter)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)

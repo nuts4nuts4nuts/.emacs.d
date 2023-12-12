@@ -11,3 +11,7 @@ eshell/
 custom.el
 google.el
 url/
+/bookmarks
+/history
+/request/
+/tags
