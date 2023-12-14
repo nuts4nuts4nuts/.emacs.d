@@ -278,7 +278,7 @@
 (setq org-todo-keywords
       '((sequence "TODO(t!)" "NEXT(t!)" "PROG(p!)" "|" "DONE(t!)")
 	(sequence "INTR(i!)" "|" "DONE(d!)")
-	(sequence "|" "CANCELED(c!)"))
+	(sequence "|" "CNCL(c!)"))
       org-clock-into-drawer t
       org-log-into-drawer t)
 
