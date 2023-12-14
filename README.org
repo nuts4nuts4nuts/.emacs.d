@@ -652,7 +652,7 @@ Orderless completion.
 		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
 		   nil
 		   (window-parameters (mode-line-format . none)))))
-	  #+end_src
+#+end_src
 
 *** Language support
 
