@@ -276,7 +276,7 @@
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t!)" "NEXT(t!)" "PROG(p!)" "|" "DONE(t!)")
+      '((sequence "TODO(t!)" "NEXT(n!)" "PROG(p!)" "|" "DONE(d!)")
 	(sequence "INTR(i!)" "|" "DONE(d!)")
 	(sequence "|" "CNCL(c!)"))
       org-clock-into-drawer t

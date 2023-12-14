@@ -338,7 +338,7 @@ All flows from the agenda
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-	'((sequence "TODO(t!)" "NEXT(t!)" "PROG(p!)" "|" "DONE(t!)")
+	'((sequence "TODO(t!)" "NEXT(n!)" "PROG(p!)" "|" "DONE(d!)")
 	  (sequence "INTR(i!)" "|" "DONE(d!)")
 	  (sequence "|" "CNCL(c!)"))
 	org-clock-into-drawer t
