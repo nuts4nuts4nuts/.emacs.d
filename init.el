@@ -8,11 +8,11 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
-;; Turn off all the bars
-(menu-bar-mode -1)
+;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; Except the tab bar ;)
+;; Always have the menu bar and tab bar :)
+(menu-bar-mode 1)
 (tab-bar-mode 1)
 
 ;; Show column number in the modeline
@@ -126,7 +126,7 @@
 ;; Easily store links to org headers
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
-(define-key dkj-keys (kbd "C-c") #'org-capture)
+(define-key dkj-keys (kbd "C-t") #'org-capture)
 
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
@@ -220,7 +220,7 @@
      ((equal major-mode 'org-agenda-mode) (progn
 					    (delete-other-windows)
 					    (org-agenda-redo-all)))
-     (t (org-agenda nil "a")))))
+     (t (org-agenda nil "n")))))
 
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
@@ -231,13 +231,17 @@
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
       org-outline-path-complete-in-steps nil
       org-refile-use-outline-path 'file
-      org-agenda-span 'day)
+      org-agenda-span 'day
+      org-agenda-todo-ignore-scheduled 'future)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
-				    "Day agenda and all TODOs"
-				    ((agenda #1="")
-				     (alltodo #1#)))))
+				    "TODOs in order of importance"
+				    ((agenda "" nil)
+				     (todo "INTR" nil)
+				     (todo "PROG" nil)
+				     (todo "NEXT" nil))
+				    nil)))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -245,7 +249,7 @@
 				    (tags priority-down category-keep)
 				    (search category-keep)))
 ;; Agenda clockreport settings
-(setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 4 :tags t))
+(setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 6 :tags t))
 
 (defun dkj/format-n-breadcrumbs (n)
   "Formats the top n headers for an org item for my agenda."
@@ -272,18 +276,11 @@
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t!)" "NEXT(n!)" "|" "DONE(d!)")
-	(sequence "|" "CANCELED(c!)")
-	(sequence "HABIT(h!)" "|" "DONE(d!)"))
+      '((sequence "TODO(t!)" "NEXT(t!)" "PROG(p!)" "|" "DONE(t!)")
+	(sequence "INTR(i!)" "|" "DONE(d!)")
+	(sequence "|" "CANCELED(c!)"))
       org-clock-into-drawer t
       org-log-into-drawer t)
-
-;; Set :STYLE: habit for HABIT todos
-(defun dkj/org-set-habit ()
-  (interactive)
-  (when (equal (org-get-todo-state) "HABIT")
-    (org-set-property "STYLE" "habit")))
-(add-hook 'org-after-todo-state-change-hook #'dkj/org-set-habit)
 
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")
@@ -291,11 +288,7 @@
 	      ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
 	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
-	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t)
-	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
-	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)
-	      ("s" "Day story" entry (file+datetree "~/org/stories.org")
-	       "* %? \n%U\n" :clock-in t :clock-resume t))))
+	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
 (setq org-clock-history-length 25)
@@ -330,6 +323,45 @@
   (org-clock-in '(4)))
 (define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
 
+;;;;; LOG BASED WORKFLOW BINDINGS I WANT TO KEEP HERE FOR NOW ;;;;;
+;; (defun dkj/log-at-marker (marker)
+;;   (pop-to-buffer-same-window (marker-buffer marker))
+;;   (goto-char marker)
+;;   (org-insert-heading '(4))
+;;   (when (org-clocking-p) (org-clock-out))
+;;   (org-clock-in))
+
+;; (defun dkj/get-log-end-marker ()
+;;   (let ((logb (get-buffer "log.org")))
+;;     (set-marker (make-marker) (+ 1 (buffer-size logb)) logb)))
+
+;; (defun dkj/smart-log ()
+;;   (let ((jump-marker (cond
+;; 		      ;; If in the log, log at point
+;; 		      ((string= (buffer-name (window-buffer (minibuffer-selected-window)))
+;; 				"log.org")
+;; 		       (point-marker))
+;; 		      ;; If clocked in log, log at clocked
+;; 		      ((and (org-clocking-p)
+;; 			    (string= (buffer-name (marker-buffer org-clock-marker))
+;; 				     "log.org"))
+;; 		       org-clock-marker)
+;; 		      ;; Else log at end
+;; 		      (t
+;; 		       (dkj/get-log-end-marker)))))
+;;     (dkj/log-at-marker jump-marker)))
+
+;; (defun dkj/log-at-end ()
+;;   (dkj/log-at-marker (dkj/get-log-end-marker)))
+
+;; (defun dkj/new-log ()
+;;   (interactive)
+;;   (cond
+;;    ((equal current-prefix-arg nil) (dkj/smart-log))
+;;    ((equal current-prefix-arg '(4)) (dkj/log-at-end))))
+
+;; (define-key dkj-keys (kbd "C-<return>") #'dkj/new-log)
+
 (setq org-export-with-sub-superscripts nil
       org-export-with-section-numbers nil
       org-export-with-toc nil
@@ -339,9 +371,7 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '(
-   (python . t)
-   ))
+ '((python . t)))
 
 (setq org-babel-python-command "python3")
 
@@ -407,9 +437,8 @@
   (define-key dot-mode-map (kbd "C-.") nil)
   (define-key dot-mode-map (kbd "C-M-.") nil)
   (define-key dot-mode-map (kbd "C-c .") nil)
-  (define-key dot-mode-map (kbd "C-x C-t") #'dot-mode-execute)
-  (define-key dot-mode-map (kbd "C-x C-M-t") #'dot-mode-override)
-  (define-key dot-mode-map (kbd "C-t C-t") #'dot-mode-copy-to-last-kbd-macro))
+  (define-key dot-mode-map (kbd "C-x C-.") #'dot-mode-execute)
+  (define-key dot-mode-map (kbd "C-x C-M-.") #'dot-mode-override))
 
 (use-package magit)
 
