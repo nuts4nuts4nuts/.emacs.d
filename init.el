@@ -192,10 +192,7 @@
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
-  (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading)
-  ;; Make the note template use an active timestamp
-  (add-to-list 'org-log-note-headings
-	       '(note . "Note taken on %T")))
+  (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
 
 (require 'org-agenda)
 
@@ -287,8 +284,8 @@
 	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
 	      ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
 	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-	      ("i" "Interrupt" entry (file+datetree "~/org/journal.org")
-	       "* %? :INTERRUPT:\n%U\n" :clock-in t :clock-resume t))))
+	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
+	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
 (setq org-clock-history-length 25)
@@ -564,7 +561,9 @@
   :init
   (pdf-tools-install))
 
-(use-package org-noter)
+(use-package org-noter
+  :config
+  (setq org-noter-highlight-selected-text t))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
