@@ -235,13 +235,31 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 	org-default-notes-file "~/org/inbox.org"
 	org-id-locations-file "~/org/.org-id-locations"
 	org-startup-truncated nil
-	org-ellipsis "↴"
+	org-ellipsis ":>"
 	org-id-link-to-org-use-id 'create-if-interactive)
 
   ;; Make inserting new list items a little cleaner
   (with-eval-after-load "org"
     (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
     (define-key org-mode-map (kbd "C-<return>") #'org-insert-heading))
+
+  ;; Create a link to an org header interactively
+  ;; using the same backend as refile
+  ;; taken from https://www.reddit.com/r/emacs/comments/qblthi/how_to_link_to_headings_in_another_org_file_with/
+  (defun dkj/org-id-insert-link ()
+    "Insert at point a link to any heading from 'org-agenda-files'."
+    (interactive)
+    (let ((buffer-pos
+	   (org-id-find
+	    (org-id-get-with-outline-path-completion '((nil :maxlevel . 5)
+						       (org-agenda-files :maxlevel . 5))))))
+      (save-excursion
+	(with-current-buffer (get-file-buffer (car buffer-pos))
+	  (goto-char (cdr buffer-pos))
+	  (call-interactively 'org-store-link)))
+      (org-insert-all-links 1 "" " ")))
+  (with-eval-after-load "org"
+    (define-key org-mode-map (kbd "C-c l") #'dkj/org-id-insert-link))
 #+end_src
 
 *** Agenda settings
