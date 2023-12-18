@@ -574,14 +574,20 @@
   (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)
   (define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom))
 
+(use-package org-noter
+  :config
+  (setq org-noter-highlight-selected-text t))
+
 (use-package pdf-tools
   :ensure t
   :init
   (pdf-tools-install))
 
-(use-package org-noter
+(use-package nov
+  :ensure t
   :config
-  (setq org-noter-highlight-selected-text t))
+  (setq nov-text-width 80)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))

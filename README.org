@@ -806,16 +806,6 @@ Tetris, man...
     (define-key tetris-mode-map (kbd "<up>") #'tetris-move-bottom))
 #+end_src
 
-*** pdf-tools
-For reading pdfs in Emacs!
-
-#+begin_src emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :init
-    (pdf-tools-install))
-#+end_src
-
 *** org-noter
 Take synched org notes on documents in Emacs!
 
@@ -825,6 +815,26 @@ Take synched org notes on documents in Emacs!
     (setq org-noter-highlight-selected-text t))
 
 #+end_src
+*** pdf-tools
+For reading pdfs in Emacs! Useful with org-noter.
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :init
+    (pdf-tools-install))
+#+end_src
+*** nov.el
+For reading epub files in Emacs! Useful with org-noter.
+
+#+begin_src emacs-lisp
+	(use-package nov
+	  :ensure t
+	  :config
+	  (setq nov-text-width 80)
+	  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+#+end_src
+
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
