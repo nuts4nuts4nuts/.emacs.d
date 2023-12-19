@@ -157,12 +157,8 @@
 ;; delete-horizontal-space, and delete-blank-lines all in one
 (global-set-key (kbd "M-SPC") #'cycle-spacing)
 
-;; Bind M-v to go from the completions buffer to the minibuffer,
-;; mirroring the minubuffer binding to go to completions
-(define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
-
-;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
-(global-set-key (kbd "M-/") #'hippie-expand)
+;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
+(global-set-key (kbd "M-/") #'dabbrev-completion)
 
 ;; C-t C-h to open this file, my config
 (defun dkj/open-config ()
@@ -214,11 +210,15 @@
 
 (require 'org-agenda)
 
+;; define a main view to use in the following functions
+(defun dkj/agenda-main-view ()
+  (org-agenda nil "n"))
+
 (defun dkj/present-agenda-and-clocked ()
   "Open the agenda and the currently clocked task side by side."
   (interactive)
   (progn
-    (org-agenda nil "a")
+    (dkj/agenda-main-view)
     (delete-other-windows)
     (split-window-right)
     (other-window 1)
@@ -235,7 +235,7 @@
      ((equal major-mode 'org-agenda-mode) (progn
 					    (delete-other-windows)
 					    (org-agenda-redo-all)))
-     (t (org-agenda nil "n")))))
+     (t (dkj/agenda-main-view)))))
 
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
@@ -252,10 +252,10 @@
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "TODOs in order of importance"
-				    ((agenda "" nil)
-				     (todo "INTR" nil)
+				    ((todo "INTR" nil)
 				     (todo "PROG" nil)
-				     (todo "NEXT" nil))
+				     (todo "NEXT" nil)
+				     (agenda "" nil))
 				    nil)))
 
 ;; Agenda sorting order
@@ -394,8 +394,10 @@
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+			 ("elpa" . "https://elpa.gnu.org/packages/")
+			 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
+
 
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
@@ -421,6 +423,9 @@
 ;; Themes that I like to have available
 (use-package gruvbox-theme)
 (use-package material-theme)
+
+;; Some modus theme customization
+(setq modus-themes-org-blocks 'gray-background)
 
 ;; Light and dark themes I'm using currently
 (setq dkj/theme-light 'modus-operandi)
@@ -457,13 +462,27 @@
 
 (use-package magit)
 
+(use-package marginalia
+  :ensure t
+  :bind
+  (:map minibuffer-local-map
+	("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
+
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless initials basic)
+	completion-category-defaults nil
+	completion-category-overrides '((file (styles partial-completion)))))
+
 ;; Enable vertico
 (use-package vertico
   :init
   (vertico-mode)
 
   ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
+  (setq vertico-scroll-margin 1)
 
   ;; Show more candidates
   ;; (setq vertico-count 20)
@@ -472,22 +491,27 @@
   ;; (setq vertico-resize t)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
+  (setq vertico-cycle t)
 
-(use-package orderless
+  ;; enable the mouse
+  (vertico-mouse-mode 1))
+
+(use-package corfu
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for 'corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-scroll-margin 1)        ;; Use scroll margin
   :init
-  (setq completion-styles '(orderless initials basic)
-	completion-category-defaults nil
-	completion-category-overrides '((file (styles partial-completion)))))
+  (global-corfu-mode))
 
-(use-package marginalia
-  :ensure t
-  :config
-  (marginalia-mode)
-  :bind
-  (:map minibuffer-local-map
-	("M-A" . marginalia-cycle)))
+  ;; Enable indentation+completion using the TAB key.
+  (setq tab-always-indent 'complete)
+
+(use-package corfu-terminal
+  :init
+  (unless (display-graphic-p)
+    (corfu-terminal-mode +1)))
 
 (use-package embark
   :ensure t
@@ -507,7 +531,8 @@
   (add-to-list 'display-buffer-alist
 	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
 		 nil
-		 (window-parameters (mode-line-format . none)))))
+		 (window-parameters (mode-line-format . none))))
+  (embark-quit-after-action nil))
 
 (use-package markdown-mode)
 

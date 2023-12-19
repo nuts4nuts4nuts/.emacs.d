@@ -194,12 +194,8 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
   ;; delete-horizontal-space, and delete-blank-lines all in one
   (global-set-key (kbd "M-SPC") #'cycle-spacing)
 
-  ;; Bind M-v to go from the completions buffer to the minibuffer,
-  ;; mirroring the minubuffer binding to go to completions
-  (define-key completion-list-mode-map (kbd "M-v") #'switch-to-minibuffer)
-
-  ;; Bind M-/ to hippie-expand instead of dabbrev-expand, since hippie does the same but more
-  (global-set-key (kbd "M-/") #'hippie-expand)
+  ;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
+  (global-set-key (kbd "M-/") #'dabbrev-completion)
 #+end_src
 
 *** Functions
@@ -272,11 +268,15 @@ All flows from the agenda
 #+begin_src emacs-lisp
   (require 'org-agenda)
 
+  ;; define a main view to use in the following functions
+  (defun dkj/agenda-main-view ()
+    (org-agenda nil "n"))
+
   (defun dkj/present-agenda-and-clocked ()
     "Open the agenda and the currently clocked task side by side."
     (interactive)
     (progn
-      (org-agenda nil "a")
+      (dkj/agenda-main-view)
       (delete-other-windows)
       (split-window-right)
       (other-window 1)
@@ -293,7 +293,7 @@ All flows from the agenda
        ((equal major-mode 'org-agenda-mode) (progn
 					      (delete-other-windows)
 					      (org-agenda-redo-all)))
-       (t (org-agenda nil "n")))))
+       (t (dkj/agenda-main-view)))))
 
   ;; Open the main view of the agenda with f12
   (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
@@ -310,10 +310,10 @@ All flows from the agenda
   ;; Open my custom agenda view
   (setq org-agenda-custom-commands '(("n"
 				      "TODOs in order of importance"
-				      ((agenda "" nil)
-				       (todo "INTR" nil)
+				      ((todo "INTR" nil)
 				       (todo "PROG" nil)
-				       (todo "NEXT" nil))
+				       (todo "NEXT" nil)
+				       (agenda "" nil))
 				      nil)))
 
   ;; Agenda sorting order
@@ -499,7 +499,8 @@ Packages are hip and cool and emacs is pretty good at using them.
   (require 'package)
   (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			   ("org" . "https://orgmode.org/elpa/")
-			   ("elpa" . "https://elpa.gnu.org/packages/")))
+			   ("elpa" . "https://elpa.gnu.org/packages/")
+			   ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   (package-initialize)
 
   ;; Initialize use-package on non-Linux platforms
@@ -544,6 +545,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
   ;; Themes that I like to have available
   (use-package gruvbox-theme)
   (use-package material-theme)
+
+  ;; Some modus theme customization
+  (setq modus-themes-org-blocks 'gray-background)
 
   ;; Light and dark themes I'm using currently
   (setq dkj/theme-light 'modus-operandi)
@@ -593,31 +597,22 @@ You can also use ~M-x auto-package-update-now~ to update right now!
   (use-package magit)
 #+end_src
 
-*** Vertico
+*** Completion stuff
+**** Marginalia
 
-Vertico is a vertical completing-read interface. It's pretty much the same as fido-vertical-mode, which is built in now, but it's more performant.
+[[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
 
 #+begin_src emacs-lisp
-  ;; Enable vertico
-  (use-package vertico
+  (use-package marginalia
+    :ensure t
+    :bind
+    (:map minibuffer-local-map
+	  ("M-A" . marginalia-cycle))
     :init
-    (vertico-mode)
-
-    ;; Different scroll margin
-    ;; (setq vertico-scroll-margin 0)
-
-    ;; Show more candidates
-    ;; (setq vertico-count 20)
-
-    ;; Grow and shrink the Vertico minibuffer
-    ;; (setq vertico-resize t)
-
-    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-    ;; (setq vertico-cycle t)
-    )
+    (marginalia-mode))
 #+end_src
 
-*** Orderless
+**** Orderless
 
 Orderless completion.
 
@@ -629,18 +624,56 @@ Orderless completion.
 	  completion-category-overrides '((file (styles partial-completion)))))
 #+end_src
 
-*** Marginalia
+**** Vertico
 
-[[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
+Vertico is a vertical completing-read interface. It's pretty much the same as fido-vertical-mode, which is built in now, but it's more performant.
 
 #+begin_src emacs-lisp
-  (use-package marginalia
-    :ensure t
-    :config
-    (marginalia-mode)
-    :bind
-    (:map minibuffer-local-map
-	  ("M-A" . marginalia-cycle)))
+  ;; Enable vertico
+  (use-package vertico
+    :init
+    (vertico-mode)
+
+    ;; Different scroll margin
+    (setq vertico-scroll-margin 1)
+
+    ;; Show more candidates
+    ;; (setq vertico-count 20)
+
+    ;; Grow and shrink the Vertico minibuffer
+    ;; (setq vertico-resize t)
+
+    ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
+    (setq vertico-cycle t)
+
+    ;; enable the mouse
+    (vertico-mouse-mode 1))
+#+end_src
+
+**** Corfu
+[[https://github.com/minad/corfu][Corfu]] is Vertico's completion-in-region companion.
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :custom
+    (corfu-cycle t)                ;; Enable cycling for 'corfu-next/previous'
+    (corfu-auto t)                 ;; Enable auto completion
+    (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+    (corfu-scroll-margin 1)        ;; Use scroll margin
+    :init
+    (global-corfu-mode))
+
+    ;; Enable indentation+completion using the TAB key.
+    (setq tab-always-indent 'complete)
+#+end_src
+
+Corfu uses child frames that don't work in terminal emacs. For that we need [[https://codeberg.org/akib/emacs-corfu-terminal#user-content-headline-2][emacs-corfu-terminal]].
+
+#+begin_src emacs-lisp
+  (use-package corfu-terminal
+    :init
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1)))
 #+end_src
 
 *** Embark
@@ -666,7 +699,8 @@ Orderless completion.
     (add-to-list 'display-buffer-alist
 		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
 		   nil
-		   (window-parameters (mode-line-format . none)))))
+		   (window-parameters (mode-line-format . none))))
+    (embark-quit-after-action nil))
 #+end_src
 
 *** Language support
