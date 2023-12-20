@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (defun dkj/org-babel-tangle-config ()
   "Automatically tangle our config.org config file when we save it"
   (when (string-equal (file-name-directory (buffer-file-name))
@@ -11,9 +13,8 @@
 ;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; Always have the menu bar and tab bar :)
+;; Always have the menu bar :)
 (menu-bar-mode 1)
-(tab-bar-mode 1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -70,13 +71,6 @@
 
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
 (setq send-mail-function 'mailclient-send-it)
-
-;; Put the menu bar in the tab bar, to help with discoverability
-(defun dkj/tab-bar-format-menu-bar ()
-  "Produce the Menu button (denoted as λ) for the tab bar that shows the menu bar."
-  `((menu-bar menu-item (propertize "λ" 'face 'tab-bar-tab-inactive)
-	      tab-bar-menu-bar :help "Menu Bar")))
-(add-to-list 'tab-bar-format #'dkj/tab-bar-format-menu-bar)
 
 ;; Winner mode remembers my window layouts
 (winner-mode 1)
@@ -208,6 +202,51 @@
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "C-c l") #'dkj/org-id-insert-link))
 
+;; "One" button org-add-note to clocked workflow
+(defun dkj/create-org-store-log-note-and-save (m)
+  (defun dkj/org-store-log-note-and-save () ; This only works with lexical binding
+    (org-store-log-note)
+    (save-some-buffers t
+		       (lambda ()
+			 (eq (marker-buffer m) (current-buffer))))))
+
+(defun dkj/org-add-note-clocked ()
+  (interactive)
+  ;; Marker logic copied from org-clock-goto
+  (let* ((recent nil)
+	 (m (cond
+	     ((org-clocking-p) org-clock-marker)
+	     ((and org-clock-goto-may-find-recent-task
+		   (car org-clock-history)
+		   (marker-buffer (car org-clock-history)))
+	      (setq recent t)
+	      (car org-clock-history))
+	     (t (user-error "No active or recent clock task")))))
+    (if recent ;; this is also from org-clock-goto
+	(message "No running clock, this is the most recently clocked task"))
+    ;; Copy and merge org-add-log-setup and org-add-log-note
+    ;; but using clocked marker, keeping the current window
+    ;; instead of moving to the target org heading
+    ;; and not doing extra stuff that's not relevant to this case
+    (move-marker org-log-note-marker (marker-position m) (marker-buffer m))
+    (setq org-log-note-purpose 'note
+	  org-log-note-effective-time (org-current-effective-time)
+	  org-log-note-this-command this-command
+	  org-log-note-recursion-depth (recursion-depth))
+    (when (and (equal org-log-note-this-command this-command)
+	       (= org-log-note-recursion-depth (recursion-depth)))
+      (setq org-log-note-window-configuration (current-window-configuration))
+      (delete-other-windows)
+      (move-marker org-log-note-return-to (point))
+      (org-switch-to-buffer-other-window "*Org Note*")
+      (erase-buffer)
+      (let ((org-inhibit-startup t)) (org-mode))
+      (insert "# Insert note for this entry.\n# Finish with C-c C-c, or cancel with C-c C-k.\n\n")
+      (when org-log-note-extra (insert org-log-note-extra))
+      (setq-local org-finish-function (dkj/create-org-store-log-note-and-save m))
+      (run-hooks 'org-log-buffer-setup-hook))))
+(global-set-key (kbd "C-z") #'dkj/org-add-note-clocked)
+
 (require 'org-agenda)
 
 ;; define a main view to use in the following functions
@@ -252,10 +291,10 @@
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "TODOs in order of importance"
-				    ((todo "INTR" nil)
+				    ((agenda "" nil)
+				     (todo "INTR" nil)
 				     (todo "PROG" nil)
-				     (todo "NEXT" nil)
-				     (agenda "" nil))
+				     (todo "NEXT" nil))
 				    nil)))
 
 ;; Agenda sorting order
@@ -398,7 +437,6 @@
 			 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 
-
 ;; Initialize use-package on non-Linux platforms
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -505,8 +543,8 @@
   :init
   (global-corfu-mode))
 
-  ;; Enable indentation+completion using the TAB key.
-  (setq tab-always-indent 'complete)
+;; Enable indentation+completion using the TAB key.
+(setq tab-always-indent 'complete)
 
 (use-package corfu-terminal
   :init
@@ -531,8 +569,9 @@
   (add-to-list 'display-buffer-alist
 	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
 		 nil
-		 (window-parameters (mode-line-format . none))))
-  (embark-quit-after-action nil))
+		 (window-parameters (mode-line-format . none)))))
+
+(setq embark-quit-after-action nil)
 
 (use-package markdown-mode)
 
