@@ -285,7 +285,8 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
       (setq org-log-note-purpose 'note
 	    org-log-note-effective-time (org-current-effective-time)
 	    org-log-note-this-command this-command
-	    org-log-note-recursion-depth (recursion-depth))
+	    org-log-note-recursion-depth (recursion-depth)
+	    org-log-post-message nil) ;; prevents storing the log from sending an extra "Entry repeats" message
       (when (and (equal org-log-note-this-command this-command)
 		 (= org-log-note-recursion-depth (recursion-depth)))
 	(setq org-log-note-window-configuration (current-window-configuration))
@@ -906,11 +907,11 @@ For reading pdfs in Emacs! Useful with org-noter.
 For reading epub files in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
-	(use-package nov
-	  :ensure t
-	  :config
-	  (setq nov-text-width 80)
-	  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  (use-package nov
+    :ensure t
+    :config
+    (setq nov-text-width 80)
+    (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
 #+end_src
 
 ** Load other files
@@ -923,12 +924,12 @@ I like to keep everything in one file, but sometimes stuff needs to go in other 
     (load custom-file))
 
   ;; Load Google stuff if it exists
-  (let ((googel (concat user-emacs-directory "google.el")))
-    (when (file-exists-p googel)
-      (load googel)))
+  (setq googel (concat user-emacs-directory "google.el"))
+  (when (file-exists-p googel)
+    (load googel))
 
   ;; Load non-Google stuff if it exists
-  (let ((noogel (concat user-emacs-directory "noogle.el")))
-    (when (file-exists-p noogel)
-      (load noogel)))
+  (setq noogel (concat user-emacs-directory "noogle.el"))
+  (when (file-exists-p noogel)
+    (load noogel))
 #+end_src

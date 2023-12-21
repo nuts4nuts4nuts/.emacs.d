@@ -232,7 +232,8 @@
     (setq org-log-note-purpose 'note
 	  org-log-note-effective-time (org-current-effective-time)
 	  org-log-note-this-command this-command
-	  org-log-note-recursion-depth (recursion-depth))
+	  org-log-note-recursion-depth (recursion-depth)
+	  org-log-post-message nil) ;; prevents storing the log from sending an extra "Entry repeats" message
     (when (and (equal org-log-note-this-command this-command)
 	       (= org-log-note-recursion-depth (recursion-depth)))
       (setq org-log-note-window-configuration (current-window-configuration))
@@ -659,11 +660,11 @@
   (load custom-file))
 
 ;; Load Google stuff if it exists
-(let ((googel (concat user-emacs-directory "google.el")))
-  (when (file-exists-p googel)
-    (load googel)))
+(setq googel (concat user-emacs-directory "google.el"))
+(when (file-exists-p googel)
+  (load googel))
 
 ;; Load non-Google stuff if it exists
-(let ((noogel (concat user-emacs-directory "noogle.el")))
-  (when (file-exists-p noogel)
-    (load noogel)))
+(setq noogel (concat user-emacs-directory "noogle.el"))
+(when (file-exists-p noogel)
+  (load noogel))
