@@ -176,7 +176,7 @@
       org-default-notes-file "~/org/inbox.org"
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
-      org-ellipsis ":>"
+      org-ellipsis ">>"
       org-id-link-to-org-use-id 'create-if-interactive)
 
 ;; Make inserting new list items a little cleaner
