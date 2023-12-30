@@ -787,8 +787,12 @@ The Anki apps are great.
   (use-package anki-editor)
 
   ;; Create a named command for inserting a hiragana from the clipbard
-  (fset 'dkj/anki-insert-hiragana-from-clipboard
-	(kmacro-lambda-form [?\M-x ?a ?n ?k ?i ?- ?e ?d ?i ?t ?o ?r ?- ?i ?n ?d ?e ?r backspace backspace backspace ?s ?e ?r ?t ?- ?n ?o ?t ?e return ?b ?a ?s ?i ?c ?  ?a ?n ?d ?  ?r ?e return ?\C-y return M-S-left ?\C-c ?\C-n ?\C-e return ?\C-y ?\C-n ?\C-e return] 0 "%d"))
+  (defalias 'dkj/anki-insert-hiragana-from-clipboard
+   (kmacro "M-x a n k i - e d i t o r - i n d e r <backspace> <backspace> <backspace> s e r t - n o t e <return> b a s i c SPC a n d SPC r e <return> C-y <return> M-S-<left> C-c C-n C-e <return> C-y C-n C-e <return>"))
+
+  ;; Command for creating a new card using a structure in the "a" register
+  (defalias 'dkj/insert-from-a
+   (kmacro "C-u C-<return> C-a C-k C-x r i a C-c C-u C-e" 4 "%d"))
 #+end_src
 
 *** Bad Emacs Defaults
