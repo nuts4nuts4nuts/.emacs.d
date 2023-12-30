@@ -349,7 +349,8 @@ All flows from the agenda
 	org-outline-path-complete-in-steps nil
 	org-refile-use-outline-path 'file
 	org-agenda-span 'day
-	org-agenda-todo-ignore-scheduled 'future)
+	org-agenda-todo-ignore-scheduled 'future
+	org-deadline-warning-days 7)
 
   ;; Open my custom agenda view
   (setq org-agenda-custom-commands '(("n"
@@ -788,11 +789,11 @@ The Anki apps are great.
 
   ;; Create a named command for inserting a hiragana from the clipbard
   (defalias 'dkj/anki-insert-hiragana-from-clipboard
-   (kmacro "M-x a n k i - e d i t o r - i n d e r <backspace> <backspace> <backspace> s e r t - n o t e <return> b a s i c SPC a n d SPC r e <return> C-y <return> M-S-<left> C-c C-n C-e <return> C-y C-n C-e <return>"))
+    (kmacro "M-x a n k i - e d i t o r - i n d e r <backspace> <backspace> <backspace> s e r t - n o t e <return> b a s i c SPC a n d SPC r e <return> C-y <return> M-S-<left> C-c C-n C-e <return> C-y C-n C-e <return>"))
 
   ;; Command for creating a new card using a structure in the "a" register
   (defalias 'dkj/insert-from-a
-   (kmacro "C-u C-<return> C-a C-k C-x r i a C-c C-u C-e" 4 "%d"))
+    (kmacro "C-u C-<return> C-a C-k C-x r i a C-c C-u C-e" 4 "%d"))
 #+end_src
 
 *** Bad Emacs Defaults
