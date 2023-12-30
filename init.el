@@ -192,7 +192,7 @@
   (interactive)
   (let ((buffer-pos
 	 (org-id-find
-	  (org-id-get-with-outline-path-completion '((nil :maxlevel . 5)
+	  (org-id-get-with-outline-path-completion '((nil :maxlevel . 100)
 						     (org-agenda-files :maxlevel . 5))))))
     (save-excursion
       (with-current-buffer (get-file-buffer (car buffer-pos))
