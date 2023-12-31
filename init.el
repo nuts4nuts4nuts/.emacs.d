@@ -177,7 +177,8 @@
       org-id-locations-file "~/org/.org-id-locations"
       org-startup-truncated nil
       org-ellipsis ">>"
-      org-id-link-to-org-use-id 'create-if-interactive)
+      org-id-link-to-org-use-id 'create-if-interactive
+      org-image-actual-width 600)
 
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
