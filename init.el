@@ -357,6 +357,8 @@
 (setq org-clock-persist t)
 ;; Set clock duration format to never aggregate up to days
 (setq org-duration-format (quote h:mm))
+;; Show current clock period instead of defaulting to total clocked time
+(setq org-clock-mode-line-total 'current)
 
 ;; Define things that show up as issues in clock check (v c in org-agenda)
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
@@ -380,7 +382,7 @@
   (org-clock-in '(4)))
 (define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
 
-;;;;; LOG BASED WORKFLOW BINDINGS I WANT TO KEEP HERE FOR NOW ;;;;;
+  ;;;;; LOG BASED WORKFLOW BINDINGS I WANT TO KEEP HERE FOR NOW ;;;;;
 ;; (defun dkj/log-at-marker (marker)
 ;;   (pop-to-buffer-same-window (marker-buffer marker))
 ;;   (goto-char marker)
@@ -464,12 +466,13 @@
 ;; Themes that I like to have available
 (use-package gruvbox-theme)
 (use-package material-theme)
+(use-package modus-themes) ;; built in now, but to get the tinted themes we need the package, I think
 
 ;; Some modus theme customization
 (setq modus-themes-org-blocks 'gray-background)
 
 ;; Light and dark themes I'm using currently
-(setq dkj/theme-light 'modus-operandi)
+(setq dkj/theme-light 'modus-operandi-tinted)
 (setq dkj/theme-dark 'modus-vivendi)
 
 ;; Function to swap between light and dark theme
