@@ -630,18 +630,18 @@
      (cdr (ring-ref avy-ring 0))))
   t)
 
+
 (use-package avy
   :ensure t
-  :config
-  (setq avy-timeout-seconds 0.2)
   :bind
-  (("C-;" . avy-goto-char-2))
+  (("C-;" . avy-goto-char-timer))
   (:map org-mode-map
-	("C-;" . avy-goto-char-2))
+	("C-;" . avy-goto-char-timer))
   (:map isearch-mode-map
 	("C-;" . avy-isearch))
   :config
-  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
+  (setq avy-timeout-seconds 0.33))
 
 (with-eval-after-load "tetris-mode"
   (define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
