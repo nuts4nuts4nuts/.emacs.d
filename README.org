@@ -349,18 +349,17 @@ All flows from the agenda
 	org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
 	org-outline-path-complete-in-steps nil
 	org-refile-use-outline-path 'file
-	org-agenda-span 'day
-	org-agenda-todo-ignore-scheduled 'future
-	org-deadline-warning-days 7)
+	org-agenda-span 'day)
 
   ;; Open my custom agenda view
   (setq org-agenda-custom-commands '(("n"
-				      "TODOs in order of importance"
-				      ((agenda "" nil)
-				       (todo "INTR" nil)
-				       (todo "PROG" nil)
-				       (todo "NEXT" nil))
-				      nil)))
+				      "TODOs in order of actionability"
+				      ((agenda "" ((org-deadline-warning-days 7)))
+				       (todo "DO" nil)
+				       (todo "DCIDE" ((org-agenda-todo-ignore-deadlines 'all)
+						      (org-agenda-todo-ignore-scheduled 'all))
+					     (todo "DGATE" nil))
+				       nil))))
 
   ;; Agenda sorting order
   (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -399,8 +398,7 @@ All flows from the agenda
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-	'((sequence "TODO(t!)" "NEXT(n!)" "PROG(p!)" "|" "DONE(d!)")
-	  (sequence "INTR(i!)" "|" "DONE(d!)")
+	'((sequence "DO(o!)" "DCIDE(i!)" "DGATE(a!)" "DLETE(e!)" "|" "DONE(d!)")
 	  (sequence "|" "CNCL(c!)"))
 	org-clock-into-drawer t
 	org-log-into-drawer t)
@@ -413,7 +411,7 @@ Quick cap
 #+begin_src emacs-lisp
   (setq org-capture-templates
 	(quote (("t" "Todo" entry (file "~/org/inbox.org")
-		 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+		 "* DCIDE %?\n%U\n%a\n" :clock-in t :clock-resume t)
 		("m" "Meeting" entry (file+datetree "~/org/meetings.org")
 		 "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 		("j" "Journal" entry (file+datetree "~/org/journal.org")
