@@ -114,6 +114,12 @@
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
       ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
+;; Strokes mode is a way of assigning mouse gestures to functions
+(strokes-mode 1)
+(setq strokes-use-strokes-buffer nil)
+(global-set-key (kbd "M-<down-mouse-1>") #'strokes-do-stroke)
+(global-set-key (kbd "<volume-down>") #'strokes-do-stroke)
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
