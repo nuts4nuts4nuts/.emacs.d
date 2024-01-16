@@ -299,9 +299,9 @@
 				    ((agenda "" ((org-deadline-warning-days 7)))
 				     (todo "DO" nil)
 				     (todo "DCIDE" ((org-agenda-todo-ignore-deadlines 'all)
-						    (org-agenda-todo-ignore-scheduled 'all))
-					   (todo "DGATE" nil))
-				     nil))))
+						    (org-agenda-todo-ignore-scheduled 'all)))
+				     (todo "DGATE" nil))
+				    nil)))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
