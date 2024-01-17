@@ -645,6 +645,8 @@
   (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
   (setq avy-timeout-seconds 0.33))
 
+(use-package vundo)
+
 (with-eval-after-load "tetris-mode"
   (define-key tetris-mode-map (kbd "z") #'tetris-rotate-next)
   (define-key tetris-mode-map (kbd "x") #'tetris-rotate-prev)

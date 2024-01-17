@@ -885,6 +885,12 @@ Why is Avy better?
     (setq avy-timeout-seconds 0.33))
 #+end_src
 
+*** Vundo
+Visualize the undo tree for tricky undo situations
+#+begin_src emacs-lisp
+  (use-package vundo)
+#+end_src
+
 *** Tetris...
 
 Tetris, man...
