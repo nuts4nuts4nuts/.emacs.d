@@ -291,17 +291,19 @@
       org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
       org-outline-path-complete-in-steps nil
       org-refile-use-outline-path 'file
-      org-agenda-span 'day)
+      org-agenda-span 'day
+      org-agenda-tags-todo-honor-ignore-options 't)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "TODOs in order of actionability"
 				    ((agenda "" ((org-deadline-warning-days 7)))
-				     (todo "DO" nil)
-				     (todo "DCIDE" ((org-agenda-todo-ignore-deadlines 'all)
-						    (org-agenda-todo-ignore-scheduled 'all)))
-				     (todo "DGATE" nil))
-				    nil)))
+				     (tags-todo "+important+urgent")
+				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
+				     (tags-todo "-important+urgent")
+				     (tags-todo "-important-urgent")
+				     nil))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -336,18 +338,26 @@
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
 (setq org-todo-keywords
-      '((sequence "DO(o!)" "DCIDE(i!)" "DGATE(a!)" "DLETE(e!)" "|" "DONE(d!)")
-	(sequence "|" "CNCL(c!)"))
+      '((sequence "TODO(t!)" "PROG(p!)" "|" "DONE(d!)" "CNCL(c!)"))
       org-clock-into-drawer t
       org-log-into-drawer t)
 
+;; Switch to "PROG" when clocked in, unless we're just clocking in a capture buffer
+(defun dkj/prog-when-clock-if-not-cap (state)
+  (cond ((and (boundp 'org-capture-mode) org-capture-mode) state)
+	(t "PROG")))
+(setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-not-cap)
+
+(setq org-tag-persistent-alist '(("important" . ?i)
+				 ("urgent"    . ?u)))
+
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")
-	       "* DCIDE %?\n%U\n%a\n" :clock-in t :clock-resume t)
+	       "* DCIDE %?\n%U\n%a\n" :clock-in t :clock-keep t)
 	      ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
-	       "* %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+	       "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
 	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
-	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t))))
+	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
 (setq org-clock-history-length 25)
