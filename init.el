@@ -354,9 +354,9 @@
 (setq org-capture-templates
       (quote (("t" "Todo" entry (file "~/org/inbox.org")
 	       "* DCIDE %?\n%U\n%a\n" :clock-in t :clock-keep t)
-	      ("m" "Meeting" entry (file+datetree "~/org/meetings.org")
+	      ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
 	       "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
-	      ("j" "Journal" entry (file+datetree "~/org/journal.org")
+	      ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
