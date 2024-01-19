@@ -301,9 +301,10 @@
 				     (tags-todo "+important+urgent")
 				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
 								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "-important+urgent")
-				     (tags-todo "-important-urgent")
-				     nil))))
+				     (tags-todo "-important+urgent")))
+				   ("N"
+				    "Not important or urgent"
+				    ((tags-todo "-important-urgent")))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
