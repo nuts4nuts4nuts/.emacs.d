@@ -115,6 +115,8 @@
       ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
 ;; Android bindings
+(setq overriding-text-conversion-style nil)
+(setq touch-screen-display-keyboard t)
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
@@ -330,7 +332,7 @@
 (setq org-agenda-prefix-format
       '((agenda . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
 	(todo . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
-	(tags . " %i %-12:c")
+	(tags . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
 	(search . " %i %-12:c")))
 
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
