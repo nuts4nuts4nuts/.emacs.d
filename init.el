@@ -267,6 +267,7 @@
     (dkj/agenda-main-view)
     (delete-other-windows)
     (split-window-right)
+    (org-agenda-redo-all)
     (other-window 1)
     (org-clock-goto)
     (recenter-top-bottom 0)))
