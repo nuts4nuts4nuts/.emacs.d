@@ -115,7 +115,6 @@
       ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
 ;; Android bindings
-(setq overriding-text-conversion-style nil)
 (setq touch-screen-display-keyboard t)
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
@@ -503,8 +502,14 @@
 ;; Bind swapping between light and dark theme to "C-t C-\"
 (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
 
-;; Default to dark theme
-(load-theme dkj/theme-dark t)
+;; Default to dark theme except on Android
+;; where I want to default to light theme and get even lighter
+;; for the Boox
+(cond ((eq system-type 'android)
+       (setq dkj/theme-light 'modus-operandi)
+       (load-theme dkj/theme-light t))
+      (t
+       (load-theme dkj/theme-dark t)))
 
 (use-package dot-mode
   :config
