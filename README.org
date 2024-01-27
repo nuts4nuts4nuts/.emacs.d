@@ -138,7 +138,6 @@ These are some basic settings to make life a little better. They don't relate to
 	ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
  
   ;; Android bindings
-  (setq touch-screen-display-keyboard t)
   (global-set-key (kbd "<volume-down>") #'execute-extended-command)
   (global-set-key (kbd "<volume-up>") #'winner-undo)
 #+end_src
@@ -199,6 +198,21 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 
   ;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
   (global-set-key (kbd "M-/") #'dabbrev-completion)
+#+end_src
+**** Menu bar customization
+Create a menu bar menu and add custom functions to it.
+
+#+begin_src emacs-lisp
+  (define-key global-map [menu-bar dkj]
+	      (cons "DKJ" (make-sparse-keymap "DKJ")))
+
+  (define-key global-map
+	      [menu-bar dkj end-macro]
+	      '("Macro - End/Call" . kmacro-end-or-call-macro))
+
+  (define-key global-map
+	      [menu-bar dkj begin-macro]
+	      '("Macro - Begin/Counter" . kmacro-start-macro-or-insert-counter))
 #+end_src
 
 *** Functions
@@ -329,6 +343,7 @@ All flows from the agenda
       (dkj/agenda-main-view)
       (delete-other-windows)
       (split-window-right)
+      (org-agenda-redo-all)
       (other-window 1)
       (org-clock-goto)
       (recenter-top-bottom 0)))
@@ -344,6 +359,13 @@ All flows from the agenda
 					      (delete-other-windows)
 					      (org-agenda-redo-all)))
        (t (dkj/agenda-main-view)))))
+
+
+  ;; Open agenda through the menu bar
+  (define-key global-map
+	      [menu-bar dkj open-agenda-main-view]
+	      '("Open agenda" . dkj/open-agenda-main-view))
+
 
   ;; Open the main view of the agenda with f12
   (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
@@ -973,3 +995,4 @@ I like to keep everything in one file, but sometimes stuff needs to go in other 
   (when (file-exists-p noogel)
     (load noogel))
 #+end_src
+p
