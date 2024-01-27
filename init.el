@@ -115,7 +115,6 @@
       ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
 ;; Android bindings
-(setq touch-screen-display-keyboard t)
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
@@ -158,6 +157,17 @@
 
 ;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
 (global-set-key (kbd "M-/") #'dabbrev-completion)
+
+(define-key global-map [menu-bar dkj]
+	    (cons "DKJ" (make-sparse-keymap "DKJ")))
+
+(define-key global-map
+	    [menu-bar dkj end-macro]
+	    '("Macro - End/Call" . kmacro-end-or-call-macro))
+
+(define-key global-map
+	    [menu-bar dkj begin-macro]
+	    '("Macro - Begin/Counter" . kmacro-start-macro-or-insert-counter))
 
 ;; C-t C-h to open this file, my config
 (defun dkj/open-config ()
@@ -283,6 +293,13 @@
 					    (delete-other-windows)
 					    (org-agenda-redo-all)))
      (t (dkj/agenda-main-view)))))
+
+
+;; Open agenda through the menu bar
+(define-key global-map
+	    [menu-bar dkj open-agenda-main-view]
+	    '("Open agenda" . dkj/open-agenda-main-view))
+
 
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
