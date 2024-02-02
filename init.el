@@ -270,6 +270,10 @@
 (defun dkj/agenda-main-view ()
   (org-agenda nil "n"))
 
+;; define a secondary view to use in the following functions
+(defun dkj/agenda-alt-view ()
+  (org-agenda nil "N"))
+
 (defun dkj/present-agenda-and-clocked ()
   "Open the agenda and the currently clocked task side by side."
   (interactive)
@@ -286,12 +290,11 @@
   "Open the main view of my agenda."
   (interactive "P")
   (progn
+    (if (equal major-mode 'org-agenda-mode) (delete-other-windows))
     (setq current-prefix-arg nil)
     (cond
      ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
-     ((equal major-mode 'org-agenda-mode) (progn
-					    (delete-other-windows)
-					    (org-agenda-redo-all)))
+     ((equal prefix '(16)) (dkj/agenda-alt-view))
      (t (dkj/agenda-main-view)))))
 
 
@@ -315,15 +318,17 @@
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
-				    "TODOs in order of actionability"
-				    ((agenda "" ((org-deadline-warning-days 7)))
-				     (tags-todo "+important+urgent")
+				    "Today's agenda"
+				    ((agenda "" ((org-deadline-warning-days 7)))))
+				   ("N"
+				    "Todos in Do, Decide, Delegate, Delete order"
+				    ((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
 				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
 								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "-important+urgent")))
-				   ("N"
-				    "Not important or urgent"
-				    ((tags-todo "-important-urgent")))))
+				     (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
+				     (tags-todo "-important-urgent")))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
