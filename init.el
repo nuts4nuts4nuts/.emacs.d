@@ -323,10 +323,14 @@
 				     (todo "" ((org-agenda-files '("~/org/inbox.org"))))))
 				   ("N"
 				    "Todos in Do, Decide, Delegate, Delete order"
-				    ((tags-todo "+important+urgent")
-				     (tags-todo "+important-urgent")
-				     (tags-todo "-important+urgent")
-				     (tags-todo "-important-urgent")))))
+				    ((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
+				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
+				     (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))
+				     (tags-todo "-important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
+								     (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
