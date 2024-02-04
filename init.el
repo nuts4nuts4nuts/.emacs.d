@@ -314,20 +314,18 @@
       org-outline-path-complete-in-steps nil
       org-refile-use-outline-path 'file
       org-agenda-span 'day
-      org-agenda-tags-todo-honor-ignore-options 't)
+      org-agenda-tags-todo-honor-ignore-options t)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 				    "Today's agenda"
-				    ((agenda "" ((org-deadline-warning-days 7)))))
+				    ((agenda "" ((org-deadline-warning-days 7)))
+				     (todo "" ((org-agenda-files '("~/org/inbox.org"))))))
 				   ("N"
 				    "Todos in Do, Decide, Delegate, Delete order"
-				    ((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
+				    ((tags-todo "+important+urgent")
+				     (tags-todo "+important-urgent")
+				     (tags-todo "-important+urgent")
 				     (tags-todo "-important-urgent")))))
 
 ;; Agenda sorting order
@@ -353,10 +351,10 @@
 (setq breadcrumbs-to-format 2)
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-      '((agenda . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
-	(todo . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
-	(tags . " %i %(dkj/format-n-breadcrumbs breadcrumbs-to-format) ")
-	(search . " %i %-12:c")))
+      '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
+	(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
+	(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
+	(search . "%-12:c")))
 
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
 (with-eval-after-load "org"
