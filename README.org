@@ -1026,4 +1026,3 @@ I like to keep everything in one file, but sometimes stuff needs to go in other 
   (when (file-exists-p noogel)
     (load noogel))
 #+end_src
-p
