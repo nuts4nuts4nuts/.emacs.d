@@ -471,6 +471,7 @@
       org-icalendar-use-scheduled '(event-if-todo event-if-not-todo)
       org-icalendar-scheduled-summary-prefix ""
       org-icalendar-deadline-summary-prefix "DL: "
+      org-icalendar-combined-name "David Org Export"
       dkj/org-ical-agenda-files '("inbox.org"
 				  "init.org"
 				  "journal.org"
