@@ -11,8 +11,9 @@
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
 ;; Turn off the tool bar and scroll bar
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(when (display-graphic-p)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 ;; Always have the menu bar :)
 (menu-bar-mode 1)
 
@@ -464,6 +465,24 @@
       org-export-with-section-numbers nil
       org-export-with-toc nil
       org-export-headline-levels 10)
+
+(setq org-icalendar-store-UID 't
+      org-icalendar-use-deadline '(event-if-todo event-if-not-todo)
+      org-icalendar-use-scheduled '(event-if-todo event-if-not-todo)
+      org-icalendar-scheduled-summary-prefix ""
+      org-icalendar-deadline-summary-prefix "DL: "
+      dkj/org-ical-agenda-files '("inbox.org"
+				  "init.org"
+				  "journal.org"
+				  "meetings.org"
+				  "projects.org"))
+
+(defun dkj/org-ical-export ()
+  (interactive)
+  (setq current-agenda-files org-agenda-files)
+  (setq org-agenda-files dkj/org-ical-agenda-files)
+  (org-icalendar-combine-agenda-files)
+  (setq org-agenda-files current-agenda-files))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 

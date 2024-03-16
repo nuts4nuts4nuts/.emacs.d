@@ -34,8 +34,9 @@ These are some basic settings to make life a little better. They don't relate to
 
 #+begin_src emacs-lisp
   ;; Turn off the tool bar and scroll bar
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  (when (display-graphic-p)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1))
   ;; Always have the menu bar :)
   (menu-bar-mode 1)
 
@@ -563,6 +564,29 @@ Use defaults that make sense for me.
 	org-export-with-section-numbers nil
 	org-export-with-toc nil
 	org-export-headline-levels 10)
+#+end_src
+
+*** Calendar export defaults
+I want to mirror my org agenda to a Google calendar in order to make it sharable.
+
+#+begin_src emacs-lisp
+  (setq org-icalendar-store-UID 't
+	org-icalendar-use-deadline '(event-if-todo event-if-not-todo)
+	org-icalendar-use-scheduled '(event-if-todo event-if-not-todo)
+	org-icalendar-scheduled-summary-prefix ""
+	org-icalendar-deadline-summary-prefix "DL: "
+	dkj/org-ical-agenda-files '("inbox.org"
+				    "init.org"
+				    "journal.org"
+				    "meetings.org"
+				    "projects.org"))
+
+  (defun dkj/org-ical-export ()
+    (interactive)
+    (setq current-agenda-files org-agenda-files)
+    (setq org-agenda-files dkj/org-ical-agenda-files)
+    (org-icalendar-combine-agenda-files)
+    (setq org-agenda-files current-agenda-files))
 #+end_src
 
 *** Markdown export
