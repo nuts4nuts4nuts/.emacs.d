@@ -992,10 +992,10 @@ Take synched org notes on documents in Emacs!
 For reading pdfs in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
-  (use-package pdf-tools
-    :ensure t
-    :init
-    (pdf-tools-install))
+  ;; (use-package pdf-tools
+  ;;   :ensure t
+  ;;   :init
+  ;;   (pdf-tools-install))
 #+end_src
 *** nov.el
 For reading epub files in Emacs! Useful with org-noter.

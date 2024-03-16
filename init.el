@@ -719,10 +719,10 @@
   :config
   (setq org-noter-highlight-selected-text t))
 
-(use-package pdf-tools
-  :ensure t
-  :init
-  (pdf-tools-install))
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :init
+;;   (pdf-tools-install))
 
 (use-package nov
   :ensure t
