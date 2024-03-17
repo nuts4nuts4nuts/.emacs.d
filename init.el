@@ -298,16 +298,13 @@
      ((equal prefix '(16)) (dkj/agenda-alt-view))
      (t (dkj/agenda-main-view)))))
 
-
 ;; Open agenda through the menu bar
 (define-key global-map
 	    [menu-bar dkj open-agenda-main-view]
 	    '("Open agenda" . dkj/open-agenda-main-view))
 
-
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
-
 
 ;; ~/org for agenda and refile settings
 (setq org-agenda-files '("~/org")
@@ -338,6 +335,7 @@
 				    (todo todo-state-down category-keep)
 				    (tags todo-state-down)
 				    (search category-keep)))
+
 ;; Agenda clockreport settings
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 6 :tags t))
 
@@ -469,9 +467,10 @@
 (setq org-icalendar-store-UID 't
       org-icalendar-use-deadline '(event-if-todo event-if-not-todo)
       org-icalendar-use-scheduled '(event-if-todo event-if-not-todo)
-      org-icalendar-scheduled-summary-prefix ""
+      org-icalendar-scheduled-summary-prefix "S: "
       org-icalendar-deadline-summary-prefix "DL: "
       org-icalendar-combined-name "David Org Export"
+      org-agenda-default-appointment-duration 30
       dkj/org-ical-agenda-files '("inbox.org"
 				  "init.org"
 				  "journal.org"
