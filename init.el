@@ -465,8 +465,8 @@
       org-export-headline-levels 10)
 
 (setq org-icalendar-store-UID 't
-      org-icalendar-use-deadline '(event-if-todo event-if-not-todo)
-      org-icalendar-use-scheduled '(event-if-todo event-if-not-todo)
+      org-icalendar-use-deadline '(event-if-todo-not-done event-if-not-todo)
+      org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo)
       org-icalendar-scheduled-summary-prefix "S: "
       org-icalendar-deadline-summary-prefix "DL: "
       org-icalendar-combined-name "David Org Export"
