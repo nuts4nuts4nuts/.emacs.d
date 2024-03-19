@@ -597,6 +597,10 @@ Markdown is still useful, so we need a backend to export to it.
   (setq org-export-backends '(ascii html icalendar latex md odt))
 #+end_src
 
+*** Org-babel
+Org-babel is the part of org that's about interacting with code blocks.
+Org code blocks are not simply about giving a block a colorful, monospaced typeface.
+They also have powers, thanks to Emacs' environment.
 *** Org execute other languages inline
 
 With C-c C-c
@@ -607,6 +611,29 @@ With C-c C-c
    '((python . t)))
 
   (setq org-babel-python-command "python3")
+#+end_src
+
+*** Literate code helper functions
+#+begin_src emacs-lisp
+  (defun dkj/extract-code-block-noweb (name)
+    "Extracts a block of code from an org code block,
+  surrounding it with a new named code block,
+  and leaving a noweb reference in its place."
+    (interactive "MName: " name)
+    (let* ((rb (region-beginning))
+	   (re (region-end))
+	   (region (buffer-substring-no-properties rb re))
+	   (lang (car (ignore-errors (org-babel-get-src-block-info))))
+	   (noweb-ref (format "<<%s>>" name))
+	   (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
+			     name
+			     lang
+			     region)))
+      (delete-region rb re)
+      (kill-new newblock)
+      (insert noweb-ref)
+      (indent-region rb re)))
+  (define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
 #+end_src
 
 ** Packages

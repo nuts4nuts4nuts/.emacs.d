@@ -492,6 +492,26 @@
 
 (setq org-babel-python-command "python3")
 
+(defun dkj/extract-code-block-noweb (name)
+  "Extracts a block of code from an org code block,
+surrounding it with a new named code block,
+and leaving a noweb reference in its place."
+  (interactive "MName: " name)
+  (let* ((rb (region-beginning))
+	 (re (region-end))
+	 (region (buffer-substring-no-properties rb re))
+	 (lang (car (ignore-errors (org-babel-get-src-block-info))))
+	 (noweb-ref (format "<<%s>>" name))
+	 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
+			   name
+			   lang
+			   region)))
+    (delete-region rb re)
+    (kill-new newblock)
+    (insert noweb-ref)
+    (indent-region rb re)))
+(define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
+
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
