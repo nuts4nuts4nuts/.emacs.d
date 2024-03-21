@@ -434,7 +434,7 @@ All flows from the agenda
 
 #+begin_src emacs-lisp
   (setq org-todo-keywords
-	'((sequence "TODO(t!)" "PROG(p!)" "|" "DONE(d!)" "CNCL(c!)"))
+	'((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
 	org-clock-into-drawer t
 	org-log-into-drawer t)
 
@@ -598,6 +598,7 @@ Markdown is still useful, so we need a backend to export to it.
 #+end_src
 
 *** Org-babel
+
 Org-babel is the part of org that's about interacting with code blocks.
 Org code blocks are not simply about giving a block a colorful, monospaced typeface.
 They also have powers, thanks to Emacs' environment.
@@ -614,6 +615,7 @@ With C-c C-c
 #+end_src
 
 *** Literate code helper functions
+
 #+begin_src emacs-lisp
   (defun dkj/extract-code-block-noweb (name)
     "Extracts a block of code from an org code block,
