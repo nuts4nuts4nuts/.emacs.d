@@ -389,8 +389,6 @@
 (setq org-clock-history-length 25)
 ;; Resume clocking task on clock-in if the clock is open
 (setq org-clock-in-resume t)
-;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
-(setq org-clock-out-remove-zero-time-clocks t)
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
 (setq org-clock-persist t)
 ;; Set clock duration format to never aggregate up to days
