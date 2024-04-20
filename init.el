@@ -122,6 +122,9 @@
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
+;; Shorter tab-next binding
+(define-key dkj-keys (kbd "C-o") #'tab-next)
+
 ;; Easily store links to org headers
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
@@ -725,7 +728,7 @@ and leaving a noweb reference in its place."
 	("C-;" . avy-isearch))
   :config
   (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
-  (setq avy-timeout-seconds 0.33))
+  (setq avy-timeout-seconds 0.25))
 
 (use-package vundo)
 
