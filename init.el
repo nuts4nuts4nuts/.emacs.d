@@ -34,6 +34,9 @@
 ;; Allow the mouse in terminal mode
 (xterm-mouse-mode 1)
 
+;; Automatically balance windows when they are created or destroyed
+(setq window-combination-resize t)
+
 ;; I can't see a god damn at this small font size
 (defun dkj/font-height (height)
   "Prompts the user for a height and sets the font height.
