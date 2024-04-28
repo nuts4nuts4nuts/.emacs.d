@@ -889,6 +889,12 @@ GDScript mode!
   (use-package gdscript-mode)
 #+end_src
 
+**** Golang
+
+#+begin_src emacs-lisp
+  (use-package go-mode)
+#+end_src
+
 *** Anki editor
 
 Write anki cards in org mode and sync them to Anki.

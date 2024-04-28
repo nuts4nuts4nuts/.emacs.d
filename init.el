@@ -670,6 +670,8 @@ and leaving a noweb reference in its place."
 
 (use-package gdscript-mode)
 
+(use-package go-mode)
+
 (use-package anki-editor)
 
 ;; Create a named command for inserting a hiragana from the clipbard
