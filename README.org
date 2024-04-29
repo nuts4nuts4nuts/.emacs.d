@@ -407,20 +407,22 @@ All flows from the agenda
 				      (todo todo-state-down category-keep)
 				      (tags todo-state-down)
 				      (search category-keep)))
-  
+
   ;; Agenda clockreport settings
   (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 6 :tags t))
 
   (defun dkj/format-n-breadcrumbs (n)
-    "Formats the top n headers for an org item for my agenda."
+    "Formats the first and last n-1 headers for an org item for my agenda."
     (let* ((breadcrumbs (org-get-outline-path))
-	   (first-n (seq-subseq breadcrumbs
-				0
-				(min n
-				     (length breadcrumbs)))))
-      (format "%-25.25s" (if first-n
-			     (string-join first-n ">")
-			   ""))))
+	   (blength (length breadcrumbs))
+	   (extra (if (> blength n) '(".") '()))
+	   (first (cons (car breadcrumbs)
+			extra))
+	   (n1 (max (- (min blength n) 1) 0))
+	   (last-n (seq-subseq breadcrumbs
+			       (- blength n1)
+			       blength)))
+      (format "%-25.25s" (string-join (append first last-n) ">"))))
 
   ;; Number of breadcrumbs to format into my agenda prefix
   (setq breadcrumbs-to-format 2)
