@@ -202,6 +202,9 @@
       org-id-link-to-org-use-id 'create-if-interactive
       org-image-actual-width 600)
 
+;; work-around  for org-ctags obnoxious behavior
+(with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
+
 ;; Make inserting new list items a little cleaner
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "M-<return>") #'org-insert-item)
