@@ -125,8 +125,13 @@
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
-;; Shorter tab-next binding
-(define-key dkj-keys (kbd "C-o") #'tab-next)
+(defun dkj/tab-next-or-other-frame (prefix)
+  "Call tab-next without a prefix or other-frame with"
+  (interactive "P")
+  (if (equal prefix '(4)) (other-frame 1) (tab-next)))
+
+;; Shorter tab-next and other-frame binding
+(define-key dkj-keys (kbd "C-o") #'dkj/tab-next-or-other-frame)
 
 ;; Easily store links to org headers
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
