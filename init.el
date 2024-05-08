@@ -502,9 +502,12 @@
 
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t)
+   (plantuml . t)))
 
 (setq org-babel-python-command "python3")
+
+(setq org-plantuml-exec-mode 'plantuml)
 
 (defun dkj/extract-code-block-noweb (name)
   "Extracts a block of code from an org code block,

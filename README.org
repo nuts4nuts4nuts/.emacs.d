@@ -616,16 +616,20 @@ Markdown is still useful, so we need a backend to export to it.
 Org-babel is the part of org that's about interacting with code blocks.
 Org code blocks are not simply about giving a block a colorful, monospaced typeface.
 They also have powers, thanks to Emacs' environment.
-*** Org execute other languages inline
+
+**** Org execute other languages inline
 
 With C-c C-c
 
 #+begin_src emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t)))
+   '((python . t)
+     (plantuml . t)))
 
   (setq org-babel-python-command "python3")
+
+  (setq org-plantuml-exec-mode 'plantuml)
 #+end_src
 
 *** Literate code helper functions
