@@ -3,10 +3,10 @@
 (defun dkj/org-babel-tangle-config ()
   "Automatically tangle our config.org config file when we save it"
   (when (string-equal (file-name-directory (buffer-file-name))
-		      (expand-file-name user-emacs-directory))
-    ;; Dynamic scoping to the rescue
-    (let ((org-confirm-babel-evaluate nil))
-      (org-babel-tangle))))
+					  (expand-file-name user-emacs-directory))
+	;; Dynamic scoping to the rescue
+	(let ((org-confirm-babel-evaluate nil))
+	  (org-babel-tangle))))
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
@@ -27,6 +27,9 @@
 ;; Turn off the beeping with visible-bell
 (setq visible-bell t)
 
+;; 4 space tabs
+(setq-default tab-width 4)
+
 ;; command is a lot more ergonomic than option
 ;; also, less confusing when going back and forth between mac and windows
 (setq mac-command-modifier 'meta)
@@ -40,7 +43,7 @@
 ;; I can't see a god damn at this small font size
 (defun dkj/font-height (height)
   "Prompts the user for a height and sets the font height.
-     Uses the prefix arg if one is provided."
+	 Uses the prefix arg if one is provided."
   (interactive "NHeight: ")
   (set-face-attribute 'default nil :height height))
 (dkj/font-height 140)
@@ -71,7 +74,7 @@
 
 ;; Backup to the ~/.emacs.d/backups directory
 (setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backups"))))
+	  `(("." . ,(concat user-emacs-directory "backups"))))
 
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
 (setq send-mail-function 'mailclient-send-it)
@@ -116,7 +119,7 @@
 
 ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
-      ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
+	  ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
 ;; Android bindings
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
@@ -171,15 +174,15 @@
 (global-set-key (kbd "M-/") #'dabbrev-completion)
 
 (define-key global-map [menu-bar dkj]
-	    (cons "DKJ" (make-sparse-keymap "DKJ")))
+			(cons "DKJ" (make-sparse-keymap "DKJ")))
 
 (define-key global-map
-	    [menu-bar dkj end-macro]
-	    '("Macro - End/Call" . kmacro-end-or-call-macro))
+			[menu-bar dkj end-macro]
+			'("Macro - End/Call" . kmacro-end-or-call-macro))
 
 (define-key global-map
-	    [menu-bar dkj begin-macro]
-	    '("Macro - Begin/Counter" . kmacro-start-macro-or-insert-counter))
+			[menu-bar dkj begin-macro]
+			'("Macro - Begin/Counter" . kmacro-start-macro-or-insert-counter))
 
 ;; C-t C-h to open this file, my config
 (defun dkj/open-config ()
@@ -196,16 +199,16 @@
   "Pulse the current line."
   (pulse-momentary-highlight-one-line (point)))
 (dolist (command '(scroll-up-command scroll-down-command
-				     recenter-top-bottom other-window))
+									 recenter-top-bottom other-window))
   (advice-add command :after #'dkj/pulse-line))
 
 (setq org-directory "~/org"
-      org-default-notes-file "~/org/inbox.org"
-      org-id-locations-file "~/org/.org-id-locations"
-      org-startup-truncated nil
-      org-ellipsis ">>"
-      org-id-link-to-org-use-id 'create-if-interactive
-      org-image-actual-width 600)
+	  org-default-notes-file "~/org/inbox.org"
+	  org-id-locations-file "~/org/.org-id-locations"
+	  org-startup-truncated nil
+	  org-ellipsis ">>"
+	  org-id-link-to-org-use-id 'create-if-interactive
+	  org-image-actual-width 600)
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
@@ -222,61 +225,61 @@
   "Insert at point a link to any heading from 'org-agenda-files'."
   (interactive)
   (let ((buffer-pos
-	 (org-id-find
-	  (org-id-get-with-outline-path-completion '((nil :maxlevel . 100)
-						     (org-agenda-files :maxlevel . 5))))))
-    (save-excursion
-      (with-current-buffer (get-file-buffer (car buffer-pos))
-	(goto-char (cdr buffer-pos))
-	(call-interactively 'org-store-link)))
-    (org-insert-all-links 1 "" " ")))
+		 (org-id-find
+		  (org-id-get-with-outline-path-completion '((nil :maxlevel . 100)
+													 (org-agenda-files :maxlevel . 5))))))
+	(save-excursion
+	  (with-current-buffer (get-file-buffer (car buffer-pos))
+		(goto-char (cdr buffer-pos))
+		(call-interactively 'org-store-link)))
+	(org-insert-all-links 1 "" " ")))
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "C-c l") #'dkj/org-id-insert-link))
 
 ;; "One" button org-add-note to clocked workflow
 (defun dkj/create-org-store-log-note-and-save (m)
   (defun dkj/org-store-log-note-and-save () ; This only works with lexical binding
-    (org-store-log-note)
-    (save-some-buffers t
-		       (lambda ()
-			 (eq (marker-buffer m) (current-buffer))))))
+	(org-store-log-note)
+	(save-some-buffers t
+					   (lambda ()
+						 (eq (marker-buffer m) (current-buffer))))))
 
 (defun dkj/org-add-note-clocked ()
   (interactive)
   ;; Marker logic copied from org-clock-goto
   (let* ((recent nil)
-	 (m (cond
-	     ((org-clocking-p) org-clock-marker)
-	     ((and org-clock-goto-may-find-recent-task
-		   (car org-clock-history)
-		   (marker-buffer (car org-clock-history)))
-	      (setq recent t)
-	      (car org-clock-history))
-	     (t (user-error "No active or recent clock task")))))
-    (if recent ;; this is also from org-clock-goto
-	(message "No running clock, this is the most recently clocked task"))
-    ;; Copy and merge org-add-log-setup and org-add-log-note
-    ;; but using clocked marker, keeping the current window
-    ;; instead of moving to the target org heading
-    ;; and not doing extra stuff that's not relevant to this case
-    (move-marker org-log-note-marker (marker-position m) (marker-buffer m))
-    (setq org-log-note-purpose 'note
-	  org-log-note-effective-time (org-current-effective-time)
-	  org-log-note-this-command this-command
-	  org-log-note-recursion-depth (recursion-depth)
-	  org-log-post-message nil) ;; prevents storing the log from sending an extra "Entry repeats" message
-    (when (and (equal org-log-note-this-command this-command)
-	       (= org-log-note-recursion-depth (recursion-depth)))
-      (setq org-log-note-window-configuration (current-window-configuration))
-      (delete-other-windows)
-      (move-marker org-log-note-return-to (point))
-      (org-switch-to-buffer-other-window "*Org Note*")
-      (erase-buffer)
-      (let ((org-inhibit-startup t)) (org-mode))
-      (insert "# Insert note for this entry.\n# Finish with C-c C-c, or cancel with C-c C-k.\n\n")
-      (when org-log-note-extra (insert org-log-note-extra))
-      (setq-local org-finish-function (dkj/create-org-store-log-note-and-save m))
-      (run-hooks 'org-log-buffer-setup-hook))))
+		 (m (cond
+			 ((org-clocking-p) org-clock-marker)
+			 ((and org-clock-goto-may-find-recent-task
+				   (car org-clock-history)
+				   (marker-buffer (car org-clock-history)))
+			  (setq recent t)
+			  (car org-clock-history))
+			 (t (user-error "No active or recent clock task")))))
+	(if recent ;; this is also from org-clock-goto
+		(message "No running clock, this is the most recently clocked task"))
+	;; Copy and merge org-add-log-setup and org-add-log-note
+	;; but using clocked marker, keeping the current window
+	;; instead of moving to the target org heading
+	;; and not doing extra stuff that's not relevant to this case
+	(move-marker org-log-note-marker (marker-position m) (marker-buffer m))
+	(setq org-log-note-purpose 'note
+		  org-log-note-effective-time (org-current-effective-time)
+		  org-log-note-this-command this-command
+		  org-log-note-recursion-depth (recursion-depth)
+		  org-log-post-message nil) ;; prevents storing the log from sending an extra "Entry repeats" message
+	(when (and (equal org-log-note-this-command this-command)
+			   (= org-log-note-recursion-depth (recursion-depth)))
+	  (setq org-log-note-window-configuration (current-window-configuration))
+	  (delete-other-windows)
+	  (move-marker org-log-note-return-to (point))
+	  (org-switch-to-buffer-other-window "*Org Note*")
+	  (erase-buffer)
+	  (let ((org-inhibit-startup t)) (org-mode))
+	  (insert "# Insert note for this entry.\n# Finish with C-c C-c, or cancel with C-c C-k.\n\n")
+	  (when org-log-note-extra (insert org-log-note-extra))
+	  (setq-local org-finish-function (dkj/create-org-store-log-note-and-save m))
+	  (run-hooks 'org-log-buffer-setup-hook))))
 (global-set-key (kbd "C-z") #'dkj/org-add-note-clocked)
 
 (require 'org-agenda)
@@ -293,62 +296,62 @@
   "Open the agenda and the currently clocked task side by side."
   (interactive)
   (progn
-    (dkj/agenda-main-view)
-    (delete-other-windows)
-    (split-window-right)
-    (org-agenda-redo-all)
-    (other-window 1)
-    (org-clock-goto)
-    (recenter-top-bottom 0)))
+	(dkj/agenda-main-view)
+	(delete-other-windows)
+	(split-window-right)
+	(org-agenda-redo-all)
+	(other-window 1)
+	(org-clock-goto)
+	(recenter-top-bottom 0)))
 
 (defun dkj/open-agenda-main-view (prefix)
   "Open the main view of my agenda."
   (interactive "P")
   (progn
-    (if (equal major-mode 'org-agenda-mode) (delete-other-windows))
-    (setq current-prefix-arg nil)
-    (cond
-     ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
-     ((equal prefix '(16)) (dkj/agenda-alt-view))
-     (t (dkj/agenda-main-view)))))
+	(if (equal major-mode 'org-agenda-mode) (delete-other-windows))
+	(setq current-prefix-arg nil)
+	(cond
+	 ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
+	 ((equal prefix '(16)) (dkj/agenda-alt-view))
+	 (t (dkj/agenda-main-view)))))
 
 ;; Open agenda through the menu bar
 (define-key global-map
-	    [menu-bar dkj open-agenda-main-view]
-	    '("Open agenda" . dkj/open-agenda-main-view))
+			[menu-bar dkj open-agenda-main-view]
+			'("Open agenda" . dkj/open-agenda-main-view))
 
 ;; Open the main view of the agenda with f12
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
 
 ;; ~/org for agenda and refile settings
 (setq org-agenda-files '("~/org")
-      org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
-      org-outline-path-complete-in-steps nil
-      org-refile-use-outline-path 'file
-      org-agenda-span 'day
-      org-agenda-tags-todo-honor-ignore-options t)
+	  org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
+	  org-outline-path-complete-in-steps nil
+	  org-refile-use-outline-path 'file
+	  org-agenda-span 'day
+	  org-agenda-tags-todo-honor-ignore-options t)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
-				    "Today's agenda"
-				    ((agenda "" ((org-deadline-warning-days 7)))
-				     (todo "" ((org-agenda-files '("~/org/inbox.org"))))))
-				   ("N"
-				    "Todos in Do, Decide, Delegate, Delete order"
-				    ((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))
-				     (tags-todo "-important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
-								     (org-agenda-todo-ignore-scheduled 'all)))))))
+									"Today's agenda"
+									((agenda "" ((org-deadline-warning-days 7)))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org"))))))
+								   ("N"
+									"Todos in Do, Decide, Delegate, Delete order"
+									((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+																	 (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
+																	 (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
+																	 (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "-important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
+																	 (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
-				    (todo todo-state-down category-keep)
-				    (tags todo-state-down)
-				    (search category-keep)))
+									(todo todo-state-down category-keep)
+									(tags todo-state-down)
+									(search category-keep)))
 
 ;; Agenda clockreport settings
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 6 :tags t))
@@ -356,50 +359,50 @@
 (defun dkj/format-n-breadcrumbs (n)
   "Formats the first and last n-1 headers for an org item for my agenda."
   (let* ((breadcrumbs (org-get-outline-path))
-	 (blength (length breadcrumbs))
-	 (extra (if (> blength n) '(".") '()))
-	 (first (cons (car breadcrumbs)
-		      extra))
-	 (n1 (max (- (min blength n) 1) 0))
-	 (last-n (seq-subseq breadcrumbs
-			     (- blength n1)
-			     blength)))
-    (format "%-25.25s" (string-join (append first last-n) ">"))))
+		 (blength (length breadcrumbs))
+		 (extra (if (> blength n) '(".") '()))
+		 (first (cons (car breadcrumbs)
+					  extra))
+		 (n1 (max (- (min blength n) 1) 0))
+		 (last-n (seq-subseq breadcrumbs
+							 (- blength n1)
+							 blength)))
+	(format "%-25.25s" (string-join (append first last-n) ">"))))
 
 ;; Number of breadcrumbs to format into my agenda prefix
 (setq breadcrumbs-to-format 2)
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-      '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
-	(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
-	(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
-	(search . "%-12:c")))
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
+		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
+		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
+		(search . "%-12:c")))
 
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
 (with-eval-after-load "org"
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
-      org-clock-into-drawer t
-      org-log-into-drawer t)
+	  '((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
+	  org-clock-into-drawer t
+	  org-log-into-drawer t)
 
 ;; Switch to "PROG" when clocked in, unless we're just clocking in a capture buffer
 (defun dkj/prog-when-clock-if-not-cap (state)
   (cond ((and (boundp 'org-capture-mode) org-capture-mode) state)
-	(t "PROG")))
+		(t "PROG")))
 (setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-not-cap)
 
 (setq org-tag-persistent-alist '(("important" . ?i)
-				 ("urgent"    . ?u)))
+								 ("urgent"    . ?u)))
 
 (setq org-capture-templates
-      (quote (("t" "Todo" entry (file "~/org/inbox.org")
-	       "* TODO %?\n%U\n%a\n" :clock-in t :clock-keep t)
-	      ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-	       "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
-	      ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-	       "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
+	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
+			   "* TODO %?\n%U\n%a\n" :clock-in t :clock-keep t)
+			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
+			   "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
+			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
 ;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
 (setq org-clock-history-length 25)
@@ -416,18 +419,18 @@
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
 ;; and lowering the default max-duration from 10 hours to 5 hours.
 (setq org-agenda-clock-consistency-checks '(:max-duration "5:00"
-							  :min-duration 0
-							  :max-gap "0:01"
-							  :gap-ok-around
-							  ("4:00")
-							  :default-face
-							  ((:background "DarkRed")
-							   (:foreground "white"))
-							  :overlap-face nil
-							  :gap-face nil
-							  :no-end-time-face nil
-							  :long-face nil
-							  :short-face nil))
+														  :min-duration 0
+														  :max-gap "0:01"
+														  :gap-ok-around
+														  ("4:00")
+														  :default-face
+														  ((:background "DarkRed")
+														   (:foreground "white"))
+														  :overlap-face nil
+														  :gap-face nil
+														  :no-end-time-face nil
+														  :long-face nil
+														  :short-face nil))
 
 (defun dkj/global-clock-in ()
   (interactive)
@@ -474,22 +477,22 @@
 ;; (define-key dkj-keys (kbd "C-<return>") #'dkj/new-log)
 
 (setq org-export-with-sub-superscripts nil
-      org-export-with-section-numbers nil
-      org-export-with-toc nil
-      org-export-headline-levels 10)
+	  org-export-with-section-numbers nil
+	  org-export-with-toc nil
+	  org-export-headline-levels 10)
 
 (setq org-icalendar-store-UID 't
-      org-icalendar-use-deadline '(event-if-todo-not-done event-if-not-todo)
-      org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo)
-      org-icalendar-scheduled-summary-prefix "S: "
-      org-icalendar-deadline-summary-prefix "DL: "
-      org-icalendar-combined-name "David Org Export"
-      org-agenda-default-appointment-duration 30
-      dkj/org-ical-agenda-files '("inbox.org"
-				  "init.org"
-				  "journal.org"
-				  "meetings.org"
-				  "projects.org"))
+	  org-icalendar-use-deadline '(event-if-todo-not-done event-if-not-todo)
+	  org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo)
+	  org-icalendar-scheduled-summary-prefix "S: "
+	  org-icalendar-deadline-summary-prefix "DL: "
+	  org-icalendar-combined-name "David Org Export"
+	  org-agenda-default-appointment-duration 30
+	  dkj/org-ical-agenda-files '("inbox.org"
+								  "init.org"
+								  "journal.org"
+								  "meetings.org"
+								  "projects.org"))
 
 (defun dkj/org-ical-export ()
   (interactive)
@@ -515,26 +518,26 @@ surrounding it with a new named code block,
 and leaving a noweb reference in its place."
   (interactive "MName: " name)
   (let* ((rb (region-beginning))
-	 (re (region-end))
-	 (region (buffer-substring-no-properties rb re))
-	 (lang (car (ignore-errors (org-babel-get-src-block-info))))
-	 (noweb-ref (format "<<%s>>" name))
-	 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
-			   name
-			   lang
-			   region)))
-    (delete-region rb re)
-    (kill-new newblock)
-    (insert noweb-ref)
-    (indent-region rb re)))
+		 (re (region-end))
+		 (region (buffer-substring-no-properties rb re))
+		 (lang (car (ignore-errors (org-babel-get-src-block-info))))
+		 (noweb-ref (format "<<%s>>" name))
+		 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
+						   name
+						   lang
+						   region)))
+	(delete-region rb re)
+	(kill-new newblock)
+	(insert noweb-ref)
+	(indent-region rb re)))
 (define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
 
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")
-			 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+						 ("org" . "https://orgmode.org/elpa/")
+						 ("elpa" . "https://elpa.gnu.org/packages/")
+						 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 
 ;; Initialize use-package on non-Linux platforms
@@ -574,11 +577,11 @@ and leaving a noweb reference in its place."
 (defun dkj/swap-themes ()
   (interactive)
   (let ((current-theme (car custom-enabled-themes)))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme (cond
-		 ((eq current-theme dkj/theme-light) dkj/theme-dark)
-		 ((eq current-theme dkj/theme-dark) dkj/theme-light))
-		t)))
+	(mapc #'disable-theme custom-enabled-themes)
+	(load-theme (cond
+				 ((eq current-theme dkj/theme-light) dkj/theme-dark)
+				 ((eq current-theme dkj/theme-dark) dkj/theme-light))
+				t)))
 
 ;; Bind swapping between light and dark theme to "C-t C-\"
 (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
@@ -587,10 +590,10 @@ and leaving a noweb reference in its place."
 ;; where I want to default to light theme and get even lighter
 ;; for the Boox
 (cond ((eq system-type 'android)
-       (setq dkj/theme-light 'modus-operandi)
-       (load-theme dkj/theme-light t))
-      (t
-       (load-theme dkj/theme-dark t)))
+	   (setq dkj/theme-light 'modus-operandi)
+	   (load-theme dkj/theme-light t))
+	  (t
+	   (load-theme dkj/theme-dark t)))
 
 (use-package dot-mode
   :config
@@ -611,15 +614,15 @@ and leaving a noweb reference in its place."
   :ensure t
   :bind
   (:map minibuffer-local-map
-	("M-A" . marginalia-cycle))
+		("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
 (use-package orderless
   :init
   (setq completion-styles '(orderless initials basic)
-	completion-category-defaults nil
-	completion-category-overrides '((file (styles partial-completion)))))
+		completion-category-defaults nil
+		completion-category-overrides '((file (styles partial-completion)))))
 
 ;; Enable vertico
 (use-package vertico
@@ -656,7 +659,7 @@ and leaving a noweb reference in its place."
 (use-package corfu-terminal
   :init
   (unless (display-graphic-p)
-    (corfu-terminal-mode +1)))
+	(corfu-terminal-mode +1)))
 
 (use-package embark
   :ensure t
@@ -665,7 +668,7 @@ and leaving a noweb reference in its place."
    ("C-," . embark-export)      ;; good alternative: M-.
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
   (:map org-mode-map
-	("C-," . embark-export))
+		("C-," . embark-export))
   :init
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
@@ -674,9 +677,9 @@ and leaving a noweb reference in its place."
   :config
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
-	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-		 nil
-		 (window-parameters (mode-line-format . none)))))
+			   '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+				 nil
+				 (window-parameters (mode-line-format . none)))))
 
 (setq embark-quit-after-action nil)
 
@@ -726,11 +729,11 @@ and leaving a noweb reference in its place."
 ;; From https://karthinks.com/software/avy-can-do-anything/
 (defun avy-action-embark (pt)
   (unwind-protect
-      (save-excursion
-	(goto-char pt)
-	(embark-act))
-    (select-window
-     (cdr (ring-ref avy-ring 0))))
+	  (save-excursion
+		(goto-char pt)
+		(embark-act))
+	(select-window
+	 (cdr (ring-ref avy-ring 0))))
   t)
 
 
@@ -739,9 +742,9 @@ and leaving a noweb reference in its place."
   :bind
   (("C-;" . avy-goto-char-timer))
   (:map org-mode-map
-	("C-;" . avy-goto-char-timer))
+		("C-;" . avy-goto-char-timer))
   (:map isearch-mode-map
-	("C-;" . avy-isearch))
+		("C-;" . avy-isearch))
   :config
   (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
   (setq avy-timeout-seconds 0.25))
