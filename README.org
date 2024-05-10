@@ -635,6 +635,19 @@ With C-c C-c
   (setq org-plantuml-exec-mode 'plantuml)
 #+end_src
 
+*** Org publish
+
+#+begin_src emacs-lisp
+  (setq org-publish-project-alist
+	'(("noweirdtrick"
+	   :base-directory "~/Documents/projects/noweirdtrick/src/"
+	   :publishing-directory "~/Documents/projects/noweirdtrick/pub/"
+	   :base-extension 'any
+	   ;; :preparation-function '()
+	   ;; :completion-function '()
+	   :html-head "<link rel=\"stylesheet\" href=\"https://latex.now.sh/style.css\">")))
+#+end_src
+
 *** Literate code helper functions
 
 #+begin_src emacs-lisp
