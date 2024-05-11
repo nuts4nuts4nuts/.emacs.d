@@ -740,14 +740,19 @@ and leaving a noweb reference in its place."
 (use-package avy
   :ensure t
   :bind
-  (("C-;" . avy-goto-char-timer))
+  (("C-;" . #'avy-goto-word-or-subword-1))
   (:map org-mode-map
-		("C-;" . avy-goto-char-timer))
+		("C-;" . #'avy-goto-word-or-subword-1))
   (:map isearch-mode-map
-		("C-;" . avy-isearch))
+		("C-;" . #'avy-isearch)))
+
+(use-package ace-window
+  :ensure t
+  :bind
+  (("C-M-;" . ace-window))
   :config
-  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
-  (setq avy-timeout-seconds 0.25))
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+		aw-dispatch-always t))
 
 (use-package vundo)
 
