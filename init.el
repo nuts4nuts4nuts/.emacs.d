@@ -208,7 +208,8 @@
 	  org-startup-truncated nil
 	  org-ellipsis ">>"
 	  org-id-link-to-org-use-id 'create-if-interactive
-	  org-image-actual-width 600)
+	  org-image-actual-width 600
+	  org-edit-src-content-indentation 0)
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
@@ -740,11 +741,14 @@ and leaving a noweb reference in its place."
 (use-package avy
   :ensure t
   :bind
-  (("C-;" . #'avy-goto-word-or-subword-1))
+  (("C-;" . #'avy-goto-char-timer))
   (:map org-mode-map
-		("C-;" . #'avy-goto-word-or-subword-1))
+		("C-;" . #'avy-goto-char-timer))
   (:map isearch-mode-map
-		("C-;" . #'avy-isearch)))
+		("C-;" . #'avy-isearch))
+  :config
+  (setq avy-timeout-seconds 0.25
+		avy-single-candidate-jump nil))
 
 (use-package ace-window
   :ensure t
