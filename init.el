@@ -504,10 +504,13 @@
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
+(use-package ob-go)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
-   (plantuml . t)))
+   (plantuml . t)
+   (go . t)))
 
 (setq org-babel-python-command "python3")
 

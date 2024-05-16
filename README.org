@@ -626,10 +626,13 @@ They also have powers, thanks to Emacs' environment.
 With C-c C-c
 
 #+begin_src emacs-lisp
+(use-package ob-go)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
-   (plantuml . t)))
+   (plantuml . t)
+   (go . t)))
 
 (setq org-babel-python-command "python3")
 
