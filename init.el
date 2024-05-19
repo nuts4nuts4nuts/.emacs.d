@@ -125,6 +125,11 @@
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
+;; Made M-x grep use rg by default
+(grep-apply-setting
+ 'grep-command
+ '("rg -n -H --no-heading -e ''" . 27))
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 

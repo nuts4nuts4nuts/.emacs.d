@@ -147,6 +147,11 @@ These are some basic settings to make life a little better. They don't relate to
 ;; Android bindings
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
+
+;; Made M-x grep use rg by default
+(grep-apply-setting
+ 'grep-command
+ '("rg -n -H --no-heading -e ''" . 27))
 #+end_src
 
 *** Mappings
