@@ -193,6 +193,9 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 ;; Better macro bindings
 (define-key dkj-keys (kbd "C-9") #'kmacro-start-macro-or-insert-counter)
 (define-key dkj-keys (kbd "C-0") #'kmacro-end-or-call-macro)
+
+;; Binding for grepping
+(define-key dkj-keys (kbd "C-/") #'grep)
 #+end_src
 
 **** Bunch of mappings

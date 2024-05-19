@@ -157,6 +157,9 @@
 (define-key dkj-keys (kbd "C-9") #'kmacro-start-macro-or-insert-counter)
 (define-key dkj-keys (kbd "C-0") #'kmacro-end-or-call-macro)
 
+;; Binding for grepping
+(define-key dkj-keys (kbd "C-/") #'grep)
+
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
 
