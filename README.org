@@ -250,8 +250,33 @@ Create a menu bar menu and add custom functions to it.
 (dolist (command '(scroll-up-command scroll-down-command
 									 recenter-top-bottom other-window))
   (advice-add command :after #'dkj/pulse-line))
+
+(defun dkj/polya (prefix)
+  "Insert Polya's How to Solve It steps as headers (or list items)"
+  (interactive "P")
+  (let ((dkj/polya-headers (lambda ()
+							 (org-insert-subheading 1)
+							 (insert "The problem")
+							 (org-insert-heading)
+							 (insert "The plan")
+							 (org-insert-heading)
+							 (insert "The process")
+							 (org-insert-heading)
+							 (insert "The past")))
+		(dkj/polya-items (lambda ()
+						   (org-insert-item)
+						   (insert "The problem")
+						   (org-insert-item)
+						   (insert "The plan")
+						   (org-insert-item)
+						   (insert "The process")
+						   (org-insert-item)
+						   (insert "The past"))))
+	(if (equal prefix '(4))
+		(funcall dkj/polya-items)
+	  (funcall dkj/polya-headers))))
 #+end_src
- 
+
 ** Org mode stuff
 
 Org-mode is cool. That's an understatement, org-mode is one of the main reasons to use Emacs.
@@ -1007,7 +1032,6 @@ Why is Avy better?
 	 (cdr (ring-ref avy-ring 0))))
   t)
 
-
 (use-package avy
   :ensure t
   :bind
@@ -1018,7 +1042,8 @@ Why is Avy better?
 		("C-;" . #'avy-isearch))
   :config
   (setq avy-timeout-seconds 0.25
-		avy-single-candidate-jump nil))
+		avy-single-candidate-jump nil)
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
 
 (use-package ace-window
   :ensure t

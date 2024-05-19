@@ -202,6 +202,31 @@
 									 recenter-top-bottom other-window))
   (advice-add command :after #'dkj/pulse-line))
 
+(defun dkj/polya (prefix)
+  "Insert Polya's How to Solve It steps as headers (or list items)"
+  (interactive "P")
+  (let ((dkj/polya-headers (lambda ()
+							 (org-insert-subheading 1)
+							 (insert "The problem")
+							 (org-insert-heading)
+							 (insert "The plan")
+							 (org-insert-heading)
+							 (insert "The process")
+							 (org-insert-heading)
+							 (insert "The past")))
+		(dkj/polya-items (lambda ()
+						   (org-insert-item)
+						   (insert "The problem")
+						   (org-insert-item)
+						   (insert "The plan")
+						   (org-insert-item)
+						   (insert "The process")
+						   (org-insert-item)
+						   (insert "The past"))))
+	(if (equal prefix '(4))
+		(funcall dkj/polya-items)
+	  (funcall dkj/polya-headers))))
+
 (setq org-directory "~/org"
 	  org-default-notes-file "~/org/inbox.org"
 	  org-id-locations-file "~/org/.org-id-locations"
@@ -740,7 +765,6 @@ and leaving a noweb reference in its place."
 	 (cdr (ring-ref avy-ring 0))))
   t)
 
-
 (use-package avy
   :ensure t
   :bind
@@ -751,7 +775,8 @@ and leaving a noweb reference in its place."
 		("C-;" . #'avy-isearch))
   :config
   (setq avy-timeout-seconds 0.25
-		avy-single-candidate-jump nil))
+		avy-single-candidate-jump nil)
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark))
 
 (use-package ace-window
   :ensure t
