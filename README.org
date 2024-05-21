@@ -149,9 +149,7 @@ These are some basic settings to make life a little better. They don't relate to
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
 ;; Made M-x grep use rg by default
-(grep-apply-setting
- 'grep-command
- '("rg -n -H --no-heading -e ''" . 27))
+(setq grep-command "rg -n -H --no-heading -e ")
 #+end_src
 
 *** Mappings
@@ -950,6 +948,9 @@ GDScript mode!
 
 #+begin_src emacs-lisp
 (use-package go-mode)
+
+;; execute Go in org source blocks
+(use-package ob-go)
 #+end_src
 
 *** Anki editor

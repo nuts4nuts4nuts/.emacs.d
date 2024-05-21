@@ -126,9 +126,7 @@
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
 ;; Made M-x grep use rg by default
-(grep-apply-setting
- 'grep-command
- '("rg -n -H --no-heading -e ''" . 27))
+(setq grep-command "rg -n -H --no-heading -e ")
 
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
@@ -727,6 +725,9 @@ and leaving a noweb reference in its place."
 (use-package gdscript-mode)
 
 (use-package go-mode)
+
+;; execute Go in org source blocks
+(use-package ob-go)
 
 (use-package anki-editor)
 
