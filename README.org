@@ -646,54 +646,6 @@ Markdown is still useful, so we need a backend to export to it.
 (setq org-export-backends '(ascii html icalendar latex md odt))
 #+end_src
 
-*** Org-babel
-
-Org-babel is the part of org that's about interacting with code blocks.
-Org code blocks are not simply about giving a block a colorful, monospaced typeface.
-They also have powers, thanks to Emacs' environment.
-
-**** Org execute other languages inline
-
-With C-c C-c
-
-#+begin_src emacs-lisp
-(use-package ob-go)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (plantuml . t)
-   (go . t)))
-
-(setq org-babel-python-command "python3")
-
-(setq org-plantuml-exec-mode 'plantuml)
-#+end_src
-
-*** Literate code helper functions
-
-#+begin_src emacs-lisp
-(defun dkj/extract-code-block-noweb (name)
-  "Extracts a block of code from an org code block,
-surrounding it with a new named code block,
-and leaving a noweb reference in its place."
-  (interactive "MName: " name)
-  (let* ((rb (region-beginning))
-		 (re (region-end))
-		 (region (buffer-substring-no-properties rb re))
-		 (lang (car (ignore-errors (org-babel-get-src-block-info))))
-		 (noweb-ref (format "<<%s>>" name))
-		 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
-						   name
-						   lang
-						   region)))
-	(delete-region rb re)
-	(kill-new newblock)
-	(insert noweb-ref)
-	(indent-region rb re)))
-(define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
-#+end_src
-
 ** Packages
 *** Using packages
 
@@ -953,6 +905,55 @@ GDScript mode!
 (use-package ob-go)
 #+end_src
 
+**** Org-babel
+
+Org-babel is the part of org that's about interacting with code blocks.
+Org code blocks are not simply about giving a block a colorful, monospaced typeface.
+They also have powers, thanks to Emacs' environment.
+
+***** Org execute other languages inline
+
+With C-c C-c
+
+#+begin_src emacs-lisp
+(use-package ob-go)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (plantuml . t)
+   (go . t)
+   (shell . t)))
+
+(setq org-babel-python-command "python3")
+
+(setq org-plantuml-exec-mode 'plantuml)
+#+end_src
+
+***** Literate code helper functions
+
+#+begin_src emacs-lisp
+(defun dkj/extract-code-block-noweb (name)
+  "Extracts a block of code from an org code block,
+surrounding it with a new named code block,
+and leaving a noweb reference in its place."
+  (interactive "MName: " name)
+  (let* ((rb (region-beginning))
+		 (re (region-end))
+		 (region (buffer-substring-no-properties rb re))
+		 (lang (car (ignore-errors (org-babel-get-src-block-info))))
+		 (noweb-ref (format "<<%s>>" name))
+		 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
+						   name
+						   lang
+						   region)))
+	(delete-region rb re)
+	(kill-new newblock)
+	(insert noweb-ref)
+	(indent-region rb re)))
+(define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
+#+end_src
+
 *** Anki editor
 
 Write anki cards in org mode and sync them to Anki.
@@ -1107,6 +1108,12 @@ For reading epub files in Emacs! Useful with org-noter.
   :config
   (setq nov-text-width 80)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+#+end_src
+*** Speed type
+Typing tests in Emacs :)
+
+#+begin_src emacs-lisp
+(use-package speed-type)
 #+end_src
 
 ** Load other files

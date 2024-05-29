@@ -535,38 +535,6 @@
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
-(use-package ob-go)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (plantuml . t)
-   (go . t)))
-
-(setq org-babel-python-command "python3")
-
-(setq org-plantuml-exec-mode 'plantuml)
-
-(defun dkj/extract-code-block-noweb (name)
-  "Extracts a block of code from an org code block,
-surrounding it with a new named code block,
-and leaving a noweb reference in its place."
-  (interactive "MName: " name)
-  (let* ((rb (region-beginning))
-		 (re (region-end))
-		 (region (buffer-substring-no-properties rb re))
-		 (lang (car (ignore-errors (org-babel-get-src-block-info))))
-		 (noweb-ref (format "<<%s>>" name))
-		 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
-						   name
-						   lang
-						   region)))
-	(delete-region rb re)
-	(kill-new newblock)
-	(insert noweb-ref)
-	(indent-region rb re)))
-(define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
-
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -729,6 +697,39 @@ and leaving a noweb reference in its place."
 ;; execute Go in org source blocks
 (use-package ob-go)
 
+(use-package ob-go)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (plantuml . t)
+   (go . t)
+   (shell . t)))
+
+(setq org-babel-python-command "python3")
+
+(setq org-plantuml-exec-mode 'plantuml)
+
+(defun dkj/extract-code-block-noweb (name)
+  "Extracts a block of code from an org code block,
+surrounding it with a new named code block,
+and leaving a noweb reference in its place."
+  (interactive "MName: " name)
+  (let* ((rb (region-beginning))
+		 (re (region-end))
+		 (region (buffer-substring-no-properties rb re))
+		 (lang (car (ignore-errors (org-babel-get-src-block-info))))
+		 (noweb-ref (format "<<%s>>" name))
+		 (newblock (format "#+name: %s\n#+begin_src %s :noweb yes\n%s\n#+end_src"
+						   name
+						   lang
+						   region)))
+	(delete-region rb re)
+	(kill-new newblock)
+	(insert noweb-ref)
+	(indent-region rb re)))
+(define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
+
 (use-package anki-editor)
 
 ;; Create a named command for inserting a hiragana from the clipbard
@@ -816,6 +817,8 @@ and leaving a noweb reference in its place."
   :config
   (setq nov-text-width 80)
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+
+(use-package speed-type)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
