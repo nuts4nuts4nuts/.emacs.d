@@ -821,6 +821,8 @@ and leaving a noweb reference in its place."
 
 (use-package speed-type)
 
+(use-package eat)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)

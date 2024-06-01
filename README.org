@@ -1116,6 +1116,12 @@ Typing tests in Emacs :)
 #+begin_src emacs-lisp
 (use-package speed-type)
 #+end_src
+*** Eat
+Emulate a Terminal
+https://codeberg.org/akib/emacs-eat/
+#+begin_src emacs-lisp
+(use-package eat)
+#+end_src
 
 ** Load other files
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
