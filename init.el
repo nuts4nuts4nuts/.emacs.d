@@ -46,7 +46,11 @@
 	 Uses the prefix arg if one is provided."
   (interactive "NHeight: ")
   (set-face-attribute 'default nil :height height))
-(dkj/font-height 140)
+
+;; Bigger font by default on mobile
+(if (eq system-type 'android)
+	(dkj/font-height 225)
+  (dkj/font-height 140))
 
 ;; Automatically set view-mode when in a readonly buffer
 ;; Set a buffer as readonly with C-x C-q
@@ -367,7 +371,10 @@
 (setq org-agenda-custom-commands '(("n"
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
-									 (todo "" ((org-agenda-files '("~/org/inbox.org"))))))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
+											   (org-agenda-overriding-header "Inbox tasks")))
+									 (todo "PROG" ((org-agenda-files '("~/org/projects.org"))
+												   (org-agenda-overriding-header "In-progress tasks")))))
 								   ("N"
 									"Todos in Do, Decide, Delegate, Delete order"
 									((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
@@ -806,7 +813,38 @@ and leaving a noweb reference in its place."
 
 (use-package org-noter
   :config
-  (setq org-noter-highlight-selected-text t))
+  (setq org-noter-highlight-selected-text t
+		org-noter-max-short-selected-text-length 0))
+
+(defun dkj/mobile-org-noter ()
+  "Call org-noter in a way that sets everything up perfectly for mobile device usage."
+  (interactive)
+  (let* ((org-noter-notes-window-location 'vertical-split)
+		 (org-noter-doc-split-fraction '(0.8 . 0.2)))
+	(org-noter)))
+
+(define-key global-map [menu-bar mobile-reading]
+			(cons "READ" (make-sparse-keymap "READ")))
+
+(define-key global-map
+			[menu-bar mobile-reading org-noter]
+			'("Open noter" . dkj/mobile-org-noter))
+
+(define-key global-map
+			[menu-bar mobile-reading noter-kill]
+			'("Kill noter" . org-noter-kill-session))
+
+(define-key global-map
+			[menu-bar mobile-reading window-swap-states]
+			'("Window swap" . window-swap-states))
+
+(defun dkj/noter-insert-note-and-save-all ()
+  (interactive)
+  (org-noter-insert-precise-note)
+  (save-some-buffers t))
+(define-key global-map
+			[menu-bar mobile-reading org-noter-insert-precise-note]
+			'("Insert note" . dkj/noter-insert-note-and-save-all))
 
 ;; (use-package pdf-tools
 ;;   :ensure t
@@ -816,12 +854,16 @@ and leaving a noweb reference in its place."
 (use-package nov
   :ensure t
   :config
-  (setq nov-text-width 80)
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  (setq nov-save-place-file "~/org/nov-places"))
 
 (use-package speed-type)
 
 (use-package eat)
+
+(use-package ox-gfm)
+(eval-after-load "org"
+  '(require 'ox-gfm nil t))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
