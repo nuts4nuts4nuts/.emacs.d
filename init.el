@@ -825,7 +825,7 @@ and leaving a noweb reference in its place."
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.2 . 0.8)))
+		 (org-noter-doc-split-fraction '(0.1 . 0.9)))
 	(org-noter)))
 
 (define-key global-map [menu-bar mobile-reading]
@@ -867,7 +867,7 @@ and leaving a noweb reference in its place."
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 60))
+		nov-text-width 50))
 
 (use-package visual-fill-column
   :config
