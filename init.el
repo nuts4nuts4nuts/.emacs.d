@@ -819,8 +819,7 @@ and leaving a noweb reference in its place."
 (defun dkj/mobile-org-noter ()
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
-  (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.8 . 0.2)))
+  (let* ((org-noter-notes-window-location 'other-frame))
 	(org-noter)))
 
 (define-key global-map [menu-bar mobile-reading]
