@@ -825,22 +825,28 @@ and leaving a noweb reference in its place."
 (define-key global-map [menu-bar mobile-reading]
 			(cons "READ" (make-sparse-keymap "READ")))
 
+(defun dkj/goto-id-mobile-org-noter (id)
+  (org-id-open id t)
+  (dkj/mobile-org-noter))
+
 (define-key global-map
 			[menu-bar mobile-reading org-noter]
-			'("Open noter" . dkj/mobile-org-noter))
+			'("Orientalism" . (lambda () (interactive)
+								(dkj/goto-id-mobile-org-noter
+								 "79789b99-5741-4605-947b-13bd070e18dc"))))
+
+(define-key global-map
+    [separator-4] menu-bar-separator) 
 
 (define-key global-map
 			[menu-bar mobile-reading noter-kill]
 			'("Kill noter" . org-noter-kill-session))
 
-(define-key global-map
-			[menu-bar mobile-reading window-swap-states]
-			'("Window swap" . window-swap-states))
-
 (defun dkj/noter-insert-note-and-save-all ()
   (interactive)
   (org-noter-insert-precise-note)
   (save-some-buffers t))
+
 (define-key global-map
 			[menu-bar mobile-reading org-noter-insert-precise-note]
 			'("Insert note" . dkj/noter-insert-note-and-save-all))
