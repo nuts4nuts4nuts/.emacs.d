@@ -194,6 +194,10 @@
 			[menu-bar dkj begin-macro]
 			'("Macro - Begin/Counter" . kmacro-start-macro-or-insert-counter))
 
+(define-key global-map
+			[menu-bar dkj open-config]
+			'("Open config" . dkj/open-config))
+
 ;; C-t C-h to open this file, my config
 (defun dkj/open-config ()
   "Open this file."
