@@ -49,7 +49,7 @@
 
 ;; Bigger font by default on mobile
 (if (eq system-type 'android)
-	(dkj/font-height 225)
+	(dkj/font-height 250)
   (dkj/font-height 140))
 
 ;; Automatically set view-mode when in a readonly buffer
