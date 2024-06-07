@@ -814,12 +814,14 @@ and leaving a noweb reference in its place."
 (use-package org-noter
   :config
   (setq org-noter-highlight-selected-text t
-		org-noter-max-short-selected-text-length 0))
+		org-noter-max-short-selected-text-length 0
+		org-noter-swap-window t))
 
 (defun dkj/mobile-org-noter ()
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
-  (let* ((org-noter-notes-window-location 'other-frame))
+  (let* ((org-noter-notes-window-location 'vertical-split)
+		 (org-noter-doc-split-fraction '(0.2 . 0.8)))
 	(org-noter)))
 
 (define-key global-map [menu-bar mobile-reading]
@@ -836,7 +838,7 @@ and leaving a noweb reference in its place."
 								 "79789b99-5741-4605-947b-13bd070e18dc"))))
 
 (define-key global-map
-    [separator-4] menu-bar-separator) 
+			[separator-4] menu-bar-separator) 
 
 (define-key global-map
 			[menu-bar mobile-reading noter-kill]
