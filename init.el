@@ -862,7 +862,20 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  (setq nov-save-place-file "~/org/nov-places"))
+  (setq nov-save-place-file "~/org/nov-places"
+		nov-text-width 60))
+
+(use-package visual-fill-column
+  :config
+  (setq-default visual-fill-column-center-text t))
+
+(defun dkj/nov-display-setup ()
+  (when (require 'visual-fill-column nil t)
+	(setq-local visual-fill-column-width
+				(1+ nov-text-width))
+    (visual-line-fill-column-mode 1)))
+
+(add-hook 'nov-mode-hook 'dkj/nov-display-setup)
 
 (use-package speed-type)
 
