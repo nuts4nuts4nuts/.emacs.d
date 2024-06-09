@@ -2,16 +2,25 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 * Org file that makes an el file
+:PROPERTIES:
+:ID:       8EB782A0-C282-4795-B43A-E8D68229C4EC
+:END:
 
 Hello! This is an org-mode file that automatically generates an init.el file for emacs configuration. Cool, huh?
 
 ** Lexical binding
+:PROPERTIES:
+:ID:       BEE29EC9-6E0C-4553-B016-BB15A1AE5273
+:END:
 
 #+begin_src emacs-lisp
 ;;; -*- lexical-binding: t -*-
 #+end_src
 
 ** Auto-tangle Configuration Files
+:PROPERTIES:
+:ID:       068FDD49-316A-438B-85BD-CA5222EF8F7E
+:END:
 
 This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-config= gets executed each time such a buffer gets saved.  This function checks to see if the file being saved is in my .emacs.d directory and, if so, automatically exports the configuration here to the associated output files.
 
@@ -28,7 +37,13 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 #+end_src
 
 ** Personal customization
+:PROPERTIES:
+:ID:       D40CC664-F3BA-4923-BBF3-B75924E913BC
+:END:
 *** Settings
+:PROPERTIES:
+:ID:       73A70187-678D-4773-89F4-6FFE64AAA6F7
+:END:
 
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
@@ -157,8 +172,14 @@ These are some basic settings to make life a little better. They don't relate to
 #+end_src
 
 *** Mappings
+:PROPERTIES:
+:ID:       F9FB43FA-5B66-481F-8C7C-697903AB1AB5
+:END:
 
 **** C-t as my personal keymap
+:PROPERTIES:
+:ID:       137DAE9D-68A7-4046-BEA8-9C55BD29A57A
+:END:
 
 By default, ~C-c <letter>~ is supposed to be reserved for user-defined commands.
 This is not my favorite for a couple of reasons:
@@ -201,6 +222,9 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 #+end_src
 
 **** Bunch of mappings
+:PROPERTIES:
+:ID:       E2CDA0A7-837C-4072-841D-7227C53ECAB9
+:END:
 
 #+begin_src emacs-lisp
 ;; Reserve this for tmux. Previously toggle-input-method
@@ -225,6 +249,9 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 (global-set-key (kbd "M-/") #'dabbrev-completion)
 #+end_src
 **** Menu bar customization
+:PROPERTIES:
+:ID:       F4625DD1-CBDA-435B-B06A-3BFC2ACDC0E1
+:END:
 Create a menu bar menu and add custom functions to it.
 
 #+begin_src emacs-lisp
@@ -245,6 +272,9 @@ Create a menu bar menu and add custom functions to it.
 #+end_src
 
 *** Functions
+:PROPERTIES:
+:ID:       7FBA6149-4E22-444B-AE2F-04C694F631EE
+:END:
 
 #+begin_src emacs-lisp
 ;; C-t C-h to open this file, my config
@@ -292,10 +322,16 @@ Create a menu bar menu and add custom functions to it.
 #+end_src
 
 ** Org mode stuff
+:PROPERTIES:
+:ID:       45C58192-1412-4095-A95D-79CF70DD93FF
+:END:
 
 Org-mode is cool. That's an understatement, org-mode is one of the main reasons to use Emacs.
 
 *** org-mode general settings
+:PROPERTIES:
+:ID:       A4B757FA-DB96-4921-9A63-B53E0632E176
+:END:
 
 #+begin_src emacs-lisp
 (setq org-directory "~/org"
@@ -493,6 +529,9 @@ All flows from the agenda
 #+end_src
 
 *** Todo settings
+:PROPERTIES:
+:ID:       5BB73BE0-8216-49EF-A62A-9AFF303A00C3
+:END:
 
 #+begin_src emacs-lisp
 (setq org-todo-keywords
@@ -508,6 +547,9 @@ All flows from the agenda
 #+end_src
 
 *** Tag settings
+:PROPERTIES:
+:ID:       A9445EBF-6C21-48C9-8508-4D0CEC293A90
+:END:
 Quick tag selection for easier Eisenhowering
 
 #+begin_src emacs-lisp
@@ -516,6 +558,9 @@ Quick tag selection for easier Eisenhowering
 #+end_src
  
 *** Capture templates
+:PROPERTIES:
+:ID:       5BA2F6C1-6DAB-4EDF-A521-0EDB7F017B3B
+:END:
 
 Quick cap
 
@@ -530,6 +575,9 @@ Quick cap
 #+end_src
 
 *** Clock settings
+:PROPERTIES:
+:ID:       3DD22740-3CB4-43AB-9B75-2C795052D6B2
+:END:
 
 Use org-mode to clock time spent on things.
 Estimate time before starting tasks.
@@ -613,6 +661,9 @@ Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
 #+end_src
 
 *** Export defaults
+:PROPERTIES:
+:ID:       8FB3DDF3-A277-4A5E-925D-8E9E3896D3EB
+:END:
 
 The export options are detailed [[https://orgmode.org/manual/Export-Settings.html][here]].
 Use defaults that make sense for me.
@@ -626,6 +677,9 @@ Use defaults that make sense for me.
 #+end_src
 
 *** Calendar export defaults
+:PROPERTIES:
+:ID:       443468BD-B569-445D-8E2D-F8EBBE181E6D
+:END:
 I want to mirror my org agenda to a Google calendar in order to make it sharable.
 
 #+begin_src emacs-lisp
@@ -651,6 +705,9 @@ I want to mirror my org agenda to a Google calendar in order to make it sharable
 #+end_src
 
 *** Markdown export
+:PROPERTIES:
+:ID:       2D95D6F2-D29C-457C-BA7B-2016D127505B
+:END:
 
 Markdown is still useful, so we need a backend to export to it.
 
@@ -658,8 +715,32 @@ Markdown is still useful, so we need a backend to export to it.
 (setq org-export-backends '(ascii html icalendar latex md odt))
 #+end_src
 
+*** Org add ids automatically
+:PROPERTIES:
+:ID:       5B090E72-2929-4CE1-A406-ECDCD2B8256F
+:END:
+https://stackoverflow.com/a/16247032
+
+#+begin_src emacs-lisp
+(defun dkj/org-add-ids-to-headlines-in-file ()
+  "Add ID properties to all headlines in the current file which
+do not already have one."
+  (interactive)
+  (org-map-entries 'org-id-get-create))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'dkj/org-add-ids-to-headlines-in-file nil 'local)))
+#+end_src
+
 ** Packages
+:PROPERTIES:
+:ID:       2652087B-5DDB-4FA7-895E-86AA6BD1114F
+:END:
 *** Using packages
+:PROPERTIES:
+:ID:       3700B43F-AD46-481F-AD53-46690C560C79
+:END:
 
 Packages are hip and cool and emacs is pretty good at using them.
 
@@ -682,6 +763,9 @@ Packages are hip and cool and emacs is pretty good at using them.
 #+end_src
 
 **** Automatic Package Updates
+:PROPERTIES:
+:ID:       0933E843-5D80-48C9-AB1D-E29AC282DF54
+:END:
 
 The auto-package-update package helps us keep our Emacs packages up to date!  It will prompt you after a certain number of days either at startup or at a specific time of day to remind you to update your packages.
 
@@ -699,6 +783,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** Which-key
+:PROPERTIES:
+:ID:       72BD8981-CE05-4297-8793-A12FB90D609C
+:END:
 
 [[https://github.com/justbur/emacs-which-key][which-key]] is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
 
@@ -709,6 +796,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** Pretty colors
+:PROPERTIES:
+:ID:       1A33AE6F-908F-4D9D-8AFD-A577E53F5FEE
+:END:
 
 #+begin_src emacs-lisp
 ;; Themes that I like to have available
@@ -747,6 +837,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** Dot-mode
+:PROPERTIES:
+:ID:       DC17C04F-7990-4D38-A4A6-9A4A73838406
+:END:
 
 ~dot-mode~ gives us a function similar to Vim's ~.~, which replays the last sequence of edits.
 
@@ -766,6 +859,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** Magit
+:PROPERTIES:
+:ID:       B83065DA-663E-48C7-B4ED-E4C12A9C967C
+:END:
 
 [[https://github.com/magit/magit][Magit]] is a git frontend. People really like it. I'm used to fugitive. Anyway, this is Emacs, so we use Magit.
 
@@ -774,7 +870,13 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** Completion stuff
+:PROPERTIES:
+:ID:       4C8CA67B-FBEF-400D-B846-044C73AC7108
+:END:
 **** Marginalia
+:PROPERTIES:
+:ID:       9202A48D-A59C-4372-98DA-FF43C8158FB3
+:END:
 
 [[https://github.com/minad/marginalia][Marginalia]] adds more context to minibuffer completions.
 
@@ -789,6 +891,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 **** Orderless
+:PROPERTIES:
+:ID:       C33ECF85-7C62-4AC1-A54F-565C6570E2B2
+:END:
 
 Orderless completion.
 
@@ -801,6 +906,9 @@ Orderless completion.
 #+end_src
 
 **** Vertico
+:PROPERTIES:
+:ID:       D4C169F5-1C59-4CCF-A9EB-DA43AE47788F
+:END:
 
 Vertico is a vertical completing-read interface. It's pretty much the same as fido-vertical-mode, which is built in now, but it's more performant.
 
@@ -827,6 +935,9 @@ Vertico is a vertical completing-read interface. It's pretty much the same as fi
 #+end_src
 
 **** Corfu
+:PROPERTIES:
+:ID:       3A270C3D-687A-4902-AABF-3517822FCA0D
+:END:
 [[https://github.com/minad/corfu][Corfu]] is Vertico's completion-in-region companion.
 
 #+begin_src emacs-lisp
@@ -853,6 +964,9 @@ Corfu uses child frames that don't work in terminal emacs. For that we need [[ht
 #+end_src
 
 *** Embark
+:PROPERTIES:
+:ID:       DF51D8AA-8504-4429-A40D-E3BE5CC5AA7A
+:END:
 
 [[https://github.com/oantolin/embark][Embark]] is a right-click menu for the keyboard.
 
@@ -881,10 +995,16 @@ Corfu uses child frames that don't work in terminal emacs. For that we need [[ht
 #+end_src
 
 *** Language support
+:PROPERTIES:
+:ID:       E2EE663A-4EE5-4003-A3BC-5B243F6E3975
+:END:
 
 Packages for configuring support of various computer languages
 
 **** Markdown
+:PROPERTIES:
+:ID:       CC443831-E6CD-4B11-A2F0-EB3B4417FB52
+:END:
 
 In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to markup languages. Still, markdown is useful.
 
@@ -893,6 +1013,9 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
 #+end_src
 
 **** Racket
+:PROPERTIES:
+:ID:       E677DFB0-0659-46E4-8EA7-AF720338638D
+:END:
 
 [[https://www.racket-mode.com/][racket-mode]] is so good dude. I can't go back to vim.
 
@@ -901,6 +1024,9 @@ In emacs we want to mostly write [[Org mode stuff][org-mode]] when it comes to m
 #+end_src
 
 **** Godot engine
+:PROPERTIES:
+:ID:       AA80EA60-661E-4AEE-991D-3C07007B2E65
+:END:
 
 GDScript mode!
 
@@ -909,6 +1035,9 @@ GDScript mode!
 #+end_src
 
 **** Golang
+:PROPERTIES:
+:ID:       30B73AA9-CD35-4818-B633-FB91CB3579A0
+:END:
 
 #+begin_src emacs-lisp
 (use-package go-mode)
@@ -918,12 +1047,18 @@ GDScript mode!
 #+end_src
 
 **** Org-babel
+:PROPERTIES:
+:ID:       106A6515-8083-4221-8F20-5DB53E8FE758
+:END:
 
 Org-babel is the part of org that's about interacting with code blocks.
 Org code blocks are not simply about giving a block a colorful, monospaced typeface.
 They also have powers, thanks to Emacs' environment.
 
 ***** Org execute other languages inline
+:PROPERTIES:
+:ID:       3B2880AF-52C1-4820-A25F-23B5950CA849
+:END:
 
 With C-c C-c
 
@@ -943,6 +1078,9 @@ With C-c C-c
 #+end_src
 
 ***** Literate code helper functions
+:PROPERTIES:
+:ID:       3FF67FB3-595F-4794-9270-B895C92D2061
+:END:
 
 #+begin_src emacs-lisp
 (defun dkj/extract-code-block-noweb (name)
@@ -967,6 +1105,9 @@ and leaving a noweb reference in its place."
 #+end_src
 
 *** Anki editor
+:PROPERTIES:
+:ID:       E5513135-DDA1-4CE2-A191-D4D9AF1F48AD
+:END:
 
 Write anki cards in org mode and sync them to Anki.
 Why not use ~org-drill~ or similar?
@@ -986,6 +1127,9 @@ The Anki apps are great.
 #+end_src
 
 *** Bad Emacs Defaults
+:PROPERTIES:
+:ID:       4B015149-88F6-4B9D-8A1F-1AC1D1BE6396
+:END:
 
 https://idiomdrottning.org/bad-emacs-defaults
 
@@ -1014,6 +1158,9 @@ Most of them seem good.
 #+end_src
 
 *** Kitty Keyboard Protocol
+:PROPERTIES:
+:ID:       D65650AA-9CBF-45BA-8778-F9D6DD3A7AB0
+:END:
 
 [[https://github.com/benjaminor/kkp][KKP]] tells Emacs how to handle [[https://sw.kovidgoyal.net/kitty/keyboard-protocol/][CSI u escape codes]],
 allowing CLI Emacs to use lots of cool key chords that would otherwise
@@ -1028,6 +1175,9 @@ not work.
 #+end_src
 
 *** Avy
+:PROPERTIES:
+:ID:       1533CFB8-D85E-47FA-B1D5-6D1E9E2CBDC9
+:END:
 
 Avy is one of those "jump to a character on the screen" type of plugins.
 I've never liked these in the past, but let's try it again.
@@ -1077,12 +1227,18 @@ Why is Avy better?
 #+end_src
 
 *** Vundo
+:PROPERTIES:
+:ID:       4DF49617-A0A3-4922-90A5-4D74A4704096
+:END:
 Visualize the undo tree for tricky undo situations
 #+begin_src emacs-lisp
 (use-package vundo)
 #+end_src
 
 *** Tetris...
+:PROPERTIES:
+:ID:       4D3ECBB7-044E-40F7-96DE-E72C81824ED2
+:END:
 
 Tetris, man...
 
@@ -1094,6 +1250,9 @@ Tetris, man...
 #+end_src
 
 *** org-noter
+:PROPERTIES:
+:ID:       BAB2BA75-CD90-4DAE-B951-AC4EDD7DE5C4
+:END:
 Take synched org notes on documents in Emacs!
 
 #+begin_src emacs-lisp
@@ -1141,6 +1300,9 @@ Take synched org notes on documents in Emacs!
 #+end_src
 
 *** pdf-tools
+:PROPERTIES:
+:ID:       8D3BF8DE-F4B7-4E1C-8575-DC7E93245EB2
+:END:
 For reading pdfs in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
@@ -1150,6 +1312,9 @@ For reading pdfs in Emacs! Useful with org-noter.
 ;;   (pdf-tools-install))
 #+end_src
 *** nov.el
+:PROPERTIES:
+:ID:       9E1BC0F0-F620-4BDE-B9F9-C6D9B422DE8D
+:END:
 For reading epub files in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
@@ -1161,6 +1326,9 @@ For reading epub files in Emacs! Useful with org-noter.
 		nov-text-width 50))
 #+end_src
 *** Visual fill column
+:PROPERTIES:
+:ID:       721B93BD-13D9-4298-A7E4-9319A32FB967
+:END:
 https://codeberg.org/joostkremers/visual-fill-column
 
 Soft wrap lines in a center column in nov.el mode.
@@ -1180,18 +1348,27 @@ Soft wrap lines in a center column in nov.el mode.
 #+end_src
 
 *** Speed type
+:PROPERTIES:
+:ID:       205B1A8E-8096-4E2E-8DD6-8511034FD2C4
+:END:
 Typing tests in Emacs :)
 
 #+begin_src emacs-lisp
 (use-package speed-type)
 #+end_src
 *** Eat
+:PROPERTIES:
+:ID:       DA64AD78-59E0-4AEB-BD9C-D4CCC7384364
+:END:
 Emulate a Terminal
 https://codeberg.org/akib/emacs-eat/
 #+begin_src emacs-lisp
 (use-package eat)
 #+end_src
 *** ox-gfm
+:PROPERTIES:
+:ID:       C03A2774-20A0-4036-918B-0B381ED2779C
+:END:
 https://github.com/larstvei/ox-gfm
 
 The built-in markdown exporter is a little stinky.
@@ -1207,6 +1384,9 @@ For richer markdown posting, let's use ox-gfm.
 #+end_src
 
 ** Load other files
+:PROPERTIES:
+:ID:       2AA38BCE-B3F0-4D6C-B7C0-CE00B9BB22EB
+:END:
 I like to keep everything in one file, but sometimes stuff needs to go in other files for cleanliness or confidentiality.
 
 #+begin_src emacs-lisp

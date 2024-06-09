@@ -547,6 +547,16 @@
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
+(defun dkj/org-add-ids-to-headlines-in-file ()
+  "Add ID properties to all headlines in the current file which
+do not already have one."
+  (interactive)
+  (org-map-entries 'org-id-get-create))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'dkj/org-add-ids-to-headlines-in-file nil 'local)))
+
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
