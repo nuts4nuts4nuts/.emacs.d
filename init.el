@@ -30,9 +30,11 @@
 ;; 4 space tabs
 (setq-default tab-width 4)
 
-;; command is a lot more ergonomic than option
-;; also, less confusing when going back and forth between mac and windows
-(setq mac-command-modifier 'meta)
+;; more ergo modifier keybindings on macos
+(when (eq system-type 'darwin)
+  (setq
+   ns-command-modifier 'control
+   ns-option-modifier 'meta))
 
 ;; Allow the mouse in terminal mode
 (xterm-mouse-mode 1)
@@ -342,7 +344,8 @@
 	(org-agenda-redo-all)
 	(other-window 1)
 	(org-clock-goto)
-	(recenter-top-bottom 0)))
+	(recenter-top-bottom 0)
+	(org-narrow-to-subtree)))
 
 (defun dkj/open-agenda-main-view (prefix)
   "Open the main view of my agenda."
@@ -596,7 +599,7 @@ do not already have one."
 
 ;; Light and dark themes I'm using currently
 (setq dkj/theme-light 'modus-operandi-tinted)
-(setq dkj/theme-dark 'modus-vivendi)
+(setq dkj/theme-dark 'modus-vivendi-tinted)
 
 ;; Function to swap between light and dark theme
 (defun dkj/swap-themes ()
@@ -672,7 +675,6 @@ do not already have one."
 (use-package corfu
   :custom
   (corfu-cycle t)                ;; Enable cycling for 'corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
   (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
   (corfu-scroll-margin 1)        ;; Use scroll margin
   :init
