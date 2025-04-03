@@ -74,8 +74,9 @@ These are some basic settings to make life a little better. They don't relate to
    ns-command-modifier 'control
    ns-option-modifier 'meta))
 
-;; Allow the mouse in terminal mode
-(xterm-mouse-mode 1)
+;; unbind set-goal column
+;; I'm always accidentally pressing this
+(global-unset-key (kbd "C-x C-n"))
 
 ;; Automatically balance windows when they are created or destroyed
 (setq window-combination-resize t)
@@ -160,6 +161,21 @@ These are some basic settings to make life a little better. They don't relate to
 
 ;; Let xterm-compatible terminals copy-paste from emacs
 (setq xterm-extra-capabilities '(setSelection))
+
+;; Allow the mouse in terminal mode
+(xterm-mouse-mode 1)
+(add-hook 'focus-in-hook 'xterm-mouse-refresh-hook)
+(defun xterm-mouse-refresh-hook ()
+  (cond ((equal xterm-mouse-mode t)
+		 (progn
+		   (xterm-mouse-mode)
+		   (xterm-mouse-mode)))
+		(t (xterm-mouse-mode))))
+
+;; No maximum terminal buffer sizes
+(setq-default comint-buffer-maximum-size 0)
+(setq-default term-buffer-maximum-size 0)
+(setq-default eshell-buffer-maximum-lines 0)
 
 ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
@@ -249,6 +265,10 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 
 ;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
 (global-set-key (kbd "M-/") #'dabbrev-completion)
+
+;; Do something useful with these that seems roughly congruent with existing C- vs M- movement semantics
+(global-set-key (kbd "M-p") #'previous-logical-line)
+(global-set-key (kbd "M-n") #'next-logical-line)
 #+end_src
 **** Menu bar customization
 :PROPERTIES:
@@ -465,7 +485,7 @@ All flows from the agenda
 			[menu-bar dkj open-agenda-main-view]
 			'("Open agenda" . dkj/open-agenda-main-view))
 
-;; Open the main view of the agenda with f12
+;; Open the main view of the agenda
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
 
 ;; ~/org for agenda and refile settings
@@ -1383,6 +1403,20 @@ For richer markdown posting, let's use ox-gfm.
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
+#+end_src
+*** gpt-el
+:PROPERTIES:
+:ID: b509eba6-3c24-43f2-9a3e-bf63ef5bf341
+:END:
+LLMs in Emacs
+
+#+begin_src emacs-lisp
+(use-package gptel)
+(setq
+ gptel-model 'gemini-pro
+ gptel-backend (gptel-make-gemini "Gemini"
+				 :key (getenv "GEMINI_API_KEY")
+				 :stream t))
 #+end_src
 
 ** Load other files

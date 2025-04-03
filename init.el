@@ -36,8 +36,9 @@
    ns-command-modifier 'control
    ns-option-modifier 'meta))
 
-;; Allow the mouse in terminal mode
-(xterm-mouse-mode 1)
+;; unbind set-goal column
+;; I'm always accidentally pressing this
+(global-unset-key (kbd "C-x C-n"))
 
 ;; Automatically balance windows when they are created or destroyed
 (setq window-combination-resize t)
@@ -123,6 +124,21 @@
 ;; Let xterm-compatible terminals copy-paste from emacs
 (setq xterm-extra-capabilities '(setSelection))
 
+;; Allow the mouse in terminal mode
+(xterm-mouse-mode 1)
+(add-hook 'focus-in-hook 'xterm-mouse-refresh-hook)
+(defun xterm-mouse-refresh-hook ()
+  (cond ((equal xterm-mouse-mode t)
+		 (progn
+		   (xterm-mouse-mode)
+		   (xterm-mouse-mode)))
+		(t (xterm-mouse-mode))))
+
+;; No maximum terminal buffer sizes
+(setq-default comint-buffer-maximum-size 0)
+(setq-default term-buffer-maximum-size 0)
+(setq-default eshell-buffer-maximum-lines 0)
+
 ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
 	  ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
@@ -184,6 +200,10 @@
 
 ;; Bind M-/ to dabbrev-completion instead of dabbrev-expand to use capf
 (global-set-key (kbd "M-/") #'dabbrev-completion)
+
+;; Do something useful with these that seems roughly congruent with existing C- vs M- movement semantics
+(global-set-key (kbd "M-p") #'previous-logical-line)
+(global-set-key (kbd "M-n") #'next-logical-line)
 
 (define-key global-map [menu-bar dkj]
 			(cons "DKJ" (make-sparse-keymap "DKJ")))
@@ -363,7 +383,7 @@
 			[menu-bar dkj open-agenda-main-view]
 			'("Open agenda" . dkj/open-agenda-main-view))
 
-;; Open the main view of the agenda with f12
+;; Open the main view of the agenda
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
 
 ;; ~/org for agenda and refile settings
@@ -900,6 +920,13 @@ and leaving a noweb reference in its place."
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
+
+(use-package gptel)
+(setq
+ gptel-model 'gemini-pro
+ gptel-backend (gptel-make-gemini "Gemini"
+				 :key (getenv "GEMINI_API_KEY")
+				 :stream t))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
