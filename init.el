@@ -30,7 +30,7 @@
 ;; 4 space tabs
 (setq-default tab-width 4)
 
-;; more ergo modifier keybindings on macos
+;; cmd for meta on macos
 (when (eq system-type 'darwin)
   (setq
    ns-command-modifier 'meta))
