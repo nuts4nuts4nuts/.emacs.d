@@ -33,8 +33,7 @@
 ;; more ergo modifier keybindings on macos
 (when (eq system-type 'darwin)
   (setq
-   ns-command-modifier 'control
-   ns-option-modifier 'meta))
+   ns-command-modifier 'meta))
 
 ;; unbind set-goal column
 ;; I'm always accidentally pressing this
