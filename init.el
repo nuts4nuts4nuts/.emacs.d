@@ -125,13 +125,14 @@
 
 ;; Allow the mouse in terminal mode
 (xterm-mouse-mode 1)
-(add-hook 'focus-in-hook 'xterm-mouse-refresh-hook)
-(defun xterm-mouse-refresh-hook ()
+(add-hook 'focus-in-hook 'dkj/xterm-mouse-refresh)
+(defun dkj/xterm-mouse-refresh ()
+  (interactive)
   (cond ((equal xterm-mouse-mode t)
 		 (progn
-		   (xterm-mouse-mode)
-		   (xterm-mouse-mode)))
-		(t (xterm-mouse-mode))))
+		   (xterm-mouse-mode -1)
+		   (xterm-mouse-mode 1)))
+		(t (xterm-mouse-mode 1))))
 
 ;; No maximum terminal buffer sizes
 (setq-default comint-buffer-maximum-size 0)
@@ -178,6 +179,9 @@
 
 ;; Binding for grepping
 (define-key dkj-keys (kbd "C-/") #'grep)
+
+;; Binding global-subword-mode, which makes word-type operations CamelCase aware
+(define-key dkj-keys (kbd "C-s") #'global-subword-mode)
 
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
@@ -363,8 +367,7 @@
 	(org-agenda-redo-all)
 	(other-window 1)
 	(org-clock-goto)
-	(recenter-top-bottom 0)
-	(org-narrow-to-subtree)))
+	(recenter-top-bottom 0)))
 
 (defun dkj/open-agenda-main-view (prefix)
   "Open the main view of my agenda."
