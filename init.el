@@ -824,9 +824,9 @@ and leaving a noweb reference in its place."
 (use-package avy
   :ensure t
   :bind
-  (("C-;" . #'avy-goto-char-timer))
+  (("C-;" . #'avy-goto-char-2))
   (:map org-mode-map
-		("C-;" . #'avy-goto-char-timer))
+		("C-;" . #'avy-goto-char-2))
   (:map isearch-mode-map
 		("C-;" . #'avy-isearch))
   :config
@@ -925,7 +925,7 @@ and leaving a noweb reference in its place."
 
 (use-package gptel)
 (setq
- gptel-model 'gemini-pro
+ gptel-model 'gemini-2.0-flash
  gptel-backend (gptel-make-gemini "Gemini"
 				 :key (getenv "GEMINI_API_KEY")
 				 :stream t))
