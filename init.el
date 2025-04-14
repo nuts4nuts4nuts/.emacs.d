@@ -923,12 +923,30 @@ and leaving a noweb reference in its place."
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 
-(use-package gptel)
-(setq
- gptel-model 'gemini-2.0-flash
- gptel-backend (gptel-make-gemini "Gemini"
-				 :key (getenv "GEMINI_API_KEY")
-				 :stream t))
+(use-package gptel
+  :custom
+  (gptel-model 'gemini-2.0-flash)
+  (gptel-backend (gptel-make-gemini "Gemini"
+                                   :key (getenv "GEMINI_API_KEY")
+                                   :stream t))
+  :bind
+  ("C-`" . gptel-send))
+
+(use-package fsrs
+  :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
+       :rev :newest)
+  :defer t)
+
+(use-package org-srs
+  :vc (:url "https://github.com/bohonghuang/org-srs"
+			:rev :newest)
+  :defer t
+  :hook (org-mode . org-srs-embed-overlay-mode)
+  :bind (:map org-mode-map
+         ("<f5>" . org-srs-review-rate-easy)
+         ("<f6>" . org-srs-review-rate-good)
+         ("<f7>" . org-srs-review-rate-hard)
+         ("<f8>" . org-srs-review-rate-again)))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -944,3 +962,17 @@ and leaving a noweb reference in its place."
 (setq noogel (concat user-emacs-directory "noogle.el"))
 (when (file-exists-p noogel)
   (load noogel))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-vc-selected-packages
+   '((org-srs :url "https://github.com/bohonghuang/org-srs")
+	 (fsrs :url "https://github.com/bohonghuang/lisp-fsrs"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

@@ -1406,21 +1406,45 @@ For richer markdown posting, let's use ox-gfm.
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
 #+end_src
-*** gpt-el
+*** gptel
 :PROPERTIES:
 :ID: b509eba6-3c24-43f2-9a3e-bf63ef5bf341
 :END:
 LLMs in Emacs
 
 #+begin_src emacs-lisp
-(use-package gptel)
-(setq
- gptel-model 'gemini-2.0-flash
- gptel-backend (gptel-make-gemini "Gemini"
-				 :key (getenv "GEMINI_API_KEY")
-				 :stream t))
+(use-package gptel
+  :custom
+  (gptel-model 'gemini-2.0-flash)
+  (gptel-backend (gptel-make-gemini "Gemini"
+                                   :key (getenv "GEMINI_API_KEY")
+                                   :stream t))
+  :bind
+  ("C-`" . gptel-send))
 #+end_src
+*** org-srs
+:PROPERTIES:
+:ID:       BC240B89-A76B-4081-984E-34C0BE2502B4
+:END:
+Create and review flashcards all from within Emacs.
 
+#+begin_src emacs-lisp
+(use-package fsrs
+  :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
+       :rev :newest)
+  :defer t)
+
+(use-package org-srs
+  :vc (:url "https://github.com/bohonghuang/org-srs"
+			:rev :newest)
+  :defer t
+  :hook (org-mode . org-srs-embed-overlay-mode)
+  :bind (:map org-mode-map
+         ("<f5>" . org-srs-review-rate-easy)
+         ("<f6>" . org-srs-review-rate-good)
+         ("<f7>" . org-srs-review-rate-hard)
+         ("<f8>" . org-srs-review-rate-again)))
+#+end_src
 ** Load other files
 :PROPERTIES:
 :ID:       2AA38BCE-B3F0-4D6C-B7C0-CE00B9BB22EB
