@@ -1414,9 +1414,9 @@ LLMs in Emacs
 
 #+begin_src emacs-lisp
 (use-package gptel
-  :custom
-  (gptel-model 'gemini-2.0-flash)
-  (gptel-backend (gptel-make-gemini "Gemini"
+  :config
+  (setq gptel-model 'gemini-2.0-flash)
+  (setq gptel-backend (gptel-make-gemini "Gemini"
                                    :key (getenv "GEMINI_API_KEY")
                                    :stream t))
   :bind

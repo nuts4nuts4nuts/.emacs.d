@@ -924,9 +924,9 @@ and leaving a noweb reference in its place."
   '(require 'ox-gfm nil t))
 
 (use-package gptel
-  :custom
-  (gptel-model 'gemini-2.0-flash)
-  (gptel-backend (gptel-make-gemini "Gemini"
+  :config
+  (setq gptel-model 'gemini-2.0-flash)
+  (setq gptel-backend (gptel-make-gemini "Gemini"
                                    :key (getenv "GEMINI_API_KEY")
                                    :stream t))
   :bind
@@ -962,17 +962,3 @@ and leaving a noweb reference in its place."
 (setq noogel (concat user-emacs-directory "noogle.el"))
 (when (file-exists-p noogel)
   (load noogel))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-vc-selected-packages
-   '((org-srs :url "https://github.com/bohonghuang/org-srs")
-	 (fsrs :url "https://github.com/bohonghuang/lisp-fsrs"))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
