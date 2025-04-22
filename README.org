@@ -185,6 +185,18 @@ These are some basic settings to make life a little better. They don't relate to
 (global-set-key (kbd "<volume-down>") #'execute-extended-command)
 (global-set-key (kbd "<volume-up>") #'winner-undo)
 
+;; smarter pair insertion
+(setq skeleton-pair t)
+(global-set-key (kbd "(") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "[") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "{") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "<") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "`") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "~") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "'") #'skeleton-pair-insert-maybe)
+(global-set-key (kbd "\"") #'skeleton-pair-insert-maybe)
+(setq-default skeleton-pair-alist '((?` _ ?`)))
+
 ;; Made M-x grep use rg by default
 (setq grep-command "rg -n -H --no-heading -e ")
 #+end_src
@@ -240,6 +252,9 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 
 ;; Binding global-subword-mode, which makes word-type operations CamelCase aware
 (define-key dkj-keys (kbd "C-s") #'global-subword-mode)
+
+;; Easily duplicate lines or selections
+(define-key dkj-keys (kbd "C-y") #'duplicate-dwim)
 #+end_src
 
 **** Bunch of mappings
@@ -504,18 +519,27 @@ All flows from the agenda
 									((agenda "" ((org-deadline-warning-days 7)))
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))
-									 (todo "PROG" ((org-agenda-files '("~/org/projects.org"))
-												   (org-agenda-overriding-header "In-progress tasks")))))
-								   ("N"
-									"Todos in Do, Decide, Delegate, Delete order"
-									((tags-todo "+important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-																	 (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
-																	 (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "-important+urgent" ((org-agenda-todo-ignore-deadlines 'all)
-																	 (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "-important-urgent" ((org-agenda-todo-ignore-deadlines 'all)
-																	 (org-agenda-todo-ignore-scheduled 'all)))))))
+									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
+								   ("h"
+									"Next steps at home organized by sizes"
+									((tags-todo "+@home+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																(org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@home+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																(org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@home+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																 (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@home+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																(org-agenda-todo-ignore-scheduled 'all)))))
+								   ("y"
+									"Next steps at anywhere organized by sizes"
+									((tags-todo "+@anywhere+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																		  (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@anywhere+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																		  (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@anywhere+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																		   (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@anywhere+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																		  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -551,7 +575,7 @@ All flows from the agenda
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
 (with-eval-after-load "org"
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
-#+end_src
+									#+end_src
 
 *** Todo settings
 :PROPERTIES:
@@ -560,7 +584,7 @@ All flows from the agenda
 
 #+begin_src emacs-lisp
 (setq org-todo-keywords
-	  '((sequence "TODO(t)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
+	  '((sequence "TODO(t)" "NEXT(n)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
 	  org-clock-into-drawer t
 	  org-log-into-drawer t)
 
@@ -578,8 +602,14 @@ All flows from the agenda
 Quick tag selection for easier Eisenhowering
 
 #+begin_src emacs-lisp
-(setq org-tag-persistent-alist '(("important" . ?i)
-								 ("urgent"    . ?u)))
+(setq org-tag-persistent-alist '(;; Contexts
+								 ("@home" . ?h)
+								 ("@anywhere" . ?y)
+								 ;; t-shirt sizes
+								 ("tsmall" . ?s) ; ~10 minutes
+								 ("tmedium" . ?m) ; ~30 minutes
+								 ("tlarge" . ?l) ; ~1 hour
+								 ("tgiant" . ?g))) ; ~3 hours
 #+end_src
  
 *** Capture templates
@@ -592,7 +622,7 @@ Quick cap
 #+begin_src emacs-lisp
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n%a\n" :clock-in t :clock-keep t)
+			   "* NEXT %?\n%U\n%a\n" :clock-in t :clock-keep t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
 			   "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
