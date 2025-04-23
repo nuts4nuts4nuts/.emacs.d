@@ -11,9 +11,8 @@
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dkj/org-babel-tangle-config)))
 
 ;; Turn off the tool bar and scroll bar
-(when (display-graphic-p)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 ;; Always have the menu bar :)
 (menu-bar-mode 1)
 
@@ -48,11 +47,7 @@
 	 Uses the prefix arg if one is provided."
   (interactive "NHeight: ")
   (set-face-attribute 'default nil :height height))
-
-;; Bigger font by default on mobile
-(if (eq system-type 'android)
-	(dkj/font-height 250)
-  (dkj/font-height 140))
+(dkj/font-height 140)
 
 ;; Automatically set view-mode when in a readonly buffer
 ;; Set a buffer as readonly with C-x C-q
@@ -142,10 +137,6 @@
 ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
 	  ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
-
-;; Android bindings
-(global-set-key (kbd "<volume-down>") #'execute-extended-command)
-(global-set-key (kbd "<volume-up>") #'winner-undo)
 
 ;; smarter pair insertion
 (setq skeleton-pair t)
@@ -666,14 +657,8 @@ do not already have one."
 ;; Bind swapping between light and dark theme to "C-t C-\"
 (define-key dkj-keys (kbd "C-\\") #'dkj/swap-themes)
 
-;; Default to dark theme except on Android
-;; where I want to default to light theme and get even lighter
-;; for the Boox
-(cond ((eq system-type 'android)
-	   (setq dkj/theme-light 'modus-operandi)
-	   (load-theme dkj/theme-light t))
-	  (t
-	   (load-theme dkj/theme-dark t)))
+;; Default to dark theme
+(load-theme dkj/theme-dark t)
 
 (use-package dot-mode
   :config
@@ -957,14 +942,14 @@ and leaving a noweb reference in its place."
   :config
   (setq gptel-model 'gemini-2.0-flash)
   (setq gptel-backend (gptel-make-gemini "Gemini"
-                                   :key (getenv "GEMINI_API_KEY")
-                                   :stream t))
+                        :key (getenv "GEMINI_API_KEY")
+                        :stream t))
   :bind
   ("C-`" . gptel-send))
 
 (use-package fsrs
   :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
-       :rev :newest)
+			:rev :newest)
   :defer t)
 
 (use-package org-srs
@@ -973,10 +958,24 @@ and leaving a noweb reference in its place."
   :defer t
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
-         ("<f5>" . org-srs-review-rate-easy)
-         ("<f6>" . org-srs-review-rate-good)
-         ("<f7>" . org-srs-review-rate-hard)
-         ("<f8>" . org-srs-review-rate-again)))
+			  ("<f5>" . org-srs-review-rate-easy)
+			  ("<f6>" . org-srs-review-rate-good)
+			  ("<f7>" . org-srs-review-rate-hard)
+			  ("<f8>" . org-srs-review-rate-again)))
+
+(when (eq system-type 'android)
+  ;; tool bar is cool and should be on bottom
+  (tool-bar-mode 1)
+  (set-frame-parameter nil 'tool-bar-position 'bottom)
+  (set-frame-parameter nil 'tool-bar-lines 1)
+  ;; big font
+  (dkj/font-height 180)
+  ;; special bindings
+  (global-set-key (kbd "<volume-down>") #'execute-extended-command)
+  (global-set-key (kbd "<volume-up>") #'winner-undo)
+  ;; extra light theme
+  (setq dkj/theme-light 'modus-operandi)
+  (load-theme dkj/theme-light t))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
