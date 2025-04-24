@@ -279,7 +279,8 @@
 	  org-ellipsis ">>"
 	  org-id-link-to-org-use-id 'create-if-interactive
 	  org-image-actual-width 600
-	  org-edit-src-content-indentation 0)
+	  org-edit-src-content-indentation 0
+	  org-lowest-priority ?D)
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
