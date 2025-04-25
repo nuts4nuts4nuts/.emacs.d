@@ -512,32 +512,20 @@ All flows from the agenda
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
-								   ("h"
+								   ("c"
 									"Next steps at home organized by sizes"
-									((tags-todo "+@pc+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	(org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@pc+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	(org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@pc+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	 (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@pc+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	(org-agenda-todo-ignore-scheduled 'all)))))
-								   ("y"
+									((tags-todo "+@pc/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+															 (org-agenda-todo-ignore-scheduled 'all)))))
+								   ("h"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@phone+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	   (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@phone+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	   (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@phone+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																		(org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@phone+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																	   (org-agenda-todo-ignore-scheduled 'all)))))))
+									((tags-todo "+@phone/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																(org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
-(setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
-									(todo todo-state-down category-keep)
-									(tags todo-state-down)
-									(search category-keep)))
+(setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep effort-down)
+									(todo todo-state-down category-keep effort-down)
+									(tags todo-state-down effort-down)
+									(search category-keep effort-down)))
 
 ;; Agenda clockreport settings
 (setq org-agenda-clockreport-parameter-plist '(:link t :maxlevel 6 :tags t))
@@ -559,10 +547,10 @@ All flows from the agenda
 (setq breadcrumbs-to-format 2)
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t% s")
-		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
-		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s")
-		(search . "%-12:c")))
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e % s")
+		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
+		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
+		(search . "%-12:c %?|e ")))
 
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
 (with-eval-after-load "org"
@@ -636,8 +624,6 @@ Largely taken from / inspired by http://doc.norang.ca/org-mode.html#Clocking
 (setq org-clock-persist t)
 ;; Set clock duration format to never aggregate up to days
 (setq org-duration-format (quote h:mm))
-;; Show current clock period instead of defaulting to total clocked time
-(setq org-clock-mode-line-total 'current)
 
 ;; Define things that show up as issues in clock check (v c in org-agenda)
 ;; Only thing I've changed is lowering the default max-gap from 5 minutes to 1
