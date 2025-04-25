@@ -1,6 +1,5 @@
 #+title: Emacs configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
-
 * Org file that makes an el file
 :PROPERTIES:
 :ID:       8EB782A0-C282-4795-B43A-E8D68229C4EC
@@ -722,7 +721,8 @@ I want to mirror my org agenda to a Google calendar in order to make it sharable
 								  "init.org"
 								  "journal.org"
 								  "meetings.org"
-								  "projects.org"))
+								  "projects.org"
+								  "consume.org"))
 
 (defun dkj/org-ical-export ()
   (interactive)

@@ -564,7 +564,8 @@
 								  "init.org"
 								  "journal.org"
 								  "meetings.org"
-								  "projects.org"))
+								  "projects.org"
+								  "consume.org"))
 
 (defun dkj/org-ical-export ()
   (interactive)
