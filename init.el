@@ -66,7 +66,7 @@
 (setq global-mark-ring-max 50)
 
 ;; Show column 80
-(setq fill-column 80)
+(setq-default fill-column 80)
 (global-display-fill-column-indicator-mode)
 
 ;; Prefer vertical splits in more cases
@@ -146,7 +146,6 @@
 (global-set-key (kbd "<") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "`") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "~") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "'") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "\"") #'skeleton-pair-insert-maybe)
 (setq-default skeleton-pair-alist '((?` _ ?`)))
 
@@ -280,7 +279,8 @@
 	  org-id-link-to-org-use-id 'create-if-interactive
 	  org-image-actual-width 600
 	  org-edit-src-content-indentation 0
-	  org-lowest-priority ?D)
+	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
+	  org-global-properties '(("Effort_ALL" .  "10 30 90 270")))
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
