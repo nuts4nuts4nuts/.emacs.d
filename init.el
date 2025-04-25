@@ -412,24 +412,24 @@
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
 								   ("h"
 									"Next steps at home organized by sizes"
-									((tags-todo "+@home+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																(org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@home+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																(org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@home+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																 (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@home+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																(org-agenda-todo-ignore-scheduled 'all)))))
+									((tags-todo "+@pc+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	(org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@pc+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	(org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@pc+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	 (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@pc+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	(org-agenda-todo-ignore-scheduled 'all)))))
 								   ("y"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@anywhere+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																		  (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@anywhere+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																		  (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@anywhere+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																		   (org-agenda-todo-ignore-scheduled 'all)))
-									 (tags-todo "+@anywhere+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																		  (org-agenda-todo-ignore-scheduled 'all)))))))
+									((tags-todo "+@phone+tgiant/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	   (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@phone+tlarge/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	   (org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@phone+tmedium/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																		(org-agenda-todo-ignore-scheduled 'all)))
+									 (tags-todo "+@phone+tsmall/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+																	   (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep)
@@ -478,13 +478,8 @@
 (setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-not-cap)
 
 (setq org-tag-persistent-alist '(;; Contexts
-								 ("@home" . ?h)
-								 ("@anywhere" . ?y)
-								 ;; t-shirt sizes
-								 ("tsmall" . ?s) ; ~10 minutes
-								 ("tmedium" . ?m) ; ~30 minutes
-								 ("tlarge" . ?l) ; ~1 hour
-								 ("tgiant" . ?g))) ; ~3 hours
+								 ("@pc" . ?c)
+								 ("@phone" . ?h)))
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
