@@ -434,7 +434,7 @@
 															  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
-(setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep effort-down)
+(setq org-agenda-sorting-strategy '((agenda time-up todo-state-down deadline-down category-keep effort-down)
 									(todo todo-state-down category-keep effort-down)
 									(tags todo-state-down effort-down)
 									(search category-keep effort-down)))
