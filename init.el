@@ -366,7 +366,7 @@
            (message (format "[Emacs] Update %s" files)))
       (shell-command (format "git commit -am \"%s\"" message)))
 	(shell-command "git pull")
-	(shell-command "git push"))
+	(shell-command "git push")))
 
 (require 'org-agenda)
 

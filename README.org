@@ -458,7 +458,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
            (message (format "[Emacs] Update %s" files)))
       (shell-command (format "git commit -am \"%s\"" message)))
 	(shell-command "git pull")
-	(shell-command "git push"))
+	(shell-command "git push")))
 #+end_src
 
 *** Agenda settings
