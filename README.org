@@ -527,12 +527,12 @@ All flows from the agenda
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
 								   ("c"
 									"Next steps at home organized by sizes"
-									((tags-todo "+@pc/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-															 (org-agenda-todo-ignore-scheduled 'all)))))
+									((tags-todo "+@home/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+															   (org-agenda-todo-ignore-scheduled 'all)))))
 								   ("h"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@phone/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																(org-agenda-todo-ignore-scheduled 'all)))))))
+									((tags-todo "+@out/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+															  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep effort-down)
@@ -592,12 +592,12 @@ All flows from the agenda
 :PROPERTIES:
 :ID:       A9445EBF-6C21-48C9-8508-4D0CEC293A90
 :END:
-Quick tag selection for easier Eisenhowering
+Quick tag selection.
 
 #+begin_src emacs-lisp
 (setq org-tag-persistent-alist '(;; Contexts
-								 ("@pc" . ?c)
-								 ("@phone" . ?h)))
+								 ("@home" . ?h)
+								 ("@out" . ?o)))
 #+end_src
  
 *** Capture templates

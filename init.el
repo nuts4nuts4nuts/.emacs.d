@@ -426,12 +426,12 @@
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
 								   ("c"
 									"Next steps at home organized by sizes"
-									((tags-todo "+@pc/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-															 (org-agenda-todo-ignore-scheduled 'all)))))
+									((tags-todo "+@home/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+															   (org-agenda-todo-ignore-scheduled 'all)))))
 								   ("h"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@phone/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
-																(org-agenda-todo-ignore-scheduled 'all)))))))
+									((tags-todo "+@out/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+															  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
 (setq org-agenda-sorting-strategy '((agenda time-up todo-state-down category-keep effort-down)
@@ -480,8 +480,8 @@
 (setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-not-cap)
 
 (setq org-tag-persistent-alist '(;; Contexts
-								 ("@pc" . ?c)
-								 ("@phone" . ?h)))
+								 ("@home" . ?h)
+								 ("@out" . ?o)))
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
