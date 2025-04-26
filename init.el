@@ -354,6 +354,20 @@
 	  (run-hooks 'org-log-buffer-setup-hook))))
 (global-set-key (kbd "C-z") #'dkj/org-add-note-clocked)
 
+;; Quickly sync org files through git
+(defun dkj/org-sync ()
+  (interactive)
+  (let ((default-directory "~/org/"))
+    (let* ((status (shell-command-to-string "git status -s"))
+           (files (replace-regexp-in-string "^.+M " "" status))
+           (files (replace-regexp-in-string "\n. ." ", " files))
+           (files (replace-regexp-in-string "\n" ", " files))
+           (files (replace-regexp-in-string ", $" "" files))
+           (message (format "[Emacs] Update %s" files)))
+      (shell-command (format "git commit -am \"%s\"" message)))
+	(shell-command "git pull")
+	(shell-command "git push"))
+
 (require 'org-agenda)
 
 ;; define a main view to use in the following functions
