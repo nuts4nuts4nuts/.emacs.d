@@ -152,6 +152,9 @@
 ;; Made M-x grep use rg by default
 (setq grep-command "rg -n -H --no-heading -e ")
 
+;; List all files and human-readable sizes in dired
+(setq-default dired-listing-switches "-lash")
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
@@ -424,11 +427,11 @@
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
-								   ("c"
+								   ("h"
 									"Next steps at home organized by sizes"
 									((tags-todo "+@home/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
 															   (org-agenda-todo-ignore-scheduled 'all)))))
-								   ("h"
+								   ("o"
 									"Next steps at anywhere organized by sizes"
 									((tags-todo "+@out/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
 															  (org-agenda-todo-ignore-scheduled 'all)))))))
