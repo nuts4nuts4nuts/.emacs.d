@@ -90,7 +90,7 @@
 (global-auto-revert-mode 1)
 
 ;; Default to lax whitespace in isearch and match any char
-(setq search-whitespace-regexp ".*")
+(setq search-whitespace-regexp ".*?")
 (setq isearch-lax-whitespace t)
 (setq isearch-regexp-lax-whitespace nil)
 
