@@ -191,6 +191,9 @@ These are some basic settings to make life a little better. They don't relate to
 
 ;; List all files and human-readable sizes in dired
 (setq-default dired-listing-switches "-lash")
+
+;; Don't show eldoc in the minibuffer
+(setq-default eldoc-echo-area-use-multiline-p nil)
 #+end_src
 
 *** Mappings
@@ -247,6 +250,12 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
 
 ;; Easily duplicate lines or selections
 (define-key dkj-keys (kbd "C-y") #'duplicate-dwim)
+
+;; Quick recompile
+(define-key dkj-keys (kbd "C-r") #'recompile)
+
+;; Quick export org to gfm
+(define-key dkj-keys (kbd "C-e") #'org-gfm-export-as-markdown)
 #+end_src
 
 **** Bunch of mappings
@@ -808,6 +817,7 @@ Packages are hip and cool and emacs is pretty good at using them.
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+(setq use-package-compute-statistics t)
 #+end_src
 
 **** Automatic Package Updates

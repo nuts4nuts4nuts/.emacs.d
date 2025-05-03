@@ -155,6 +155,9 @@
 ;; List all files and human-readable sizes in dired
 (setq-default dired-listing-switches "-lash")
 
+;; Don't show eldoc in the minibuffer
+(setq-default eldoc-echo-area-use-multiline-p nil)
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
@@ -190,6 +193,12 @@
 
 ;; Easily duplicate lines or selections
 (define-key dkj-keys (kbd "C-y") #'duplicate-dwim)
+
+;; Quick recompile
+(define-key dkj-keys (kbd "C-r") #'recompile)
+
+;; Quick export org to gfm
+(define-key dkj-keys (kbd "C-e") #'org-gfm-export-as-markdown)
 
 ;; Reserve this for tmux. Previously toggle-input-method
 (global-unset-key (kbd "C-\\"))
@@ -621,6 +630,7 @@ do not already have one."
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+(setq use-package-compute-statistics t)
 
 (use-package auto-package-update
   :custom
