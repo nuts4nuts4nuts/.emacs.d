@@ -43,7 +43,10 @@ This snippet adds a hook to =org-mode= buffers so that =dkj/org-babel-tangle-con
 :PROPERTIES:
 :ID:       73A70187-678D-4773-89F4-6FFE64AAA6F7
 :END:
-
+**** Basics
+:PROPERTIES:
+:ID:       058B7DD2-357F-420F-A6F9-A7CD4C012EEE
+:END:
 These are some basic settings to make life a little better. They don't relate to packages or anything fancy like that.
 
 #+begin_src emacs-lisp
@@ -195,7 +198,25 @@ These are some basic settings to make life a little better. They don't relate to
 ;; Don't show eldoc in the minibuffer
 (setq-default eldoc-echo-area-use-multiline-p nil)
 #+end_src
+**** R/G/R Highlights
+:PROPERTIES:
+:ID:       77740FAC-F082-4687-A7BE-B10B7FB6CE19
+:END:
+TDD all the things???
 
+#+begin_src emacs-lisp
+(defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
+(defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
+(defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
+
+(defun dkj/highlight-words ()
+  (interactive)
+  (highlight-phrase "RED" 'my-red-face)
+  (highlight-phrase "GREEN" 'my-green-face)
+  (highlight-phrase "REFACTOR" 'my-refactor-face))
+
+(add-hook 'window-configuration-change-hook 'dkj/highlight-words)
+#+end_src
 *** Mappings
 :PROPERTIES:
 :ID:       F9FB43FA-5B66-481F-8C7C-697903AB1AB5

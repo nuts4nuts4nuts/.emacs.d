@@ -158,6 +158,18 @@
 ;; Don't show eldoc in the minibuffer
 (setq-default eldoc-echo-area-use-multiline-p nil)
 
+(defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
+(defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
+(defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
+
+(defun dkj/highlight-words ()
+  (interactive)
+  (highlight-phrase "RED" 'my-red-face)
+  (highlight-phrase "GREEN" 'my-green-face)
+  (highlight-phrase "REFACTOR" 'my-refactor-face))
+
+(add-hook 'window-configuration-change-hook 'dkj/highlight-words)
+
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
