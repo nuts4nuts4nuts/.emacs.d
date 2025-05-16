@@ -401,7 +401,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 	  org-id-locations-file "~/org/.org-id-locations"
 	  org-startup-truncated nil
 	  org-ellipsis ">>"
-	  org-id-link-to-org-use-id 'create-if-interactive
+	  org-id-link-to-org-use-id 't
 	  org-image-actual-width 600
 	  org-edit-src-content-indentation 0
 	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
@@ -799,17 +799,17 @@ Markdown is still useful, so we need a backend to export to it.
 :END:
 https://stackoverflow.com/a/16247032
 
-#+begin_src emacs-lisp
-(defun dkj/org-add-ids-to-headlines-in-file ()
-  "Add ID properties to all headlines in the current file which
-do not already have one."
-  (interactive)
-  (org-map-entries 'org-id-get-create))
+# #+begin_src emacs-lisp
+# (defun dkj/org-add-ids-to-headlines-in-file ()
+#   "Add ID properties to all headlines in the current file which
+# do not already have one."
+#   (interactive)
+#   (org-map-entries 'org-id-get-create))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'dkj/org-add-ids-to-headlines-in-file nil 'local)))
-#+end_src
+# (add-hook 'org-mode-hook
+#           (lambda ()
+#             (add-hook 'before-save-hook 'dkj/org-add-ids-to-headlines-in-file nil 'local)))
+# #+end_src
 
 ** Packages
 :PROPERTIES:

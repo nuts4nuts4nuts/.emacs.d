@@ -300,7 +300,7 @@
 	  org-id-locations-file "~/org/.org-id-locations"
 	  org-startup-truncated nil
 	  org-ellipsis ">>"
-	  org-id-link-to-org-use-id 'create-if-interactive
+	  org-id-link-to-org-use-id 't
 	  org-image-actual-width 600
 	  org-edit-src-content-indentation 0
 	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
@@ -616,16 +616,6 @@
   (setq org-agenda-files current-agenda-files))
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
-
-(defun dkj/org-add-ids-to-headlines-in-file ()
-  "Add ID properties to all headlines in the current file which
-do not already have one."
-  (interactive)
-  (org-map-entries 'org-id-get-create))
-
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-hook 'before-save-hook 'dkj/org-add-ids-to-headlines-in-file nil 'local)))
 
 ;; Initialize package sources
 (require 'package)
