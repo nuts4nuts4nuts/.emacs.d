@@ -986,7 +986,11 @@ and leaving a noweb reference in its place."
   ;; big font
   (dkj/font-height 180)
   ;; special bindings
-  (global-set-key (kbd "<volume-down>") #'execute-extended-command)
+  (defun dkj/onscreen-keyboard ()
+	"Show the onscreen keyboard"
+	(interactive)
+	(frame-toggle-on-screen-keyboard nil nil))
+  (global-set-key (kbd "<volume-down>") #'dkj/onscreen-keyboard)
   (global-set-key (kbd "<volume-up>") #'winner-undo)
   ;; extra light theme
   (setq dkj/theme-light 'modus-operandi)
