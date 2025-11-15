@@ -1378,10 +1378,10 @@ Take synched org notes on documents in Emacs!
 For reading pdfs in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
-;; (use-package pdf-tools
-;;   :ensure t
-;;   :init
-;;   (pdf-tools-install))
+ (use-package pdf-tools
+   :ensure t
+   :init
+   (pdf-tools-install))
 #+end_src
 *** nov.el
 :PROPERTIES:
@@ -1513,11 +1513,13 @@ Its helpful to have dofferent settings for mobile use.
 	"Show the onscreen keyboard"
 	(interactive)
 	(frame-toggle-on-screen-keyboard nil nil))
-  (global-set-key (kbd "<volume-down>") #'dkj/onscreen-keyboard)
-  (global-set-key (kbd "<volume-up>") #'winner-undo)
+  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
+  (global-set-key (kbd "<volume-up>") #'dkj/onscreen-keyboard)
   ;; extra light theme
   (setq dkj/theme-light 'modus-operandi)
   (load-theme dkj/theme-light t))
+  ;; smooth scrolling
+  (setq touch-screen-precision-scroll t)
 #+end_src
 
 ** Load other files

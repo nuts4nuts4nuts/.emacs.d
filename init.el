@@ -921,10 +921,10 @@ and leaving a noweb reference in its place."
 			[menu-bar mobile-reading org-noter-insert-precise-note]
 			'("Insert note" . dkj/noter-insert-note-and-save-all))
 
-;; (use-package pdf-tools
-;;   :ensure t
-;;   :init
-;;   (pdf-tools-install))
+(use-package pdf-tools
+  :ensure t
+  :init
+  (pdf-tools-install))
 
 (use-package nov
   :ensure t
@@ -990,11 +990,13 @@ and leaving a noweb reference in its place."
 	"Show the onscreen keyboard"
 	(interactive)
 	(frame-toggle-on-screen-keyboard nil nil))
-  (global-set-key (kbd "<volume-down>") #'dkj/onscreen-keyboard)
-  (global-set-key (kbd "<volume-up>") #'winner-undo)
+  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
+  (global-set-key (kbd "<volume-up>") #'dkj/onscreen-keyboard)
   ;; extra light theme
   (setq dkj/theme-light 'modus-operandi)
   (load-theme dkj/theme-light t))
+  ;; smooth scrolling
+  (setq touch-screen-precision-scroll t)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
