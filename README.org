@@ -184,8 +184,8 @@ These are some basic settings to make life a little better. They don't relate to
 (global-set-key (kbd "[") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "{") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "<") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "`") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "~") #'skeleton-pair-insert-maybe)
+;; (global-set-key (kbd "`") #'skeleton-pair-insert-maybe)
+;; (global-set-key (kbd "~") #'skeleton-pair-insert-maybe)
 (global-set-key (kbd "\"") #'skeleton-pair-insert-maybe)
 (setq-default skeleton-pair-alist '((?` _ ?`)))
 
