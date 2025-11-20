@@ -904,9 +904,9 @@ and leaving a noweb reference in its place."
 
 (define-key global-map
 			[menu-bar mobile-reading org-noter]
-			'("Orientalism" . (lambda () (interactive)
+			'("ElixirInAction" . (lambda () (interactive)
 								(dkj/goto-id-mobile-org-noter
-								 "79789b99-5741-4605-947b-13bd070e18dc"))))
+								 "0467cb4c-2045-4339-8097-855d7caf09fd"))))
 
 (define-key global-map
 			[separator-4] menu-bar-separator) 
