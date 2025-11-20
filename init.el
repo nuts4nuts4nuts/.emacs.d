@@ -448,9 +448,9 @@
 (setq org-agenda-custom-commands '(("n"
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
+									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
-											   (org-agenda-overriding-header "Inbox tasks")))
-									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))))
+											   (org-agenda-overriding-header "Inbox tasks")))))
 								   ("h"
 									"Next steps at home organized by sizes"
 									((tags-todo "+@home/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
@@ -471,7 +471,8 @@
 
 (defun dkj/format-n-breadcrumbs (n)
   "Formats the first and last n-1 headers for an org item for my agenda."
-  (let* ((breadcrumbs (org-get-outline-path))
+  (let* ((breadcrumbs (when (derived-mode-p 'org-mode)
+						(org-get-outline-path)))
 		 (blength (length breadcrumbs))
 		 (extra (if (> blength n) '(".") '()))
 		 (first (cons (car breadcrumbs)
@@ -992,11 +993,12 @@ and leaving a noweb reference in its place."
 	(frame-toggle-on-screen-keyboard nil nil))
   (global-set-key (kbd "<volume-down>") #'scroll-up-command)
   (global-set-key (kbd "<volume-up>") #'dkj/onscreen-keyboard)
-  ;; extra light theme
+  ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
-  (load-theme dkj/theme-light t))
+  (setq dkj/theme-dark 'modus-vivendi)
+  (load-theme dkj/theme-light t)
   ;; smooth scrolling
-  (setq touch-screen-precision-scroll t)
+  (setq touch-screen-precision-scroll t))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
