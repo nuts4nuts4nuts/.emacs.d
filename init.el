@@ -54,7 +54,7 @@
 (setq view-read-only t)
 
 ;; Use bar cursor since it matches the emacs model better
-(setq-default cursor-type 'bar)
+(setq-default cursor-type 'hollow)
 
 ;; Add more context when scrolling around
 (setq next-screen-context-lines 10)
@@ -773,6 +773,8 @@
 ;; execute Go in org source blocks
 (use-package ob-go)
 
+(use-package elixir-mode)
+
 (use-package ob-go)
 
 (org-babel-do-load-languages
@@ -997,6 +999,8 @@ and leaving a noweb reference in its place."
   (load-theme dkj/theme-light t))
   ;; smooth scrolling
   (setq touch-screen-precision-scroll t)
+  ;; dont blink cursor (particularly for eink)
+  (setq-default blink-cursor-mode nil)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))

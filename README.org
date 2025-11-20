@@ -94,7 +94,7 @@ These are some basic settings to make life a little better. They don't relate to
 (setq view-read-only t)
 
 ;; Use bar cursor since it matches the emacs model better
-(setq-default cursor-type 'bar)
+(setq-default cursor-type 'hollow)
 
 ;; Add more context when scrolling around
 (setq next-screen-context-lines 10)
@@ -1118,6 +1118,18 @@ GDScript mode!
 (use-package ob-go)
 #+end_src
 
+**** Elixir support
+:PROPERTIES:
+:ID:       AA80EA60-661E-4AEE-991D-3C07007B2E65
+:END:
+
+Lets get parallel
+
+#+begin_src emacs-lisp
+(use-package elixir-mode)
+#+end_src
+
+
 **** Org-babel
 :PROPERTIES:
 :ID:       106A6515-8083-4221-8F20-5DB53E8FE758
@@ -1520,6 +1532,8 @@ Its helpful to have dofferent settings for mobile use.
   (load-theme dkj/theme-light t))
   ;; smooth scrolling
   (setq touch-screen-precision-scroll t)
+  ;; dont blink cursor (particularly for eink)
+  (setq-default blink-cursor-mode nil)
 #+end_src
 
 ** Load other files
