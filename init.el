@@ -448,16 +448,18 @@
 (setq org-agenda-custom-commands '(("n"
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
+									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
 									 (todo "PROG" ((org-agenda-overriding-header "In-progress tasks")))
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))))
 								   ("h"
 									"Next steps at home organized by sizes"
-									((tags-todo "+@home/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+									((tags-todo "+@home/TODO" ((org-agenda-todo-ignore-deadlines 'all)
 															   (org-agenda-todo-ignore-scheduled 'all)))))
 								   ("o"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@out/NEXT" ((org-agenda-todo-ignore-deadlines 'all)
+									((tags-todo "+@out/TODO
+" ((org-agenda-todo-ignore-deadlines 'all)
 															  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
@@ -497,7 +499,7 @@
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
 (setq org-todo-keywords
-	  '((sequence "TODO(t)" "NEXT(n)" "PROG(p)" "|" "DONE(d!)" "CNCL(c!)"))
+	  '((sequence "TODO(t)" "PROG(p)" "BLCK(b)" "|" "DONE(d!)" "CNCL(c!)"))
 	  org-clock-into-drawer t
 	  org-log-into-drawer t)
 
@@ -513,7 +515,7 @@
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* NEXT %?\n%U\n%a\n" :clock-in t :clock-keep t)
+			   "* TODO %?\n%U\n%a\n" :clock-in t :clock-keep t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
 			   "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
