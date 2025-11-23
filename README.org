@@ -198,6 +198,10 @@ These are some basic settings to make life a little better. They don't relate to
 
 ;; Don't show eldoc in the minibuffer
 (setq-default eldoc-echo-area-use-multiline-p nil)
+
+;; agenda split
+(defun dkj/agenda-split ()
+  (split-window-right))
 #+end_src
 **** R/G/R Highlights
 :PROPERTIES:
@@ -522,7 +526,7 @@ All flows from the agenda
   (progn
 	(dkj/agenda-main-view)
 	(delete-other-windows)
-	(split-window-right)
+	(dkj/agenda-split)
 	(org-agenda-redo-all)
 	(other-window 1)
 	(org-clock-goto)
@@ -1538,7 +1542,10 @@ Its helpful to have dofferent settings for mobile use.
   ;; smooth scrolling
   (setq touch-screen-precision-scroll t)
   ;; dont blink cursor (particularly for eink)
-  (setq-default blink-cursor-mode nil))
+  (setq-default blink-cursor-mode nil)
+  ;; split below for smaller screen
+  (defun dkj/agenda-split ()
+	(split-window-below)))
 #+end_src
 
 ** Load other files
