@@ -54,7 +54,8 @@
 (setq view-read-only t)
 
 ;; Use bar cursor since it matches the emacs model better
-(setq-default cursor-type 'hollow)
+;; but make it a little thick
+(setq-default cursor-type '(bar . 3))
 
 ;; Add more context when scrolling around
 (setq next-screen-context-lines 10)
