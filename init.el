@@ -993,8 +993,6 @@ and leaving a noweb reference in its place."
   (tool-bar-mode 1)
   (set-frame-parameter nil 'tool-bar-position 'bottom)
   (set-frame-parameter nil 'tool-bar-lines 1)
-  ;; big font
-  (dkj/font-height 180)
   ;; special bindings
   (defun dkj/onscreen-keyboard ()
 	"Show the onscreen keyboard"
