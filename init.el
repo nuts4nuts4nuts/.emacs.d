@@ -163,6 +163,10 @@
 (defun dkj/agenda-split ()
   (split-window-right))
 
+;; run async commands in new buffers when old ones are in use
+;; without confirmation
+(setq async-shell-command-buffer 'new-buffer)
+
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
