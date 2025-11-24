@@ -400,7 +400,7 @@
            (files (replace-regexp-in-string "\n" ", " files))
            (files (replace-regexp-in-string ", $" "" files))
            (message (format "[Emacs] Update %s" files)))
-      (async-shell-command (format "git commit -am \"%s\" && git pull && git push" message)))))
+      (async-shell-command (format "git add -A && git diff-index --quiet HEAD || git commit -m \"%s\" && git pull && git push" message)))))
 
 (require 'org-agenda)
 
