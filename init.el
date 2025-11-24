@@ -392,9 +392,7 @@
            (files (replace-regexp-in-string "\n" ", " files))
            (files (replace-regexp-in-string ", $" "" files))
            (message (format "[Emacs] Update %s" files)))
-      (shell-command (format "git commit -am \"%s\"" message)))
-	(shell-command "git pull")
-	(shell-command "git push")))
+      (async-shell-command (format "git commit -am \"%s\" && git pull && git push" message)))))
 
 (require 'org-agenda)
 
@@ -421,6 +419,7 @@
 (defun dkj/open-agenda-main-view (prefix)
   "Open the main view of my agenda."
   (interactive "P")
+  (dkj/org-sync)
   (progn
 	(if (equal major-mode 'org-agenda-mode) (delete-other-windows))
 	(setq current-prefix-arg nil)
