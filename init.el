@@ -159,6 +159,10 @@
 ;; Don't show eldoc in the minibuffer
 (setq-default eldoc-echo-area-use-multiline-p nil)
 
+;; agenda split
+(defun dkj/agenda-split ()
+  (split-window-right))
+
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
@@ -410,7 +414,7 @@
   (progn
 	(dkj/agenda-main-view)
 	(delete-other-windows)
-	(split-window-right)
+	(dkj/agenda-split)
 	(org-agenda-redo-all)
 	(other-window 1)
 	(org-clock-goto)
@@ -988,8 +992,6 @@ and leaving a noweb reference in its place."
   (tool-bar-mode 1)
   (set-frame-parameter nil 'tool-bar-position 'bottom)
   (set-frame-parameter nil 'tool-bar-lines 1)
-  ;; big font
-  (dkj/font-height 180)
   ;; special bindings
   (defun dkj/onscreen-keyboard ()
 	"Show the onscreen keyboard"
@@ -1004,7 +1006,10 @@ and leaving a noweb reference in its place."
   ;; smooth scrolling
   (setq touch-screen-precision-scroll t)
   ;; dont blink cursor (particularly for eink)
-  (setq-default blink-cursor-mode nil))
+  (setq-default blink-cursor-mode nil)
+  ;; split below for smaller screen
+  (defun dkj/agenda-split ()
+	(split-window-below)))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
