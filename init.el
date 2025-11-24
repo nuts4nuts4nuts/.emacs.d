@@ -408,6 +408,7 @@
 ;; Quickly sync org files through git
 (defun dkj/org-sync ()
   (interactive)
+  (org-save-all-org-buffers)
   (let ((default-directory "~/org/"))
     (let* ((status (shell-command-to-string "git status -s"))
            (files (replace-regexp-in-string "^.+M " "" status))
@@ -426,8 +427,9 @@
   (org-agenda nil "n"))
 
 ;; define a secondary view to use in the following functions
-(defun dkj/agenda-alt-view ()
-  (org-agenda nil "N"))
+(defun dkj/agenda-main-one-window ()
+  (dkj/agenda-main-view)
+  (delete-other-windows))
 
 (defun dkj/present-agenda-and-clocked ()
   "Open the agenda and the currently clocked task side by side."
@@ -450,7 +452,7 @@
 	(setq current-prefix-arg nil)
 	(cond
 	 ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
-	 ((equal prefix '(16)) (dkj/agenda-alt-view))
+	 ((equal prefix '(16)) (dkj/agenda-main-one-window))
 	 (t (dkj/agenda-main-view)))))
 
 ;; Open agenda through the menu bar
