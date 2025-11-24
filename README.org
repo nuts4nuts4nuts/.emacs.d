@@ -1538,7 +1538,7 @@ Create and review flashcards all from within Emacs.
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d
 :END:
 
-Its helpful to have dofferent settings for mobile use.
+Its helpful to have different settings for mobile use.
 
 #+begin_src emacs-lisp
 (when (eq system-type 'android)
@@ -1546,13 +1546,11 @@ Its helpful to have dofferent settings for mobile use.
   (tool-bar-mode 1)
   (set-frame-parameter nil 'tool-bar-position 'bottom)
   (set-frame-parameter nil 'tool-bar-lines 1)
+  ;; always display keyboard
+  (setq touch-screen-display-keyboard t)
   ;; special bindings
-  (defun dkj/onscreen-keyboard ()
-	"Show the onscreen keyboard"
-	(interactive)
-	(frame-toggle-on-screen-keyboard nil nil))
   (global-set-key (kbd "<volume-down>") #'scroll-up-command)
-  (global-set-key (kbd "<volume-up>") #'dkj/onscreen-keyboard)
+  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)

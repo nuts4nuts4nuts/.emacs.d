@@ -1013,13 +1013,11 @@ and leaving a noweb reference in its place."
   (tool-bar-mode 1)
   (set-frame-parameter nil 'tool-bar-position 'bottom)
   (set-frame-parameter nil 'tool-bar-lines 1)
+  ;; always display keyboard
+  (setq touch-screen-display-keyboard t)
   ;; special bindings
-  (defun dkj/onscreen-keyboard ()
-	"Show the onscreen keyboard"
-	(interactive)
-	(frame-toggle-on-screen-keyboard nil nil))
   (global-set-key (kbd "<volume-down>") #'scroll-up-command)
-  (global-set-key (kbd "<volume-up>") #'dkj/onscreen-keyboard)
+  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)
