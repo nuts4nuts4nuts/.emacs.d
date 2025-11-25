@@ -1017,9 +1017,6 @@ and leaving a noweb reference in its place."
   (set-frame-parameter nil 'tool-bar-lines 1)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
-  ;; special bindings
-  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
-  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)
@@ -1031,6 +1028,12 @@ and leaving a noweb reference in its place."
   ;; split below for smaller screen
   (defun dkj/agenda-split ()
 	(split-window-below)))
+
+  ;; special bindings
+  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
+  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
+  (global-set-key (kbd "A-e") #'avy-goto-char-2)
+  (global-set-key (kbd "A-d") #'delete-other-windows)
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
