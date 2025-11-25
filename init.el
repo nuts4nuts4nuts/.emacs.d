@@ -542,9 +542,9 @@
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n%a\n" :clock-in t :clock-keep t)
+			   "* TODO %?\n%U\n%a\n")
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* %? :MEETING:\n%U\n" :clock-in t :clock-keep t)
+			   "* %? :MEETING:\n%U\n")
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
