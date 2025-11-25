@@ -1010,6 +1010,9 @@ and leaving a noweb reference in its place."
 			  ("<f7>" . org-srs-review-rate-hard)
 			  ("<f8>" . org-srs-review-rate-again)))
 
+(use-package keyfreq)
+(keyfreq-mode t)
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)

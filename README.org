@@ -1159,7 +1159,6 @@ Lets get parallel
 (use-package elixir-mode)
 #+end_src
 
-
 **** Org-babel
 :PROPERTIES:
 :ID:       106A6515-8083-4221-8F20-5DB53E8FE758
@@ -1534,6 +1533,13 @@ Create and review flashcards all from within Emacs.
 			  ("<f6>" . org-srs-review-rate-good)
 			  ("<f7>" . org-srs-review-rate-hard)
 			  ("<f8>" . org-srs-review-rate-again)))
+#+end_src
+*** keyfreq
+Track the frequency with which I use commands.
+
+#+begin_src emacs-lisp
+(use-package keyfreq)
+(keyfreq-mode t)
 #+end_src
 ** Android stuff
 :PROPERTIES:
