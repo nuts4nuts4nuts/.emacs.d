@@ -932,6 +932,12 @@ and leaving a noweb reference in its place."
   (dkj/mobile-org-noter))
 
 (define-key global-map
+			[menu-bar mobile-reading book-club]
+			'("Fanon" . (lambda () (interactive)
+								(dkj/goto-id-mobile-org-noter
+								 "672b1b9a-6572-4eb6-aeb0-92dc8d46c2fa"))))
+
+(define-key global-map
 			[menu-bar mobile-reading org-noter]
 			'("ElixirInAction" . (lambda () (interactive)
 								(dkj/goto-id-mobile-org-noter
