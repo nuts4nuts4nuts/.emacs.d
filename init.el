@@ -932,16 +932,20 @@ and leaving a noweb reference in its place."
   (dkj/mobile-org-noter))
 
 (define-key global-map
+			[menu-bar mobile-reading noter2]
+			'("BrilliantFriend" . (lambda () (interactive)
+								(dkj/goto-id-mobile-org-noter
+								 "7a7229e7-1dde-4e8c-8e6b-8cd9915f6eb1"))))
+(define-key global-map
+			[menu-bar mobile-reading noter1]
+			'("ElixirInAction" . (lambda () (interactive)
+								(dkj/goto-id-mobile-org-noter
+								 "0467cb4c-2045-4339-8097-855d7caf09fd"))))
+(define-key global-map
 			[menu-bar mobile-reading book-club]
 			'("Fanon" . (lambda () (interactive)
 								(dkj/goto-id-mobile-org-noter
 								 "672b1b9a-6572-4eb6-aeb0-92dc8d46c2fa"))))
-
-(define-key global-map
-			[menu-bar mobile-reading org-noter]
-			'("ElixirInAction" . (lambda () (interactive)
-								(dkj/goto-id-mobile-org-noter
-								 "0467cb4c-2045-4339-8097-855d7caf09fd"))))
 
 (define-key global-map
 			[separator-4] menu-bar-separator) 
