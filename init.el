@@ -121,7 +121,8 @@
 
 ;; Allow the mouse in terminal mode
 (xterm-mouse-mode 1)
-(add-hook 'focus-in-hook 'dkj/xterm-mouse-refresh)
+(add-function :after after-focus-change-function
+			  #'dkj/xterm-mouse-refresh)
 (defun dkj/xterm-mouse-refresh ()
   (interactive)
   (cond ((equal xterm-mouse-mode t)
@@ -419,6 +420,8 @@
       (dkj/async-shell-command
 	   (format "git add -A && git diff-index --quiet HEAD || git commit -m \"%s\" && git pull && git push" message)
 	   "*dkj/org-sync*"))))
+(add-function :after after-focus-change-function
+			  #'dkj/org-sync)
 
 (require 'org-agenda)
 
@@ -1022,6 +1025,7 @@ and leaving a noweb reference in its place."
 
 (use-package keyfreq)
 (keyfreq-mode t)
+(keyfreq-autosave-mode t)
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom

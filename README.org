@@ -161,7 +161,8 @@ These are some basic settings to make life a little better. They don't relate to
 
 ;; Allow the mouse in terminal mode
 (xterm-mouse-mode 1)
-(add-hook 'focus-in-hook 'dkj/xterm-mouse-refresh)
+(add-function :after after-focus-change-function
+			  #'dkj/xterm-mouse-refresh)
 (defun dkj/xterm-mouse-refresh ()
   (interactive)
   (cond ((equal xterm-mouse-mode t)
@@ -520,6 +521,8 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
       (dkj/async-shell-command
 	   (format "git add -A && git diff-index --quiet HEAD || git commit -m \"%s\" && git pull && git push" message)
 	   "*dkj/org-sync*"))))
+(add-function :after after-focus-change-function
+			  #'dkj/org-sync)
 #+end_src
 
 *** Agenda settings
@@ -1550,6 +1553,7 @@ Track the frequency with which I use commands.
 #+begin_src emacs-lisp
 (use-package keyfreq)
 (keyfreq-mode t)
+(keyfreq-autosave-mode t)
 #+end_src
 ** Android stuff
 :PROPERTIES:
