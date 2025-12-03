@@ -156,20 +156,21 @@ These are some basic settings to make life a little better. They don't relate to
 ;; Increase shell mode history ring
 (setq comint-input-ring-size 100000)
 
-;; Let xterm-compatible terminals copy-paste from emacs
-(setq xterm-extra-capabilities '(setSelection))
-
-;; Allow the mouse in terminal mode
-(xterm-mouse-mode 1)
-(add-function :after after-focus-change-function
-			  #'dkj/xterm-mouse-refresh)
-(defun dkj/xterm-mouse-refresh ()
-  (interactive)
-  (cond ((equal xterm-mouse-mode t)
-		 (progn
-		   (xterm-mouse-mode -1)
-		   (xterm-mouse-mode 1)))
-		(t (xterm-mouse-mode 1))))
+;; Terminal settings
+(unless (display-graphic-p)
+  ;; Let xterm-compatible terminals copy-paste from emacs
+  (setq xterm-extra-capabilities '(setSelection))
+  ;; Allow the mouse in terminal mode
+  (xterm-mouse-mode 1)
+  (defun dkj/xterm-mouse-refresh ()
+	(interactive)
+	(cond ((equal xterm-mouse-mode t)
+		   (progn
+			 (xterm-mouse-mode -1)
+			 (xterm-mouse-mode 1)))
+		  (t (xterm-mouse-mode 1))))
+  (add-function :after after-focus-change-function
+				#'dkj/xterm-mouse-refresh))
 
 ;; No maximum terminal buffer sizes
 (setq-default comint-buffer-maximum-size 0)
@@ -179,17 +180,6 @@ These are some basic settings to make life a little better. They don't relate to
 ;; ediff settings [[https://www.youtube.com/watch?v=pSvsAutseO0][from prot]]
 (setq ediff-split-window-function 'split-window-horizontally  ; vert
 	  ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
-
-;; smarter pair insertion
-(setq skeleton-pair t)
-(global-set-key (kbd "(") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "[") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "{") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "<") #'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "`") #'skeleton-pair-insert-maybe)
-;; (global-set-key (kbd "~") #'skeleton-pair-insert-maybe)
-(global-set-key (kbd "\"") #'skeleton-pair-insert-maybe)
-(setq-default skeleton-pair-alist '((?` _ ?`)))
 
 ;; Made M-x grep use rg by default
 (setq grep-command "rg -n -H --no-heading -e ")
@@ -507,17 +497,18 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
       ;; No running process found
       (async-shell-command command output-buffer))))
 
+(add-to-list 'display-buffer-alist
+			 '("*dkj/org-sync*" display-buffer-no-window (nil)))
 ;; Quickly sync org files through git
 (defun dkj/org-sync ()
   (interactive)
   (org-save-all-org-buffers)
   (let ((default-directory "~/org/"))
     (let* ((status (shell-command-to-string "git status -s"))
-           (files (replace-regexp-in-string "^.+M " "" status))
-           (files (replace-regexp-in-string "\n. ." ", " files))
+           (files (replace-regexp-in-string "\n. ." ", " status))
            (files (replace-regexp-in-string "\n" ", " files))
            (files (replace-regexp-in-string ", $" "" files))
-           (message (format "[Emacs] Update %s" files)))
+           (message (format "[Emacs] %s" files)))
       (dkj/async-shell-command
 	   (format "git add -A && git diff-index --quiet HEAD || git commit -m \"%s\" && git pull && git push" message)
 	   "*dkj/org-sync*"))))
@@ -1554,6 +1545,16 @@ Track the frequency with which I use commands.
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
+#+end_src
+*** Smart parens
+Skeleton insertion is too finicky, so let's go for bigger guns.
+#+begin_src emacs-lisp
+(use-package smartparens
+  :ensure smartparens  ;; install the package
+  :hook (prog-mode text-mode markdown-mode org-mode) ;; add `smartparens-mode` to these hooks
+  :config
+  ;; load default config
+  (require 'smartparens-config))
 #+end_src
 ** Android stuff
 :PROPERTIES:
