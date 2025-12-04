@@ -197,6 +197,9 @@ These are some basic settings to make life a little better. They don't relate to
 ;; run async commands in new buffers when old ones are in use
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
+
+;; Make shell-command and friends read .bashrc
+(setq shell-command-switch "-ic")
 #+end_src
 **** R/G/R Highlights
 :PROPERTIES:

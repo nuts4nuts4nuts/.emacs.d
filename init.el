@@ -158,6 +158,9 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
+;; Make shell-command and friends read .bashrc
+(setq shell-command-switch "-ic")
+
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
