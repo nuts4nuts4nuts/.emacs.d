@@ -1044,13 +1044,14 @@ and leaving a noweb reference in its place."
   (setq-default blink-cursor-mode nil)
   ;; split below for smaller screen
   (defun dkj/agenda-split ()
-	(split-window-below)))
-
+	(split-window-below))
   ;; special bindings
   (global-set-key (kbd "<volume-down>") #'scroll-up-command)
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
+  (define-key doc-view-mode-map (kbd "<volume-down>") #'doc-view-scroll-up-or-next-page)
+  (define-key doc-view-mode-map (kbd "<volume-up>") #'doc-view-scroll-down-or-previous-page)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
-  (global-set-key (kbd "A-d") #'delete-other-windows)
+  (global-set-key (kbd "A-d") #'delete-other-windows))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
