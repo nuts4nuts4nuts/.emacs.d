@@ -407,8 +407,7 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
 	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
 	  org-global-properties '(("Effort_ALL" .  "10 30 90 270"))
 	  ;; Better default header creation
-	  org-M-RET-may-split-line '((default . nil))
-	  org-insert-heading-respect-content t)
+	  org-M-RET-may-split-line '((default . nil)))
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
