@@ -338,6 +338,53 @@
 (with-eval-after-load "org"
   (define-key org-mode-map (kbd "C-c l") #'dkj/org-id-insert-link))
 
+;; Much more complicated fuzzy-completing clock into header from clock history
+;; Written by Gemini
+(defun dkj/org-clock-anywhere ()
+  "Select a task from clock history and clock in immediately.
+   Auto-loads persistence history if currently empty.
+   Features: Always shows Filename, table layout, preserved colors."
+  (interactive)
+  (require 'cl-lib)
+  (require 'org-clock) ;; Ensure the clock library is loaded
+  ;; If history is empty/missing, load it from the save file immediately.
+  (when (or (null org-clock-history)
+            (not org-clock-history))
+    (org-clock-load))
+  (let ((candidates
+         (cl-loop for marker in org-clock-history
+                  for buf = (marker-buffer marker)
+                  when (and buf (buffer-live-p buf))
+                  when (with-current-buffer buf
+                         (save-excursion
+                           (goto-char marker)
+                           (when (org-at-heading-p)
+                             (let* ((todo (org-get-todo-state))
+                                    ;; 1. HEADLINE: Clean links -> Truncate -> Calc Padding
+                                    (raw  (org-link-display-format (org-get-heading t t t t)))
+                                    (head (truncate-string-to-width raw 50 0 nil "..."))
+                                    (pad  (make-string (max 0 (- 50 (string-width head))) ?\s))
+                                    ;; 2. PATH: Simplified logic (File + Outline)
+                                    (path (mapconcat #'identity
+                                                     (cons (buffer-name) (org-get-outline-path nil t))
+                                                     "/")))
+                               (cons (format "%-6s %s%s %s"
+                                             (if todo (propertize todo 'face (org-get-todo-face todo)) "")
+                                             head pad
+                                             (propertize (format "| %s:%d" path (line-number-at-pos))
+                                                         'face 'org-special-keyword))
+                                     marker)))))
+                  collect it)))
+    ;; Disable Vertico sorting to preserve MRU order
+    (let ((vertico-sort-function nil))
+      (when-let ((sel (completing-read "Clock In: " candidates nil t))
+                 (marker (cdr (assoc sel candidates))))
+        (with-current-buffer (marker-buffer marker)
+          (save-excursion
+            (goto-char marker)
+            (org-clock-in)))))))
+(define-key dkj-keys (kbd "C-i") #'dkj/org-clock-anywhere)
+
 ;; "One" button org-add-note to clocked workflow
 (defun dkj/create-org-store-log-note-and-save (m)
   (defun dkj/org-store-log-note-and-save () ; This only works with lexical binding
@@ -414,8 +461,7 @@
       (dkj/async-shell-command
 	   (format "git add -A && git diff-index --quiet HEAD || git commit -m \"%s\" && git pull && git push" message)
 	   "*dkj/org-sync*"))))
-(add-function :after after-focus-change-function
-			  #'dkj/org-sync)
+(add-function :after after-focus-change-function #'dkj/org-sync)
 
 (require 'org-agenda)
 
@@ -482,8 +528,7 @@
 															   (org-agenda-todo-ignore-scheduled 'all)))))
 								   ("o"
 									"Next steps at anywhere organized by sizes"
-									((tags-todo "+@out/TODO
-" ((org-agenda-todo-ignore-deadlines 'all)
+									((tags-todo "+@out/TODO" ((org-agenda-todo-ignore-deadlines 'all)
 															  (org-agenda-todo-ignore-scheduled 'all)))))))
 
 ;; Agenda sorting order
@@ -527,11 +572,12 @@
 	  org-clock-into-drawer t
 	  org-log-into-drawer t)
 
-;; Switch to "PROG" when clocked in, unless we're just clocking in a capture buffer
-(defun dkj/prog-when-clock-if-not-cap (state)
-  (cond ((and (boundp 'org-capture-mode) org-capture-mode) state)
+;; Switch to "PROG" when clocked in, if the header is a TODO
+(defun dkj/prog-when-clock-if-todo (state)
+  (message state)
+  (cond ((equal state nil) state)
 		(t "PROG")))
-(setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-not-cap)
+(setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-todo)
 
 (setq org-tag-persistent-alist '(;; Contexts
 								 ("@home" . ?h)
@@ -545,12 +591,15 @@
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
-;; Show lot of clocking history so it's easy to pick items off the C-t C-i list
-(setq org-clock-history-length 25)
+;; Show lots of clocking history so it's easy to pick items off the C-t C-i list
+(setq org-clock-history-length 40)
 ;; Resume clocking task on clock-in if the clock is open
 (setq org-clock-in-resume t)
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
 (setq org-clock-persist t)
+(org-clock-persistence-insinuate)
+;; Autosave clock metadata
+(run-at-time nil 300 'org-clock-save)
 ;; Set clock duration format to never aggregate up to days
 (setq org-duration-format (quote h:mm))
 
@@ -570,11 +619,6 @@
 														  :no-end-time-face nil
 														  :long-face nil
 														  :short-face nil))
-
-(defun dkj/global-clock-in ()
-  (interactive)
-  (org-clock-in '(4)))
-(define-key dkj-keys (kbd "C-i") #'dkj/global-clock-in)
 
   ;;;;; LOG BASED WORKFLOW BINDINGS I WANT TO KEEP HERE FOR NOW ;;;;;
 ;; (defun dkj/log-at-marker (marker)
@@ -931,18 +975,18 @@ and leaving a noweb reference in its place."
 (define-key global-map
 			[menu-bar mobile-reading noter2]
 			'("BrilliantFriend" . (lambda () (interactive)
-								(dkj/goto-id-mobile-org-noter
-								 "7a7229e7-1dde-4e8c-8e6b-8cd9915f6eb1"))))
+									(dkj/goto-id-mobile-org-noter
+									 "7a7229e7-1dde-4e8c-8e6b-8cd9915f6eb1"))))
 (define-key global-map
 			[menu-bar mobile-reading noter1]
 			'("ElixirInAction" . (lambda () (interactive)
-								(dkj/goto-id-mobile-org-noter
-								 "0467cb4c-2045-4339-8097-855d7caf09fd"))))
+								   (dkj/goto-id-mobile-org-noter
+									"0467cb4c-2045-4339-8097-855d7caf09fd"))))
 (define-key global-map
 			[menu-bar mobile-reading book-club]
 			'("Fanon" . (lambda () (interactive)
-								(dkj/goto-id-mobile-org-noter
-								 "672b1b9a-6572-4eb6-aeb0-92dc8d46c2fa"))))
+						  (dkj/goto-id-mobile-org-noter
+						   "672b1b9a-6572-4eb6-aeb0-92dc8d46c2fa"))))
 
 (define-key global-map
 			[separator-4] menu-bar-separator) 
