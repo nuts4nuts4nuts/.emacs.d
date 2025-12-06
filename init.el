@@ -340,46 +340,48 @@
 ;; Much more complicated fuzzy-completing clock into header from clock history
 ;; Written by Gemini
 (defun dkj/org-clock-anywhere ()
-  "Select a task from clock history and clock in immediately.
-   Auto-loads persistence history if currently empty.
-   Features: Always shows Filename, table layout, preserved colors."
+  "Select a task from clock history and clock in.
+   Robust, aligned, and face-safe."
   (interactive)
-  (require 'cl-lib)
-  (require 'org-clock) ;; Ensure the clock library is loaded
-  ;; If history is empty/missing, load it from the save file immediately.
-  (when (or (null org-clock-history)
-            (not org-clock-history))
-    (org-clock-load))
-  (let ((candidates
+  (require 'org-clock)
+  (unless org-clock-history (org-clock-load))
+  (let* ((header-width 60)
+        (candidates
          (cl-loop for marker in org-clock-history
                   for buf = (marker-buffer marker)
                   when (and buf (buffer-live-p buf))
                   when (with-current-buffer buf
                          (save-excursion
-                           (goto-char marker)
-                           (when (org-at-heading-p)
-                             (let* ((todo (org-get-todo-state))
-                                    ;; 1. HEADLINE: Clean links -> Truncate -> Calc Padding
-                                    (raw  (org-link-display-format (org-get-heading t t t t)))
-                                    (head (truncate-string-to-width raw 50 0 nil "..."))
-                                    (pad  (make-string (max 0 (- 50 (string-width head))) ?\s))
-                                    ;; 2. PATH: Simplified logic (File + Outline)
-                                    (path (mapconcat #'identity
-                                                     (cons (buffer-name) (org-get-outline-path nil t))
-                                                     "/")))
-                               (cons (format "%-6s %s%s %s"
-                                             (if todo (propertize todo 'face (org-get-todo-face todo)) "")
-                                             head pad
-                                             (propertize (format "| %s:%d" path (line-number-at-pos))
-                                                         'face 'org-special-keyword))
-                                     marker)))))
+                           (save-restriction
+                             (widen)
+                             (goto-char marker)
+                             (when (org-at-heading-p)
+                               (let* ((raw (org-link-display-format (org-get-heading t t t t)))
+                                      (head (truncate-string-to-width raw header-width 0 nil "..."))
+                                      (key (concat head (make-string (max 0 (- header-width (string-width head))) ?\s)
+                                                   (propertize (format "\0:%d" (line-number-at-pos)) 'invisible t))))
+                                 (cons (propertize key 
+                                                   'dkj-todo (org-get-todo-state)
+                                                   'dkj-path (mapconcat #'identity (cons (buffer-name) (org-get-outline-path nil t)) "/"))
+                                       marker))))))
                   collect it)))
-    ;; Disable Vertico sorting to preserve MRU order
-    (let ((vertico-sort-function nil))
-      (when-let ((sel (completing-read "Clock In: " candidates nil t))
-                 (marker (cdr (assoc sel candidates))))
+    (let ((completion-extra-properties
+           `(:affixation-function
+             (lambda (keys)
+               (mapcar (lambda (k)
+                         (list k
+                               (if-let ((todo (get-text-property 0 'dkj-todo k)))
+                                   (format "%-5s " (propertize todo 'face (org-get-todo-face todo))) 
+                                 "      ")
+                               (propertize (format "   | %s" (get-text-property 0 'dkj-path k)) 
+                                           'face 'org-special-keyword)))
+                       keys))))
+          (vertico-sort-function nil))
+      (when-let* ((sel (completing-read "Clock In: " candidates nil t))
+                  (marker (cdr (assoc sel candidates))))
         (with-current-buffer (marker-buffer marker)
-          (save-excursion
+          (save-restriction
+            (widen)
             (goto-char marker)
             (org-clock-in)))))))
 (define-key dkj-keys (kbd "C-i") #'dkj/org-clock-anywhere)
