@@ -35,8 +35,10 @@
    ns-command-modifier 'meta))
 
 ;; unbind set-goal column
-;; I'm always accidentally pressing this
+;; I'm always accidentally pressing these
 (global-unset-key (kbd "C-x C-n"))
+;; used to be set-fill-column
+(global-set-key (kbd "C-x f") #'find-file)
 
 ;; Automatically balance windows when they are created or destroyed
 (setq window-combination-resize t)
