@@ -447,25 +447,25 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
   (require 'org-clock)
   (unless org-clock-history (org-clock-load))
   (let* ((header-width 60)
-        (candidates
-         (cl-loop for marker in org-clock-history
-                  for buf = (marker-buffer marker)
-                  when (and buf (buffer-live-p buf))
-                  when (with-current-buffer buf
-                         (save-excursion
-                           (save-restriction
-                             (widen)
-                             (goto-char marker)
-                             (when (org-at-heading-p)
-                               (let* ((raw (org-link-display-format (org-get-heading t t t t)))
-                                      (head (truncate-string-to-width raw header-width 0 nil "..."))
-                                      (key (concat head (make-string (max 0 (- header-width (string-width head))) ?\s)
-                                                   (propertize (format "\0:%d" (line-number-at-pos)) 'invisible t))))
-                                 (cons (propertize key 
-                                                   'dkj-todo (org-get-todo-state)
-                                                   'dkj-path (mapconcat #'identity (cons (buffer-name) (org-get-outline-path nil t)) "/"))
-                                       marker))))))
-                  collect it)))
+         (candidates
+          (cl-loop for marker in org-clock-history
+                   for buf = (marker-buffer marker)
+                   when (and buf (buffer-live-p buf))
+                   when (with-current-buffer buf
+                          (save-excursion
+							(save-restriction
+                              (widen)
+                              (goto-char marker)
+                              (when (org-at-heading-p)
+								(let* ((raw (org-link-display-format (org-get-heading t t t t)))
+                                       (head (truncate-string-to-width raw header-width 0 nil "..."))
+                                       (key (concat head (make-string (max 0 (- header-width (string-width head))) ?\s)
+													(propertize (format "\0:%d" (line-number-at-pos)) 'invisible t))))
+                                  (cons (propertize key 
+													'dkj-todo (org-get-todo-state)
+													'dkj-path (mapconcat #'identity (cons (buffer-name) (org-get-outline-path nil t)) "/"))
+										marker))))))
+                   collect it)))
     (let ((completion-extra-properties
            `(:affixation-function
              (lambda (keys)
@@ -556,7 +556,8 @@ Org-mode is cool. That's an understatement, org-mode is one of the main reasons 
   (org-save-all-org-buffers)
   (let ((default-directory "~/org/"))
     (let* ((status (shell-command-to-string "git status -s"))
-           (files (replace-regexp-in-string "\n. ." ", " status))
+	   (files (replace-regexp-in-string "/system/bin/sh.*control" "" status))
+           (files (replace-regexp-in-string "\n. ." ", " files))
            (files (replace-regexp-in-string "\n" ", " files))
            (files (replace-regexp-in-string ", $" "" files))
            (message (format "[Emacs] %s" files)))
