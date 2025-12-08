@@ -197,9 +197,6 @@ These are some basic settings to make life a little better. They don't relate to
 ;; run async commands in new buffers when old ones are in use
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
-
-;; Make shell-command and friends read .bashrc
-(setq shell-command-switch "-ic")
 #+end_src
 **** R/G/R Highlights
 :PROPERTIES:
@@ -1637,6 +1634,8 @@ Its helpful to have different settings for mobile use.
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   (define-key doc-view-mode-map (kbd "<volume-down>") #'doc-view-scroll-up-or-next-page)
   (define-key doc-view-mode-map (kbd "<volume-up>") #'doc-view-scroll-down-or-previous-page)
+  (define-key nov-mode-map (kbd "<volume-down>") #'nov-scroll-up)
+  (define-key nov-mode-map (kbd "<volume-up>") #'nov-scroll-down)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows))
 #+end_src

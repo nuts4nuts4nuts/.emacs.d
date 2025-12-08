@@ -158,9 +158,6 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
-;; Make shell-command and friends read .bashrc
-(setq shell-command-switch "-ic")
-
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
@@ -1098,6 +1095,8 @@ and leaving a noweb reference in its place."
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   (define-key doc-view-mode-map (kbd "<volume-down>") #'doc-view-scroll-up-or-next-page)
   (define-key doc-view-mode-map (kbd "<volume-up>") #'doc-view-scroll-down-or-previous-page)
+  (define-key nov-mode-map (kbd "<volume-down>") #'nov-scroll-up)
+  (define-key nov-mode-map (kbd "<volume-up>") #'nov-scroll-down)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows))
 
