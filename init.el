@@ -1098,6 +1098,8 @@ and leaving a noweb reference in its place."
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   (define-key doc-view-mode-map (kbd "<volume-down>") #'doc-view-scroll-up-or-next-page)
   (define-key doc-view-mode-map (kbd "<volume-up>") #'doc-view-scroll-down-or-previous-page)
+  (define-key nov-mode-map (kbd "<volume-down>") #'nov-scroll-up)
+  (define-key nov-mode-map (kbd "<volume-up>") #'nov-scroll-down)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows))
 
