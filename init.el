@@ -160,6 +160,9 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
+;; auto-insert matching pair characters by default
+(electric-pair-mode 1)
+
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
@@ -1064,13 +1067,6 @@ and leaving a noweb reference in its place."
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
-
-(use-package smartparens
-  :ensure smartparens  ;; install the package
-  :hook (prog-mode text-mode markdown-mode org-mode) ;; add `smartparens-mode` to these hooks
-  :config
-  ;; load default config
-  (require 'smartparens-config))
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom

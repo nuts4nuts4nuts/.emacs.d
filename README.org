@@ -199,6 +199,9 @@ These are some basic settings to make life a little better. They don't relate to
 ;; run async commands in new buffers when old ones are in use
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
+
+;; auto-insert matching pair characters by default
+(electric-pair-mode 1)
 #+end_src
 **** R/G/R Highlights
 :PROPERTIES:
@@ -1592,16 +1595,6 @@ Track the frequency with which I use commands.
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
-#+end_src
-*** Smart parens
-Skeleton insertion is too finicky, so let's go for bigger guns.
-#+begin_src emacs-lisp
-(use-package smartparens
-  :ensure smartparens  ;; install the package
-  :hook (prog-mode text-mode markdown-mode org-mode) ;; add `smartparens-mode` to these hooks
-  :config
-  ;; load default config
-  (require 'smartparens-config))
 #+end_src
 ** Android stuff
 :PROPERTIES:
