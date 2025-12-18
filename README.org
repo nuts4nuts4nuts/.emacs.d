@@ -199,6 +199,11 @@ These are some basic settings to make life a little better. They don't relate to
 ;; run async commands in new buffers when old ones are in use
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
+
+;; I don't want to accidentally clear the terminal (or scrollback)
+(with-eval-after-load "vterm"
+  (define-key vterm-mode-map (kbd "C-l") nil)
+  (define-key vterm-mode-map (kbd "C-c C-l") nil))
 #+end_src
 **** R/G/R Highlights
 :PROPERTIES:
@@ -1561,6 +1566,17 @@ LLMs in Emacs
                         :stream t))
   :bind
   ("C-`" . gptel-send))
+#+end_src
+*** agent-shell
+Integration with Gemini via the `agent-shell` package.
+#+begin_src emacs-lisp
+(use-package agent-shell
+  :ensure t
+  :config
+  (setq agent-shell-google-gemini-command '("gemini" "--experimental-acp"))
+  (setq agent-shell-google-authentication
+        (agent-shell-google-make-authentication 
+         :api-key (getenv "GEMINI_API_KEY"))))
 #+end_src
 *** org-srs
 :PROPERTIES:

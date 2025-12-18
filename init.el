@@ -160,6 +160,11 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
+;; I don't want to accidentally clear the terminal (or scrollback)
+(with-eval-after-load "vterm"
+  (define-key vterm-mode-map (kbd "C-l") nil)
+  (define-key vterm-mode-map (kbd "C-c C-l") nil))
+
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
@@ -1044,6 +1049,14 @@ and leaving a noweb reference in its place."
                         :stream t))
   :bind
   ("C-`" . gptel-send))
+
+(use-package agent-shell
+  :ensure t
+  :config
+  (setq agent-shell-google-gemini-command '("gemini" "--experimental-acp"))
+  (setq agent-shell-google-authentication
+        (agent-shell-google-make-authentication 
+         :api-key (getenv "GEMINI_API_KEY"))))
 
 (use-package fsrs
   :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
