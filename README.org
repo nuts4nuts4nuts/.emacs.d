@@ -1609,16 +1609,6 @@ Track the frequency with which I use commands.
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
 #+end_src
-*** Smart parens
-Skeleton insertion is too finicky, so let's go for bigger guns.
-#+begin_src emacs-lisp
-(use-package smartparens
-  :ensure smartparens  ;; install the package
-  :hook (prog-mode text-mode markdown-mode org-mode) ;; add `smartparens-mode` to these hooks
-  :config
-  ;; load default config
-  (require 'smartparens-config))
-#+end_src
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d

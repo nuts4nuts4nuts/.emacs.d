@@ -1078,13 +1078,6 @@ and leaving a noweb reference in its place."
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
 
-(use-package smartparens
-  :ensure smartparens  ;; install the package
-  :hook (prog-mode text-mode markdown-mode org-mode) ;; add `smartparens-mode` to these hooks
-  :config
-  ;; load default config
-  (require 'smartparens-config))
-
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
