@@ -719,6 +719,11 @@
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
+;; Manual which-key
+(setq which-key-show-early-on-C-h t
+      which-key-idle-delay 1e6 ; 11 days
+      which-key-idle-secondary-delay 0.05)
+
 (use-package which-key
   :config
   (which-key-mode))

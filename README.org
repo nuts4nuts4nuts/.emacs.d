@@ -945,6 +945,11 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 [[https://github.com/justbur/emacs-which-key][which-key]] is a package which describes available key bindings interactively. If you use a binding which prefixes other bindings and then wait, it will pop up a small buffer with the available follow ups.
 
 #+begin_src emacs-lisp
+;; Manual which-key
+(setq which-key-show-early-on-C-h t
+      which-key-idle-delay 1e6 ; 11 days
+      which-key-idle-secondary-delay 0.05)
+
 (use-package which-key
   :config
   (which-key-mode))
