@@ -1043,10 +1043,11 @@ and leaving a noweb reference in its place."
 
 (use-package gptel
   :config
-  (setq gptel-model 'gemini-2.0-flash)
+  (setq gptel-model 'gemini-2.5-pro)
   (setq gptel-backend (gptel-make-gemini "Gemini"
                         :key (getenv "GEMINI_API_KEY")
                         :stream t))
+  (setq gptel-default-mode 'org-mode)
   :bind
   ("C-`" . gptel-send))
 
