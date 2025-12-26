@@ -1014,6 +1014,12 @@ and leaving a noweb reference in its place."
 			[menu-bar mobile-reading org-noter-insert-precise-note]
 			'("Insert note" . dkj/noter-insert-note-and-save-all))
 
+(use-package doc-view
+  :bind
+  (:map doc-view-mode
+		("<volume-down>" . #'doc-view-scroll-up-or-next-page)
+		("<volume-up>" .  #'doc-view-scroll-down-or-previous-page)))
+
 (use-package pdf-tools
   :ensure t
   :init
@@ -1024,7 +1030,11 @@ and leaving a noweb reference in its place."
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 50))
+		nov-text-width 50)
+  :bind
+  (:map nov-mode-map
+		("<volume-down>" . #'nov-scroll-up)
+		("<volume-up>" . #'nov-scroll-down)))
 
 (use-package visual-fill-column
   :config
@@ -1056,13 +1066,13 @@ and leaving a noweb reference in its place."
   :bind
   ("C-`" . gptel-send))
 
-(use-package agent-shell
-  :ensure t
-  :config
-  (setq agent-shell-google-gemini-command '("gemini" "--experimental-acp"))
-  (setq agent-shell-google-authentication
-        (agent-shell-google-make-authentication 
-         :api-key (getenv "GEMINI_API_KEY"))))
+(when (getenv "GEMINI_API_KEY")
+  (use-package agent-shell
+	:config
+	(setq agent-shell-google-gemini-command '("gemini" "--experimental-acp"))
+	(setq agent-shell-google-authentication
+          (agent-shell-google-make-authentication 
+           :api-key (getenv "GEMINI_API_KEY")))))
 
 (use-package fsrs
   :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
@@ -1107,10 +1117,6 @@ and leaving a noweb reference in its place."
   ;; special bindings
   (global-set-key (kbd "<volume-down>") #'scroll-up-command)
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
-  (define-key doc-view-mode-map (kbd "<volume-down>") #'doc-view-scroll-up-or-next-page)
-  (define-key doc-view-mode-map (kbd "<volume-up>") #'doc-view-scroll-down-or-previous-page)
-  (define-key nov-mode-map (kbd "<volume-down>") #'nov-scroll-up)
-  (define-key nov-mode-map (kbd "<volume-up>") #'nov-scroll-down)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows))
 
