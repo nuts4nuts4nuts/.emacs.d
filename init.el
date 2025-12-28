@@ -1100,7 +1100,7 @@ and leaving a noweb reference in its place."
   (set-frame-parameter nil 'tool-bar-position 'bottom)
   (set-frame-parameter nil 'tool-bar-lines 1)
   ;; bigger font
-  (dkj/font-height 160)
+  (dkj/font-height 225)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
