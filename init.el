@@ -1107,8 +1107,6 @@ and leaving a noweb reference in its place."
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)
   (load-theme dkj/theme-light t)
-  ;; smooth scrolling
-  (setq touch-screen-precision-scroll t)
   ;; dont blink cursor (particularly for eink)
   (setq-default blink-cursor-mode nil)
   ;; split below for smaller screen
