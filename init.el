@@ -1016,7 +1016,7 @@ and leaving a noweb reference in its place."
 
 (use-package doc-view
   :bind
-  (:map doc-view-mode
+  (:map doc-view-mode-map
 		("<volume-down>" . #'doc-view-scroll-up-or-next-page)
 		("<volume-up>" .  #'doc-view-scroll-down-or-previous-page)))
 
