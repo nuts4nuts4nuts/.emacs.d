@@ -313,7 +313,8 @@
 	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
 	  org-global-properties '(("Effort_ALL" .  "10 30 90 270"))
 	  ;; Better default header creation
-	  org-M-RET-may-split-line '((default . nil)))
+	  org-M-RET-may-split-line '((default . nil))
+	  org-clock-out-remove-zero-time-clocks t)
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
