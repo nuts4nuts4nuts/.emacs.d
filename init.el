@@ -207,9 +207,6 @@
 ;; Binding for grepping
 (define-key dkj-keys (kbd "C-/") #'grep)
 
-;; Binding global-subword-mode, which makes word-type operations CamelCase aware
-(define-key dkj-keys (kbd "C-s") #'global-subword-mode)
-
 ;; Easily duplicate lines or selections
 (define-key dkj-keys (kbd "C-y") #'duplicate-dwim)
 
@@ -265,7 +262,7 @@
   (interactive)
   (push-mark)
   (find-file "~/.emacs.d/README.org"))
-(define-key dkj-keys (kbd "C-h") #'dkj/open-config)
+(define-key dkj-keys (kbd "C-.") #'dkj/open-config)
 
 ;; Pulse for a little longer than the default
 (setq pulse-delay 0.1)
@@ -740,6 +737,10 @@
 ;; Light and dark themes I'm using currently
 (setq dkj/theme-light 'modus-operandi-tinted)
 (setq dkj/theme-dark 'modus-vivendi-tinted)
+;; Terminal settings
+(unless (display-graphic-p)
+  (setq dkj/theme-dark 'modus-vivendi))
+
 
 ;; Function to swap between light and dark theme
 (defun dkj/swap-themes ()
