@@ -996,9 +996,9 @@ and leaving a noweb reference in its place."
 									"0467cb4c-2045-4339-8097-855d7caf09fd"))))
 (define-key global-map
 			[menu-bar mobile-reading book-club]
-			'("Fanon" . (lambda () (interactive)
+			'("Anna K" . (lambda () (interactive)
 						  (dkj/goto-id-mobile-org-noter
-						   "672b1b9a-6572-4eb6-aeb0-92dc8d46c2fa"))))
+						   "bf0b74e8-6685-478c-a954-84f0e24e98fe"))))
 
 (define-key global-map
 			[separator-4] menu-bar-separator) 
