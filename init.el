@@ -145,6 +145,9 @@
 
 ;; Made M-x grep use rg by default
 (setq grep-command "rg -n -H --no-heading -e ")
+;; Don't append null-device to greps
+;; It's not needed for rg
+(setq grep-use-null-device nil)
 
 ;; List all files and human-readable sizes in dired
 (setq-default dired-listing-switches "-lash")
@@ -310,8 +313,7 @@
 	  org-columns-default-format "%40ITEM(Task) %17Effort(Estimated Effort){:} %CLOCKSUM"
 	  org-global-properties '(("Effort_ALL" .  "10 30 90 270"))
 	  ;; Better default header creation
-	  org-M-RET-may-split-line '((default . nil))
-	  org-clock-out-remove-zero-time-clocks t)
+	  org-M-RET-may-split-line '((default . nil)))
 
 ;; work-around  for org-ctags obnoxious behavior
 (with-eval-after-load 'org-ctags (setq org-open-link-functions nil))
