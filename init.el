@@ -987,6 +987,11 @@ and leaving a noweb reference in its place."
   (dkj/mobile-org-noter))
 
 (define-key global-map
+			[menu-bar mobile-reading noter3]
+			'("Sand Reck" . (lambda () (interactive)
+						  (dkj/goto-id-mobile-org-noter
+						   "1537C608-15D0-4179-A9E9-F6695E88B947"))))
+(define-key global-map
 			[menu-bar mobile-reading noter2]
 			'("BrilliantFriend" . (lambda () (interactive)
 									(dkj/goto-id-mobile-org-noter
@@ -1001,7 +1006,6 @@ and leaving a noweb reference in its place."
 			'("Anna K" . (lambda () (interactive)
 						  (dkj/goto-id-mobile-org-noter
 						   "bf0b74e8-6685-478c-a954-84f0e24e98fe"))))
-
 (define-key global-map
 			[separator-4] menu-bar-separator) 
 
