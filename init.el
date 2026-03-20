@@ -59,9 +59,6 @@
 ;; but make it a little thick
 (setq-default cursor-type '(bar . 3))
 
-;; Add more context when scrolling around
-(setq next-screen-context-lines 10)
-
 ;; Move to the top or bottom of the buffer when scrolling
 (setq scroll-error-top-bottom 1)
 
