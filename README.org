@@ -1479,6 +1479,9 @@ Take synched org notes on documents in Emacs!
 #+end_src
 
 *** doc-view
+:PROPERTIES:
+:ID:       63457bc2-0d01-4566-92f5-f615992a74b1
+:END:
 For when pdf-tools is not available
 
 #+begin_src emacs-lisp
@@ -1594,6 +1597,9 @@ LLMs in Emacs
   ("C-`" . gptel-send))
 #+end_src
 *** agent-shell
+:PROPERTIES:
+:ID:       2fc75901-c38e-40e9-b955-8b1fc74b62d7
+:END:
 Integration with Gemini via the `agent-shell` package.
 #+begin_src emacs-lisp
 (when (getenv "GEMINI_API_KEY")
@@ -1628,6 +1634,9 @@ Create and review flashcards all from within Emacs.
 			  ("<f8>" . org-srs-review-rate-again)))
 #+end_src
 *** keyfreq
+:PROPERTIES:
+:ID:       95424c1d-6080-468f-a480-76908386dfe9
+:END:
 Track the frequency with which I use commands.
 
 #+begin_src emacs-lisp
@@ -1646,8 +1655,7 @@ Its helpful to have different settings for mobile use.
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
-  (set-frame-parameter nil 'tool-bar-position 'bottom)
-  (set-frame-parameter nil 'tool-bar-lines 1)
+  (setopt tool-bar-position 'bottom)
   ;; bigger font
   (dkj/font-height 200)
   ;; always display keyboard

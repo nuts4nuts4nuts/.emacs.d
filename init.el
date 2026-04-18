@@ -1102,8 +1102,7 @@ and leaving a noweb reference in its place."
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
-  (set-frame-parameter nil 'tool-bar-position 'bottom)
-  (set-frame-parameter nil 'tool-bar-lines 1)
+  (setopt tool-bar-position 'bottom)
   ;; bigger font
   (dkj/font-height 200)
   ;; always display keyboard
