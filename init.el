@@ -1137,7 +1137,7 @@ and leaving a noweb reference in its place."
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
-  (setq dkj/theme-light 'almost-mono-white)
+  (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)
   (load-theme dkj/theme-light t)
   ;; dont blink cursor (particularly for eink)
