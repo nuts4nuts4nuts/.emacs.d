@@ -163,7 +163,8 @@
 ;; I don't want to accidentally clear the terminal (or scrollback)
 (with-eval-after-load "vterm"
   (define-key vterm-mode-map (kbd "C-l") nil)
-  (define-key vterm-mode-map (kbd "C-c C-l") nil))
+  (define-key vterm-mode-map (kbd "C-c C-l") nil)
+  (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 (defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
@@ -431,7 +432,8 @@
 	  (when org-log-note-extra (insert org-log-note-extra))
 	  (setq-local org-finish-function (dkj/create-org-store-log-note-and-save m))
 	  (run-hooks 'org-log-buffer-setup-hook))))
-(global-set-key (kbd "C-z") #'dkj/org-add-note-clocked)
+;; (global-set-key (kbd "C-z") #'dkj/org-add-note-clocked)
+(global-set-key (kbd "C-z") #'org-clock-goto)
 
 ;; Non duplicating async-shell-command
 (defun dkj/async-shell-command (command &optional buffer)
@@ -581,6 +583,13 @@
 		(t "PROG")))
 (setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-todo)
 
+(defun dkj/insert-todo-block ()
+  (interactive)
+  (org-insert-todo-heading-respect-content)
+  (org-set-tags "BLOCK")
+  (insert " "))
+(global-set-key (kbd "C-c z") #'dkj/insert-todo-block)
+
 (setq org-tag-persistent-alist '(;; Contexts
 								 ("@home" . ?h)
 								 ("@out" . ?o)))
@@ -726,9 +735,10 @@
   (which-key-mode))
 
 ;; Themes that I like to have available
+(use-package modus-themes) ;; built in now, but to get the tinted themes we need the package, I think
 (use-package gruvbox-theme)
 (use-package material-theme)
-(use-package modus-themes) ;; built in now, but to get the tinted themes we need the package, I think
+(use-package almost-mono-themes)
 
 ;; Some modus theme customization
 (setq modus-themes-org-blocks 'gray-background)
@@ -1063,7 +1073,7 @@ and leaving a noweb reference in its place."
 
 (use-package gptel
   :config
-  (setq gptel-model 'gemini-2.5-pro)
+  (setq gptel-model 'gemini-3.1-pro-preview)
   (setq gptel-backend (gptel-make-gemini "Gemini"
                         :key (getenv "GEMINI_API_KEY")
                         :stream t))
@@ -1071,13 +1081,34 @@ and leaving a noweb reference in its place."
   :bind
   ("C-`" . gptel-send))
 
-(when (getenv "GEMINI_API_KEY")
-  (use-package agent-shell
-	:config
-	(setq agent-shell-google-gemini-command '("gemini" "--experimental-acp"))
-	(setq agent-shell-google-authentication
-          (agent-shell-google-make-authentication 
-           :api-key (getenv "GEMINI_API_KEY")))))
+(defun dkj/gptel-add-indicator (&rest _)
+  "Place a visual indicator where gptel will insert text."
+  (let* ((pos (if (use-region-p) (region-end) (point)))
+         (ov (make-overlay pos pos nil t t)))
+    (overlay-put ov 'dkj-gptel-indicator t)
+    (overlay-put ov 'after-string (propertize " ⏳ " 'face 'warning))))
+
+(defun dkj/gptel-remove-indicator (beg _end)
+  "Remove the gptel visual indicator closest to the response."
+  (let ((closest nil)
+        (min-dist most-positive-fixnum))
+    (dolist (ov (overlays-in (point-min) (point-max)))
+      (when (overlay-get ov 'dkj-gptel-indicator)
+        (let ((dist (abs (- beg (overlay-start ov)))))
+          (when (< dist min-dist)
+            (setq min-dist dist closest ov)))))
+    (when closest (delete-overlay closest))))
+
+(defun dkj/gptel-clear-indicators ()
+  "Clear all stuck gptel indicators in the current buffer."
+  (interactive)
+  (remove-overlays nil nil 'dkj-gptel-indicator t))
+
+(advice-add 'gptel-send :before #'dkj/gptel-add-indicator)
+(add-hook 'gptel-post-response-functions #'dkj/gptel-remove-indicator)
+
+(use-package gptel-agent
+	  :config (gptel-agent-update))
 
 (use-package fsrs
   :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
@@ -1090,10 +1121,8 @@ and leaving a noweb reference in its place."
   :defer t
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
-			  ("<f5>" . org-srs-review-rate-easy)
-			  ("<f6>" . org-srs-review-rate-good)
-			  ("<f7>" . org-srs-review-rate-hard)
-			  ("<f8>" . org-srs-review-rate-again)))
+			  ("C-c C-1" . org-srs-review-rate-good)
+			  ("C-c C-2" . org-srs-review-rate-again)))
 
 (use-package keyfreq)
 (keyfreq-mode t)
@@ -1108,7 +1137,7 @@ and leaving a noweb reference in its place."
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
-  (setq dkj/theme-light 'modus-operandi)
+  (setq dkj/theme-light 'almost-mono-white)
   (setq dkj/theme-dark 'modus-vivendi)
   (load-theme dkj/theme-light t)
   ;; dont blink cursor (particularly for eink)
