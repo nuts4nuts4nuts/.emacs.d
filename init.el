@@ -1157,7 +1157,12 @@ and leaving a noweb reference in its place."
       (tool-bar-add-item "next-page" 'nov-scroll-up 'scroll-up-btn)
 	  (tool-bar-add-item "search-replace" 'org-noter-insert-note 'insert-note-btn)
       tool-bar-map))
-  (add-hook 'nov-mode-hook (lambda () (setq-local tool-bar-map nov-tool-bar-map))))
+  (add-hook 'nov-mode-hook (lambda () (setq-local tool-bar-map nov-tool-bar-map)))
+  (setq org-agenda-prefix-format
+	  '((agenda . "")
+		(todo . "")
+		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
+		(search . "%-12:c %?|e "))))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
