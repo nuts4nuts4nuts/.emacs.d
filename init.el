@@ -738,7 +738,6 @@
 (use-package modus-themes) ;; built in now, but to get the tinted themes we need the package, I think
 (use-package gruvbox-theme)
 (use-package material-theme)
-(use-package almost-mono-themes)
 
 ;; Some modus theme customization
 (setq modus-themes-org-blocks 'gray-background)
