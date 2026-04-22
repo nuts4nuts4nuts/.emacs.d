@@ -612,13 +612,21 @@
   (insert " "))
 (global-set-key (kbd "C-c z") #'dkj/insert-todo-block)
 
+;; Auto-update parent TODOs based on children's state
+(defun dkj/org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+  (let (org-log-done org-todo-log-states) ; turn off logging
+ (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook #'dkj/org-summary-todo)
+
 (setq org-tag-persistent-alist '(;; Contexts
 								 ("@home" . ?h)
 								 ("@out" . ?o)))
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n%a\n")
+			   "* TODO %?\n%U\n")
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
 			   "* %? :MEETING:\n%U\n")
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
