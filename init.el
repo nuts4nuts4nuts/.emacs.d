@@ -104,8 +104,8 @@
 (setq explicit-shell-file-name "/bin/bash")
 
 ;; Use bash_history in shell mode
-(add-hook 'shell-mode-hook 'my-shell-mode-hook)
-(defun my-shell-mode-hook ()
+(add-hook 'shell-mode-hook 'dkj/shell-mode-hook)
+(defun dkj/shell-mode-hook ()
   (setq comint-input-ring-file-name "~/.bash_history")
   (comint-read-input-ring t))
 
@@ -166,15 +166,15 @@
   (define-key vterm-mode-map (kbd "C-c C-l") nil)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
-(defface my-red-face '((t (:background "#960b0b"))) "Face for RED words")
-(defface my-green-face '((t (:background "#214a2c"))) "Face for GREEN words")
-(defface my-refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
+(defface dkj/red-face '((t (:background "#960b0b"))) "Face for RED words")
+(defface dkj/green-face '((t (:background "#214a2c"))) "Face for GREEN words")
+(defface dkj/refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
 
 (defun dkj/highlight-words ()
   (interactive)
-  (highlight-phrase "RED" 'my-red-face)
-  (highlight-phrase "GREEN" 'my-green-face)
-  (highlight-phrase "REFACTOR" 'my-refactor-face))
+  (highlight-phrase "RED" 'dkj/red-face)
+  (highlight-phrase "GREEN" 'dkj/green-face)
+  (highlight-phrase "REFACTOR" 'dkj/refactor-face))
 
 (add-hook 'window-configuration-change-hook 'dkj/highlight-words)
 
@@ -196,6 +196,28 @@
 
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
+
+(defun dkj/org-agenda-mobile-noter ()
+  "Switch to the current agenda item and run `dkj/mobile-org-noter'."
+  (interactive)
+  (org-agenda-switch-to)
+  (dkj/mobile-org-noter))
+
+(defvar dkj/org-agenda-tool-bar-map
+  (let ((map (copy-keymap (default-value 'tool-bar-map))))
+    ;; Add our custom button at the end
+    (tool-bar-local-item "exit" 'dkj/org-agenda-mobile-noter 'mobile-noter map
+                         :help "Switch to agenda item and run mobile-org-noter"
+                         :label "Noter")
+    map)
+  "Custom tool bar map for Org Agenda.")
+
+(defun dkj/org-agenda-setup-tool-bar ()
+  "Enable the custom tool bar in the current buffer."
+  (setq-local tool-bar-map dkj/org-agenda-tool-bar-map))
+
+;; Add it to the org-agenda-mode hook
+(add-hook 'org-agenda-mode-hook #'dkj/org-agenda-setup-tool-bar)
 
 ;; Nicer winner-mode bindings
 (define-key dkj-keys (kbd "C-p") #'winner-undo)
@@ -1061,6 +1083,7 @@ and leaving a noweb reference in its place."
     (visual-line-fill-column-mode 1)))
 
 (add-hook 'nov-mode-hook 'dkj/nov-display-setup)
+(add-hook 'nov-mode-hook (lambda () (text-scale-increase 2)))
 
 (use-package speed-type)
 
@@ -1159,7 +1182,7 @@ and leaving a noweb reference in its place."
       tool-bar-map))
   (add-hook 'nov-mode-hook (lambda () (setq-local tool-bar-map nov-tool-bar-map)))
   (setq org-agenda-prefix-format
-	  '((agenda . "")
+	  '((agenda . "%?-12t")
 		(todo . "")
 		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(search . "%-12:c %?|e "))))
