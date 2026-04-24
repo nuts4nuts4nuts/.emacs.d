@@ -1742,7 +1742,8 @@ Its helpful to have different settings for mobile use.
 		  (todo . "")
 		  (tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		  (search . "%-12:c %?|e ")))
-  (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b"))))
+  (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
+  (setq ispell-program-name (executable-find "hunspell")))
 #+end_src
 
 ** Load other files

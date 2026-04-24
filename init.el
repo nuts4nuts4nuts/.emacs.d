@@ -1194,7 +1194,8 @@ and leaving a noweb reference in its place."
 		  (todo . "")
 		  (tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		  (search . "%-12:c %?|e ")))
-  (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b"))))
+  (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
+  (setq ispell-program-name (executable-find "hunspell")))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
