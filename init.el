@@ -1190,10 +1190,11 @@ and leaving a noweb reference in its place."
       tool-bar-map))
   (add-hook 'nov-mode-hook (lambda () (setq-local tool-bar-map nov-tool-bar-map)))
   (setq org-agenda-prefix-format
-	  '((agenda . "%?-12t")
-		(todo . "")
-		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
-		(search . "%-12:c %?|e "))))
+		'((agenda . "%?-12t")
+		  (todo . "")
+		  (tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
+		  (search . "%-12:c %?|e ")))
+  (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b"))))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
