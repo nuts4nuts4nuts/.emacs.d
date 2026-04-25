@@ -1106,7 +1106,7 @@ and leaving a noweb reference in its place."
   :config
   (setq gptel-model 'gemini-3.1-pro-preview)
   (setq gptel-backend (gptel-make-gemini "Gemini"
-                        :key (getenv "GEMINI_API_KEY")
+                        :key (lambda () (getenv "GEMINI_API_KEY"))
                         :stream t))
   (setq gptel-default-mode 'org-mode)
   :bind
