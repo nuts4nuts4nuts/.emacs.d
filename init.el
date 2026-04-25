@@ -176,7 +176,8 @@
   (highlight-phrase "GREEN" 'dkj/green-face)
   (highlight-phrase "REFACTOR" 'dkj/refactor-face))
 
-(add-hook 'window-configuration-change-hook 'dkj/highlight-words)
+;; Disabled for now cause I'm not using it
+;; (add-hook 'window-configuration-change-hook 'dkj/highlight-words)
 
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
@@ -1109,7 +1110,8 @@ and leaving a noweb reference in its place."
                         :stream t))
   (setq gptel-default-mode 'org-mode)
   :bind
-  ("C-`" . gptel-send))
+  ("C-`" . gptel-send)
+  ("<next>" . gptel-send))
 
 (defun dkj/gptel-add-indicator (&rest _)
   "Place a visual indicator where gptel will insert text."

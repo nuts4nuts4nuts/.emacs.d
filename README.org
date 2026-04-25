@@ -223,7 +223,8 @@ TDD all the things???
   (highlight-phrase "GREEN" 'dkj/green-face)
   (highlight-phrase "REFACTOR" 'dkj/refactor-face))
 
-(add-hook 'window-configuration-change-hook 'dkj/highlight-words)
+;; Disabled for now cause I'm not using it
+;; (add-hook 'window-configuration-change-hook 'dkj/highlight-words)
 #+end_src
 *** Mappings
 :PROPERTIES:
@@ -1634,7 +1635,8 @@ LLMs in Emacs
                         :stream t))
   (setq gptel-default-mode 'org-mode)
   :bind
-  ("C-`" . gptel-send))
+  ("C-`" . gptel-send)
+  ("<next>" . gptel-send))
 
 (defun dkj/gptel-add-indicator (&rest _)
   "Place a visual indicator where gptel will insert text."
