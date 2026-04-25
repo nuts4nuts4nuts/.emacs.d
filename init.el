@@ -1158,6 +1158,8 @@ and leaving a noweb reference in its place."
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
 
+(use-package vc-jj)
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)

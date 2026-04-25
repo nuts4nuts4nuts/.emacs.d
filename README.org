@@ -1698,6 +1698,14 @@ Track the frequency with which I use commands.
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
 #+end_src
+*** VC-JJ
+:PROPERTIES:
+:ID:       cc5f1799-4485-436b-aec1-fb8089754c0b
+:END:
+https://github.com/jj-vcs/jj
+#+begin_src emacs-lisp
+(use-package vc-jj)
+#+end_src
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d
