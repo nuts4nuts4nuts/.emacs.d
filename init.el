@@ -1111,7 +1111,9 @@ and leaving a noweb reference in its place."
   (setq gptel-default-mode 'org-mode)
   :bind
   ("C-`" . gptel-send)
-  ("<next>" . gptel-send))
+  ("C-M-`" . gptel-menu)
+  ("<next>" . gptel-send)
+  ("<prior>" . gptel-menu))
 
 (defun dkj/gptel-add-indicator (&rest _)
   "Place a visual indicator where gptel will insert text."
