@@ -1109,6 +1109,10 @@ and leaving a noweb reference in its place."
                         :key (lambda () (getenv "GEMINI_API_KEY"))
                         :stream t))
   (setq gptel-default-mode 'org-mode)
+  ;; Never ask for confirmation before running a tool call
+  (setq gptel-confirm-tool-calls nil)
+  ;; Always include the results of the tool call in the buffer output
+  (setq gptel-include-tool-results t)
   :bind
   ("C-`" . gptel-send)
   ("C-M-`" . gptel-menu)
@@ -1142,7 +1146,20 @@ and leaving a noweb reference in its place."
 (add-hook 'gptel-post-response-functions #'dkj/gptel-remove-indicator)
 
 (use-package gptel-agent
-	  :config (gptel-agent-update))
+  :config
+  (gptel-agent-update)
+  ;; Default tools from gptel-agent
+  (setq gptel-tools
+		(list (gptel-get-tool "Read")
+              (gptel-get-tool "Write")
+              (gptel-get-tool "Edit")
+			  (gptel-get-tool "Glob")
+			  (gptel-get-tool "Grep")
+              (gptel-get-tool "Bash")
+			  (gptel-get-tool "Agent")
+			  (gptel-get-tool "Skill")
+			  (gptel-get-tool "WebSearch")
+			  (gptel-get-tool "WebFetch"))))
 
 (use-package fsrs
   :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
