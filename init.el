@@ -1216,7 +1216,7 @@ and leaving a noweb reference in its place."
   (setq org-agenda-prefix-format
 		'((agenda . "%?-12t")
 		  (todo . "")
-		  (tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
+		  (tags . "")
 		  (search . "%-12:c %?|e ")))
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
   (setq ispell-program-name (executable-find "hunspell")))
