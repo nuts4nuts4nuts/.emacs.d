@@ -1076,7 +1076,7 @@ and leaving a noweb reference in its place."
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 80)
+		nov-text-width 50)
   :bind
   (:map nov-mode-map
 		("<volume-down>" . #'nov-scroll-up)
@@ -1084,6 +1084,7 @@ and leaving a noweb reference in its place."
 
 (defvar dkj/nov-tool-bar-map
   (let ((map (copy-keymap (default-value 'tool-bar-map))))
+	(tool-bar-local-item "--" nil nil map)
 	(tool-bar-local-item "exit" 'org-noter-kill-session 'quit-noter-btn map)
 	(tool-bar-local-item "last-page" 'nov-scroll-down 'scroll-down-btn map)
     (tool-bar-local-item "next-page" 'nov-scroll-up 'scroll-up-btn map)
