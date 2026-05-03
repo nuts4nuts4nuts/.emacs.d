@@ -546,9 +546,9 @@
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
 									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
-									 (tags-todo "-CONSUME/PROG" ((org-agenda-overridinjg-header "TASKS in progress")))
+									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "TASKS in progress")))
 									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))
-									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org" "~/org/beorg-inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))))
 								   ("h"
 									"Next steps at home organized by sizes"
@@ -1076,11 +1076,26 @@ and leaving a noweb reference in its place."
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 50)
+		nov-text-width 80)
   :bind
   (:map nov-mode-map
 		("<volume-down>" . #'nov-scroll-up)
 		("<volume-up>" . #'nov-scroll-down)))
+
+(defvar dkj/nov-tool-bar-map
+  (let ((map (copy-keymap (default-value 'tool-bar-map))))
+	(tool-bar-local-item "exit" 'org-noter-kill-session 'quit-noter-btn map)
+	(tool-bar-local-item "last-page" 'nov-scroll-down 'scroll-down-btn map)
+    (tool-bar-local-item "next-page" 'nov-scroll-up 'scroll-up-btn map)
+	(tool-bar-local-item "search-replace" 'org-noter-insert-note 'insert-note-btn map)
+    map)
+  "Custom tool bar for nov.el mode")
+
+(defun dkj/nov-setup-tool-bar ()
+  "Enable the custom tool bar in the current buffer."
+  (setq-local tool-bar-map dkj/nov-tool-bar-map))
+
+(add-hook 'nov-mode-hook #'dkj/nov-setup-tool-bar)
 
 (use-package visual-fill-column
   :config
@@ -1204,15 +1219,6 @@ and leaving a noweb reference in its place."
   (global-set-key (kbd "<volume-up>") #'scroll-down-command)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
-  ;; experimental tool-bar stuff
-  (defvar nov-tool-bar-map
-    (let ((tool-bar-map (make-sparse-keymap)))
-	  (tool-bar-add-item "exit" 'org-noter-kill-session 'quit-noter-btn)	  
-	  (tool-bar-add-item "last-page" 'nov-scroll-down 'scroll-down-btn)
-      (tool-bar-add-item "next-page" 'nov-scroll-up 'scroll-up-btn)
-	  (tool-bar-add-item "search-replace" 'org-noter-insert-note 'insert-note-btn)
-      tool-bar-map))
-  (add-hook 'nov-mode-hook (lambda () (setq-local tool-bar-map nov-tool-bar-map)))
   (setq org-agenda-prefix-format
 		'((agenda . "%?-12t")
 		  (todo . "")
