@@ -546,8 +546,8 @@
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
 									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
-									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "In-progress tasks")))
-									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "In-progress reading")))
+									 (tags-todo "-CONSUME/PROG" ((org-agenda-overridinjg-header "TASKS in progress")))
+									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))))
 								   ("h"
