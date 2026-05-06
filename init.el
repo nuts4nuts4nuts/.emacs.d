@@ -286,7 +286,15 @@
 									(:type pbm :file "paste.pbm" :foreground "black")
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
-				(separator-3 "--")))
+				(separator-3 "--")
+				(capture menu-item "Capture" org-capture
+						 :help "Capture to org-mode"
+						 :image ,(find-image
+								  '((:type xpm :file "open.xpm")
+								    (:type pbm :file "open.pbm" :foreground "black")
+								    (:type xbm :file "open.xbm" :foreground "black")))
+						 :vert-only t)
+				(separator-4 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
   "Define a custom tool bar map for a mode and attach it.
@@ -309,7 +317,7 @@ ITEMS is a list of item definitions, where each definition is:
            ,@(mapcar (lambda (item)
                        `(tool-bar-local-item ,(nth 0 item)
                                              ,(nth 1 item)
-                                               ,(nth 2 item)
+                                             ,(nth 2 item)
                                              map
                                              ,@(nthcdr 3 item)))
                      items)
@@ -878,6 +886,11 @@ ITEMS is a list of item definitions, where each definition is:
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
+(dkj/define-local-tool-bar org-mode
+						   ("gen-changelog" 'org-todo 'todo
+							:help "Trigger org-todo"
+							:label "org-todo"))
+
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -1189,22 +1202,6 @@ and leaving a noweb reference in its place."
   (:map nov-mode-map
 		("<volume-down>" . #'nov-scroll-up)
 		("<volume-up>" . #'nov-scroll-down)))
-
-(defvar dkj/nov-tool-bar-map
-  (let ((map (copy-keymap (default-value 'tool-bar-map))))
-	(tool-bar-local-item "--" nil nil map)
-	(tool-bar-local-item "exit" 'org-noter-kill-session 'quit-noter-btn map)
-	(tool-bar-local-item "last-page" 'nov-scroll-down 'scroll-down-btn map)
-    (tool-bar-local-item "next-page" 'nov-scroll-up 'scroll-up-btn map)
-	(tool-bar-local-item "search-replace" 'org-noter-insert-note 'insert-note-btn map)
-    map)
-  "Custom tool bar for nov.el mode")
-
-(defun dkj/nov-setup-tool-bar ()
-  "Enable the custom tool bar in the current buffer."
-  (setq-local tool-bar-map dkj/nov-tool-bar-map))
-
-(add-hook 'nov-mode-hook #'dkj/nov-setup-tool-bar)
 
 (dkj/define-local-tool-bar nov-mode
 						   ("--" nil nil map)
