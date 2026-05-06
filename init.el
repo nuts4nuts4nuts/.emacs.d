@@ -166,6 +166,168 @@
   (define-key vterm-mode-map (kbd "C-c C-l") nil)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
+(setq-default tool-bar-map
+			  `(keymap
+				(new-file menu-item "Visit New File..." find-file
+						  :enable (menu-bar-non-minibuffer-window-p)
+						  :help "Specify a new file's name, to edit the file"
+						  :image ,(find-image
+								   (cond
+									((not (display-color-p))
+									 '((:type pbm :file "new.pbm" :foreground "black")
+									   (:type xbm :file "new.xbm" :foreground "black")
+									   (:type xpm :file "low-color/new.xpm")
+									   (:type xpm :file "new.xpm")))
+									((< (display-color-cells) 256)
+									 '((:type xpm :file "low-color/new.xpm")
+									   (:type xpm :file "new.xpm")
+									   (:type pbm :file "new.pbm" :foreground "black")
+									   (:type xbm :file "new.xbm" :foreground "black")))
+									(t
+									 '((:type xpm :file "new.xpm")
+									   (:type pbm :file "new.pbm" :foreground "black")
+									   (:type xbm :file "new.xbm" :foreground "black")))))
+						  :label "New File"
+						  :vert-only t)
+				
+				(save-buffer menu-item "Save" save-buffer
+							 :enable (and (buffer-modified-p)
+										  (buffer-file-name)
+										  (menu-bar-non-minibuffer-window-p))
+							 :help "Save current buffer to its file"
+							 :image ,(find-image
+									  (cond
+									   ((not (display-color-p))
+										'((:type pbm :file "save.pbm" :foreground "black")
+										  (:type xbm :file "save.xbm" :foreground "black")
+										  (:type xpm :file "low-color/save.xpm")
+										  (:type xpm :file "save.xpm")))
+									   ((< (display-color-cells) 256)
+										'((:type xpm :file "low-color/save.xpm")
+										  (:type xpm :file "save.xpm")
+										  (:type pbm :file "save.pbm" :foreground "black")
+										  (:type xbm :file "save.xbm" :foreground "black")))
+									   (t
+										'((:type xpm :file "save.xpm")
+										  (:type pbm :file "save.pbm" :foreground "black")
+										  (:type xbm :file "save.xbm" :foreground "black")))))
+							 :label "Save")
+				(separator-1 "--")
+
+				(undo menu-item "Undo" undo
+					  :enable (and (not buffer-read-only)
+								   (not (eq t buffer-undo-list))
+								   (if (eq last-command 'undo)
+									   (listp pending-undo-list)
+									 (consp buffer-undo-list)))
+					  :help "Undo last edits"
+					  :image ,(find-image
+							   (cond
+								((not (display-color-p))
+								 '((:type pbm :file "undo.pbm" :foreground "black")
+								   (:type xbm :file "undo.xbm" :foreground "black")
+								   (:type xpm :file "low-color/undo.xpm")
+								   (:type xpm :file "undo.xpm")))
+								((< (display-color-cells) 256)
+								 '((:type xpm :file "low-color/undo.xpm")
+								   (:type xpm :file "undo.xpm")
+								   (:type pbm :file "undo.pbm" :foreground "black")
+								   (:type xbm :file "undo.xbm" :foreground "black")))
+								(t
+								 '((:type xpm :file "undo.xpm")
+								   (:type pbm :file "undo.pbm" :foreground "black")
+								   (:type xbm :file "undo.xbm" :foreground "black")))))
+					  :vert-only t)
+
+				(separator-2 "--")
+
+				(cut menu-item "Cut" kill-region
+					 :enable (and mark-active (not buffer-read-only))
+					 :help "Cut (kill) text in region between mark and current position"
+					 :image ,(find-image
+							  (cond
+							   ((not (display-color-p))
+								'((:type pbm :file "cut.pbm" :foreground "black")
+								  (:type xbm :file "cut.xbm" :foreground "black")
+								  (:type xpm :file "low-color/cut.xpm")
+								  (:type xpm :file "cut.xpm")))
+							   ((< (display-color-cells) 256)
+								'((:type xpm :file "low-color/cut.xpm")
+								  (:type xpm :file "cut.xpm")
+								  (:type pbm :file "cut.pbm" :foreground "black")
+								  (:type xbm :file "cut.xbm" :foreground "black")))
+							   (t
+								'((:type xpm :file "cut.xpm")
+								  (:type pbm :file "cut.pbm" :foreground "black")
+								  (:type xbm :file "cut.xbm" :foreground "black")))))
+					 :vert-only t)
+
+				(paste menu-item "Paste" yank
+					   :enable (and (not buffer-read-only)
+									(or (and (fboundp 'gui-backend-selection-exists-p)
+											 (or (gui-backend-selection-exists-p 'CLIPBOARD)
+												 (gui-backend-selection-exists-p 'PRIMARY)))
+										kill-ring))
+					   :help "Paste (yank) text most recently cut/copied"
+					   :image ,(find-image
+								(cond
+								 ((not (display-color-p))
+								  '((:type pbm :file "paste.pbm" :foreground "black")
+									(:type xbm :file "paste.xbm" :foreground "black")
+									(:type xpm :file "low-color/paste.xpm")
+									(:type xpm :file "paste.xpm")))
+								 ((< (display-color-cells) 256)
+								  '((:type xpm :file "low-color/paste.xpm")
+									(:type xpm :file "paste.xpm")
+									(:type pbm :file "paste.pbm" :foreground "black")
+									(:type xbm :file "paste.xbm" :foreground "black")))
+								 (t
+								  '((:type xpm :file "paste.xpm")
+									(:type pbm :file "paste.pbm" :foreground "black")
+									(:type xbm :file "paste.xbm" :foreground "black")))))
+					   :vert-only t)))
+
+(defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
+  "Define a custom tool bar map for a mode and attach it.
+
+MODE-OR-HOOK can be the mode name (e.g. `org-agenda-mode') or the
+hook name (e.g. `org-agenda-mode-hook').
+
+ITEMS is a list of item definitions, where each definition is:
+  (ICON DEF KEY &rest PROPS)"
+  (let* ((base-name (replace-regexp-in-string "-hook\\'" "" (symbol-name mode-or-hook)))
+         (hook (intern (format "%s-hook" base-name)))
+         (map-sym (intern (format "dkj/%s-tool-bar-map" base-name)))
+         (func-sym (intern (format "dkj/setup-tool-bar-for-%s" base-name)))
+         ;; Generate a unique key for this mode's separator
+         (sep-key (vector (intern (format "dkj-%s-separator" base-name)))))
+    `(progn
+       ;; 1. Define the variable to hold the map
+       (defvar ,map-sym
+         (let ((map (copy-keymap (default-value 'tool-bar-map))))
+           
+           ;; Insert the visual separator before our custom buttons
+           (define-key map ,sep-key "--")
+           
+           ;; Add the custom buttons
+           ,@(mapcar (lambda (item)
+                       `(tool-bar-local-item ,(nth 0 item)
+                                             ,(nth 1 item)
+                                             ,(nth 2 item)
+                                             map
+                                             ,@(nthcdr 3 item)))
+                     items)
+           map)
+         ,(format "Custom tool bar map for `%s'." base-name))
+
+       ;; 2. Define the setup function
+       (defun ,func-sym ()
+         ,(format "Enable the custom tool bar map in `%s'." base-name)
+         (setq-local tool-bar-map ,map-sym))
+
+       ;; 3. Add the setup function to the hook
+       (add-hook ',hook #',func-sym))))
+
 (defface dkj/red-face '((t (:background "#960b0b"))) "Face for RED words")
 (defface dkj/green-face '((t (:background "#214a2c"))) "Face for GREEN words")
 (defface dkj/refactor-face '((t (:background "#630b96"))) "Face for REFACTOR words")
@@ -204,21 +366,10 @@
   (org-agenda-switch-to)
   (dkj/mobile-org-noter))
 
-(defvar dkj/org-agenda-tool-bar-map
-  (let ((map (copy-keymap (default-value 'tool-bar-map))))
-    ;; Add our custom button at the end
-    (tool-bar-local-item "exit" 'dkj/org-agenda-mobile-noter 'mobile-noter map
-                         :help "Switch to agenda item and run mobile-org-noter"
-                         :label "Noter")
-    map)
-  "Custom tool bar map for Org Agenda.")
-
-(defun dkj/org-agenda-setup-tool-bar ()
-  "Enable the custom tool bar in the current buffer."
-  (setq-local tool-bar-map dkj/org-agenda-tool-bar-map))
-
-;; Add it to the org-agenda-mode hook
-(add-hook 'org-agenda-mode-hook #'dkj/org-agenda-setup-tool-bar)
+(dkj/define-local-tool-bar org-agenda-mode
+						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
+							:help "Switch to agenda item and run mobile-org-noter"
+							:label "Noter"))
 
 ;; Nicer winner-mode bindings
 (define-key dkj-keys (kbd "C-p") #'winner-undo)
@@ -618,7 +769,7 @@
 (defun dkj/org-summary-todo (n-done n-not-done)
   "Switch entry to DONE when all subentries are done, to TODO otherwise."
   (let (org-log-done org-todo-log-states) ; turn off logging
- (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+	(org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
 (add-hook 'org-after-todo-statistics-hook #'dkj/org-summary-todo)
 
@@ -765,6 +916,10 @@
 (use-package which-key
   :config
   (which-key-mode))
+
+(use-package gcmh
+  :init
+  (gcmh-mode 1))
 
 ;; Themes that I like to have available
 (use-package modus-themes) ;; built in now, but to get the tinted themes we need the package, I think
@@ -1017,49 +1172,6 @@ and leaving a noweb reference in its place."
 		 (org-noter-doc-split-fraction '(0.1 . 0.9)))
 	(org-noter)))
 
-(define-key global-map [menu-bar mobile-reading]
-			(cons "READ" (make-sparse-keymap "READ")))
-
-(defun dkj/goto-id-mobile-org-noter (id)
-  (org-id-open id t)
-  (dkj/mobile-org-noter))
-
-(define-key global-map
-			[menu-bar mobile-reading noter3]
-			'("Sand Reck" . (lambda () (interactive)
-						  (dkj/goto-id-mobile-org-noter
-						   "1537C608-15D0-4179-A9E9-F6695E88B947"))))
-(define-key global-map
-			[menu-bar mobile-reading noter2]
-			'("BrilliantFriend" . (lambda () (interactive)
-									(dkj/goto-id-mobile-org-noter
-									 "7a7229e7-1dde-4e8c-8e6b-8cd9915f6eb1"))))
-(define-key global-map
-			[menu-bar mobile-reading noter1]
-			'("ElixirInAction" . (lambda () (interactive)
-								   (dkj/goto-id-mobile-org-noter
-									"0467cb4c-2045-4339-8097-855d7caf09fd"))))
-(define-key global-map
-			[menu-bar mobile-reading book-club]
-			'("Anna K" . (lambda () (interactive)
-						  (dkj/goto-id-mobile-org-noter
-						   "bf0b74e8-6685-478c-a954-84f0e24e98fe"))))
-(define-key global-map
-			[separator-4] menu-bar-separator) 
-
-(define-key global-map
-			[menu-bar mobile-reading noter-kill]
-			'("Kill noter" . org-noter-kill-session))
-
-(defun dkj/noter-insert-note-and-save-all ()
-  (interactive)
-  (org-noter-insert-precise-note)
-  (save-some-buffers t))
-
-(define-key global-map
-			[menu-bar mobile-reading org-noter-insert-precise-note]
-			'("Insert note" . dkj/noter-insert-note-and-save-all))
-
 (use-package doc-view
   :bind
   (:map doc-view-mode-map
@@ -1097,6 +1209,13 @@ and leaving a noweb reference in its place."
   (setq-local tool-bar-map dkj/nov-tool-bar-map))
 
 (add-hook 'nov-mode-hook #'dkj/nov-setup-tool-bar)
+
+(dkj/define-local-tool-bar nov-mode
+						   ("--" nil nil map)
+						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
+						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
+						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
+						   ("search-replace" 'org-noter-insert-note 'insert-note-btn map))
 
 (use-package visual-fill-column
   :config
