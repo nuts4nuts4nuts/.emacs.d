@@ -207,6 +207,9 @@ These are some basic settings to make life a little better. They don't relate to
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 #+end_src
 **** tool-bar-map setup
+:PROPERTIES:
+:ID:       58a25fee-9ae1-421d-aaa7-aff15f7173a4
+:END:
 
 Custom default tool-bar-map
 
@@ -332,6 +335,13 @@ Custom default tool-bar-map
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
 				(separator-3 "--")
+				(agenda menu-item "Agenda" dkj/agenda-main-one-window
+						 :help "Full screen agenda"
+						 :image ,(find-image
+								  '((:type xpm :file "home.xpm")
+								    (:type pbm :file "home.pbm" :foreground "black")
+								    (:type xbm :file "home.xbm" :foreground "black")))
+						 :vert-only t)
 				(capture menu-item "Capture" org-capture
 						 :help "Capture to org-mode"
 						 :image ,(find-image
@@ -769,6 +779,7 @@ All flows from the agenda
 
 ;; define a secondary view to use in the following functions
 (defun dkj/agenda-main-one-window ()
+  (interactive)
   (dkj/agenda-main-view)
   (delete-other-windows))
 
@@ -1087,6 +1098,9 @@ https://stackoverflow.com/a/16247032
 # #+end_src
 
 *** Custom tool-bar-map
+:PROPERTIES:
+:ID:       edc65ef9-d71d-42d4-a9e4-888a000748ca
+:END:
 
 #+begin_src emacs-lisp
 (dkj/define-local-tool-bar org-mode
@@ -1164,6 +1178,9 @@ You can also use ~M-x auto-package-update-now~ to update right now!
 #+end_src
 
 *** GCMH
+:PROPERTIES:
+:ID:       4917e60d-a06e-4bbf-a538-4051a5a0a2de
+:END:
 The Garbage Collector Magic Hack: https://gitlab.com/koral/gcmh.
 To dynamically adjust ~gc-cons-threshold~ based on idleness.
 

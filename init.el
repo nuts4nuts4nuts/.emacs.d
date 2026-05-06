@@ -287,6 +287,13 @@
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
 				(separator-3 "--")
+				(agenda menu-item "Agenda" dkj/agenda-main-one-window
+						 :help "Full screen agenda"
+						 :image ,(find-image
+								  '((:type xpm :file "home.xpm")
+								    (:type pbm :file "home.pbm" :foreground "black")
+								    (:type xbm :file "home.xbm" :foreground "black")))
+						 :vert-only t)
 				(capture menu-item "Capture" org-capture
 						 :help "Capture to org-mode"
 						 :image ,(find-image
@@ -653,6 +660,7 @@ ITEMS is a list of item definitions, where each definition is:
 
 ;; define a secondary view to use in the following functions
 (defun dkj/agenda-main-one-window ()
+  (interactive)
   (dkj/agenda-main-view)
   (delete-other-windows))
 
