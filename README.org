@@ -330,7 +330,8 @@ Custom default tool-bar-map
 								  '((:type xpm :file "paste.xpm")
 									(:type pbm :file "paste.pbm" :foreground "black")
 									(:type xbm :file "paste.xbm" :foreground "black")))))
-					   :vert-only t)))
+					   :vert-only t)
+				(separator-3 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
   "Define a custom tool bar map for a mode and attach it.
@@ -343,22 +344,17 @@ ITEMS is a list of item definitions, where each definition is:
   (let* ((base-name (replace-regexp-in-string "-hook\\'" "" (symbol-name mode-or-hook)))
          (hook (intern (format "%s-hook" base-name)))
          (map-sym (intern (format "dkj/%s-tool-bar-map" base-name)))
-         (func-sym (intern (format "dkj/setup-tool-bar-for-%s" base-name)))
-         ;; Generate a unique key for this mode's separator
-         (sep-key (vector (intern (format "dkj-%s-separator" base-name)))))
+         (func-sym (intern (format "dkj/setup-tool-bar-for-%s" base-name))))
     `(progn
        ;; 1. Define the variable to hold the map
        (defvar ,map-sym
          (let ((map (copy-keymap (default-value 'tool-bar-map))))
            
-           ;; Insert the visual separator before our custom buttons
-           (define-key map ,sep-key "--")
-           
            ;; Add the custom buttons
            ,@(mapcar (lambda (item)
                        `(tool-bar-local-item ,(nth 0 item)
                                              ,(nth 1 item)
-                                             ,(nth 2 item)
+                                               ,(nth 2 item)
                                              map
                                              ,@(nthcdr 3 item)))
                      items)
