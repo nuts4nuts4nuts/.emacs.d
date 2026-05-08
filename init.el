@@ -287,7 +287,7 @@
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
 				(separator-3 "--")
-				(agenda menu-item "Agenda" dkj/agenda-main-one-window
+				(agenda menu-item "Agenda" dkj/open-agenda-main-one-window
 						 :help "Full screen agenda"
 						 :image ,(find-image
 								  '((:type xpm :file "home.xpm")
@@ -660,7 +660,6 @@ ITEMS is a list of item definitions, where each definition is:
 
 ;; define a secondary view to use in the following functions
 (defun dkj/agenda-main-one-window ()
-  (interactive)
   (dkj/agenda-main-view)
   (delete-other-windows))
 
@@ -687,6 +686,10 @@ ITEMS is a list of item definitions, where each definition is:
 	 ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
 	 ((equal prefix '(16)) (dkj/agenda-main-one-window))
 	 (t (dkj/agenda-main-view)))))
+
+(defun dkj/open-agenda-main-one-window ()
+  (interactive)
+  (dkj/open-agenda-main-view '(16)))
 
 ;; Open agenda through the menu bar
 (define-key global-map
