@@ -810,6 +810,8 @@ All flows from the agenda
   (interactive)
   (dkj/open-agenda-main-view '(16)))
 
+(global-set-key (kbd "<next>") #'dkj/open-agenda-main-one-window)
+
 ;; Open agenda through the menu bar
 (define-key global-map
 			[menu-bar dkj open-agenda-main-view]
@@ -1806,7 +1808,6 @@ LLMs in Emacs
   :bind
   ("C-`" . gptel-send)
   ("C-M-`" . gptel-menu)
-  ("<next>" . gptel-send)
   ("<prior>" . gptel-menu))
 
 (defun dkj/gptel-add-indicator (&rest _)

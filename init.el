@@ -691,6 +691,8 @@ ITEMS is a list of item definitions, where each definition is:
   (interactive)
   (dkj/open-agenda-main-view '(16)))
 
+(global-set-key (kbd "<next>") #'dkj/open-agenda-main-one-window)
+
 ;; Open agenda through the menu bar
 (define-key global-map
 			[menu-bar dkj open-agenda-main-view]
@@ -1256,7 +1258,6 @@ and leaving a noweb reference in its place."
   :bind
   ("C-`" . gptel-send)
   ("C-M-`" . gptel-menu)
-  ("<next>" . gptel-send)
   ("<prior>" . gptel-menu))
 
 (defun dkj/gptel-add-indicator (&rest _)
