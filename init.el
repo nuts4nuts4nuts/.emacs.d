@@ -785,7 +785,7 @@ ITEMS is a list of item definitions, where each definition is:
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
 			   "* TODO %?\n%U\n")
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n")
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
@@ -1338,7 +1338,14 @@ and leaving a noweb reference in its place."
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
-  (setq ispell-program-name (executable-find "hunspell")))
+  (setq ispell-program-name (executable-find "hunspell"))
+  (setq org-capture-templates
+	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
+			   "* TODO %?\n%U\n")
+			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
+			   "* TODO %? :MEETING:\n%U\n")
+			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+			   "* %? :JOURNAL:\n%U\n")))))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
