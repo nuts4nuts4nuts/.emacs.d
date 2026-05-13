@@ -287,6 +287,13 @@
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
 				(separator-3 "--")
+				(agenda menu-item "Agenda" dkj/open-agenda-main-one-window
+						 :help "Full screen agenda"
+						 :image ,(find-image
+								  '((:type xpm :file "home.xpm")
+								    (:type pbm :file "home.pbm" :foreground "black")
+								    (:type xbm :file "home.xbm" :foreground "black")))
+						 :vert-only t)
 				(capture menu-item "Capture" org-capture
 						 :help "Capture to org-mode"
 						 :image ,(find-image
@@ -679,6 +686,12 @@ ITEMS is a list of item definitions, where each definition is:
 	 ((equal prefix '(4)) (dkj/present-agenda-and-clocked))
 	 ((equal prefix '(16)) (dkj/agenda-main-one-window))
 	 (t (dkj/agenda-main-view)))))
+
+(defun dkj/open-agenda-main-one-window ()
+  (interactive)
+  (dkj/open-agenda-main-view '(16)))
+
+(global-set-key (kbd "<next>") #'dkj/open-agenda-main-one-window)
 
 ;; Open agenda through the menu bar
 (define-key global-map
@@ -1245,7 +1258,6 @@ and leaving a noweb reference in its place."
   :bind
   ("C-`" . gptel-send)
   ("C-M-`" . gptel-menu)
-  ("<next>" . gptel-send)
   ("<prior>" . gptel-menu))
 
 (defun dkj/gptel-add-indicator (&rest _)
@@ -1315,7 +1327,7 @@ and leaving a noweb reference in its place."
   (tool-bar-mode 1)
   (setopt tool-bar-position 'bottom)
   ;; bigger font
-  (dkj/font-height 200)
+  (dkj/font-height 230)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
