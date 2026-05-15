@@ -716,7 +716,7 @@ ITEMS is a list of item definitions, where each definition is:
 									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
 									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "TASKS in progress")))
 									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))
-									 (todo "" ((org-agenda-files '("~/org/inbox.org" "~/org/beorg-inbox.org"))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
 											   (org-agenda-overriding-header "Inbox tasks")))))
 								   ("h"
 									"Next steps at home organized by sizes"
