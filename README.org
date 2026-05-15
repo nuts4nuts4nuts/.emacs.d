@@ -941,7 +941,7 @@ Quick cap
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
 			   "* TODO %?\n%U\n")
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n")
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 #+end_src
@@ -1939,7 +1939,14 @@ Its helpful to have different settings for mobile use.
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
-  (setq ispell-program-name (executable-find "hunspell")))
+  (setq ispell-program-name (executable-find "hunspell"))
+  (setq org-capture-templates
+	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
+			   "* TODO %?\n%U\n")
+			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
+			   "* TODO %? :MEETING:\n%U\n")
+			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+			   "* %? :JOURNAL:\n%U\n")))))
 #+end_src
 
 ** Load other files
