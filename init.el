@@ -1223,6 +1223,16 @@ and leaving a noweb reference in its place."
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
 						   ("search-replace" 'org-noter-insert-note 'insert-note-btn map))
 
+(defun dkj/nov-render-document ()
+  "Rerender document and restore old point"
+  (interactive)
+  (let ((p (point)))
+	(nov-render-document)
+	(goto-char p)
+	(recenter (1- (max 1 scroll-margin)))))
+
+(define-key nov-mode-map (kbd "g") #'dkj/nov-render-document)
+
 (use-package visual-fill-column
   :config
   (setq-default visual-fill-column-center-text t))
