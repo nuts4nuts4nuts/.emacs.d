@@ -168,28 +168,6 @@
 
 (setq-default tool-bar-map
 			  `(keymap
-				(new-file menu-item "Visit New File..." find-file
-						  :enable (menu-bar-non-minibuffer-window-p)
-						  :help "Specify a new file's name, to edit the file"
-						  :image ,(find-image
-								   (cond
-									((not (display-color-p))
-									 '((:type pbm :file "new.pbm" :foreground "black")
-									   (:type xbm :file "new.xbm" :foreground "black")
-									   (:type xpm :file "low-color/new.xpm")
-									   (:type xpm :file "new.xpm")))
-									((< (display-color-cells) 256)
-									 '((:type xpm :file "low-color/new.xpm")
-									   (:type xpm :file "new.xpm")
-									   (:type pbm :file "new.pbm" :foreground "black")
-									   (:type xbm :file "new.xbm" :foreground "black")))
-									(t
-									 '((:type xpm :file "new.xpm")
-									   (:type pbm :file "new.pbm" :foreground "black")
-									   (:type xbm :file "new.xbm" :foreground "black")))))
-						  :label "New File"
-						  :vert-only t)
-				
 				(save-buffer menu-item "Save" save-buffer
 							 :enable (and (buffer-modified-p)
 										  (buffer-file-name)
@@ -212,8 +190,6 @@
 										  (:type pbm :file "save.pbm" :foreground "black")
 										  (:type xbm :file "save.xbm" :foreground "black")))))
 							 :label "Save")
-				(separator-1 "--")
-
 				(undo menu-item "Undo" undo
 					  :enable (and (not buffer-read-only)
 								   (not (eq t buffer-undo-list))
@@ -239,7 +215,7 @@
 								   (:type xbm :file "undo.xbm" :foreground "black")))))
 					  :vert-only t)
 
-				(separator-2 "--")
+				(separator-1 "--")
 
 				(cut menu-item "Cut" kill-region
 					 :enable (and mark-active (not buffer-read-only))
@@ -286,7 +262,7 @@
 									(:type pbm :file "paste.pbm" :foreground "black")
 									(:type xbm :file "paste.xbm" :foreground "black")))))
 					   :vert-only t)
-				(separator-3 "--")
+				(separator-2 "--")
 				(agenda menu-item "Agenda" dkj/open-agenda-main-one-window
 						 :help "Full screen agenda"
 						 :image ,(find-image
@@ -301,7 +277,7 @@
 								    (:type pbm :file "open.pbm" :foreground "black")
 								    (:type xbm :file "open.xbm" :foreground "black")))
 						 :vert-only t)
-				(separator-4 "--")))
+				(separator-3 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
   "Define a custom tool bar map for a mode and attach it.
@@ -1217,7 +1193,6 @@ and leaving a noweb reference in its place."
 		("<volume-up>" . #'nov-scroll-down)))
 
 (dkj/define-local-tool-bar nov-mode
-						   ("--" nil nil map)
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
