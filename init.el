@@ -1312,19 +1312,34 @@ and leaving a noweb reference in its place."
 			  (gptel-get-tool "WebSearch")
 			  (gptel-get-tool "WebFetch"))))
 
-(use-package fsrs
-  :vc (:url "https://github.com/bohonghuang/lisp-fsrs"
-			:rev :newest)
-  :defer t)
-
 (use-package org-srs
-  :vc (:url "https://github.com/bohonghuang/org-srs"
-			:rev :newest)
+  :ensure t
   :defer t
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
-			  ("C-c C-1" . org-srs-review-rate-good)
-			  ("C-c C-2" . org-srs-review-rate-again)))
+         ("C-c C-1" . org-srs-review-rate-good)
+         ("C-c C-2" . org-srs-review-rate-again)))
+
+(use-package org-srs
+  :when (eq system-type 'android)
+  :ensure t
+  :defer t
+  :custom
+  (org-srs-item-confirm #'org-srs-item-confirm-command)
+  :config
+  (org-srs-ui-mode +1))
+
+(defun dkj/create-card ()
+  (interactive)
+  (org-id-get-create)
+  (org-srs-item-new-interactively 'card))
+(define-key dkj-keys (kbd "C-c") #'dkj/create-card)
+
+(defun dkj/create-reversible ()
+  (interactive)
+  (org-id-get-create)
+  (org-srs-item-new-interactively 'card-reversible))
+(define-key dkj-keys (kbd "C-v") #'dkj/create-reversible)
 
 (use-package keyfreq)
 (keyfreq-mode t)
