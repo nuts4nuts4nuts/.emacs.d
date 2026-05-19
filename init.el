@@ -1316,6 +1316,10 @@ and leaving a noweb reference in its place."
   (org-srs-item-new-interactively 'card-reversible))
 (define-key dkj-keys (kbd "C-v") #'dkj/create-reversible)
 
+(defun dkj/org-srs-review-all ()
+  (interactive)
+  (org-srs-review-start "~/org/"))
+
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)

@@ -1873,6 +1873,10 @@ Create and review flashcards all from within Emacs.
   (org-id-get-create)
   (org-srs-item-new-interactively 'card-reversible))
 (define-key dkj-keys (kbd "C-v") #'dkj/create-reversible)
+
+(defun dkj/org-srs-review-all ()
+  (interactive)
+  (org-srs-review-start "~/org/"))
 #+end_src
 *** keyfreq
 :PROPERTIES:
