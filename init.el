@@ -748,6 +748,7 @@ ITEMS is a list of item definitions, where each definition is:
 (defun dkj/prog-when-clock-if-todo (state)
   (message state)
   (cond ((equal state nil) state)
+		(org-capture-mode state)
 		(t "PROG")))
 (setq org-clock-in-switch-to-state #'dkj/prog-when-clock-if-todo)
 
