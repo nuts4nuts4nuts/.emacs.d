@@ -915,9 +915,9 @@ Quick cap
 #+begin_src emacs-lisp
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n")
+			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* TODO %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 #+end_src
@@ -1956,11 +1956,11 @@ Its helpful to have different settings for mobile use.
   (setq ispell-program-name (executable-find "hunspell"))
   (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n")
+			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* TODO %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-			   "* %? :JOURNAL:\n%U\n")))))
+			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 #+end_src
 
 ** Load other files

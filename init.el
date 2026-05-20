@@ -772,9 +772,9 @@ ITEMS is a list of item definitions, where each definition is:
 
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n")
+			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* TODO %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-keep t))))
 
@@ -1368,11 +1368,11 @@ and leaving a noweb reference in its place."
   (setq ispell-program-name (executable-find "hunspell"))
   (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n")
+			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
 			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* TODO %? :MEETING:\n%U\n")
+			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-			   "* %? :JOURNAL:\n%U\n")))))
+			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
