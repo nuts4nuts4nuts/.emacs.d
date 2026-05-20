@@ -951,6 +951,16 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Default to dark theme
 (load-theme dkj/theme-dark t)
 
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-center-content t
+		dashboard-startupify-list '(dashboard-insert-navigator
+									dashboard-insert-newline
+									dashboard-insert-init-info
+									dashboard-insert-items)))
+
 (use-package dot-mode
   :config
   (dot-mode 1)
@@ -1196,6 +1206,7 @@ and leaving a noweb reference in its place."
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
+						   ("refresh" 'dkj/nov-render-document 'render-btn map)
 						   ("search-replace" 'org-noter-insert-note 'insert-note-btn map))
 
 (defun dkj/nov-render-document ()

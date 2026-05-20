@@ -1210,6 +1210,25 @@ To dynamically adjust ~gc-cons-threshold~ based on idleness.
 (load-theme dkj/theme-dark t)
 #+end_src
 
+*** Dashboard
+:PROPERTIES:
+:ID:       c46f4b81-53f2-4510-88e0-10b9a0f60cb9
+:END:
+https://github.com/emacs-dashboard/dashboard
+Useful information at start up (and at other times).
+
+#+begin_src emacs-lisp
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-center-content t
+		dashboard-startupify-list '(dashboard-insert-navigator
+									dashboard-insert-newline
+									dashboard-insert-init-info
+									dashboard-insert-items)))
+#+end_src
+
 *** Dot-mode
 :PROPERTIES:
 :ID:       DC17C04F-7990-4D38-A4A6-9A4A73838406
@@ -1702,6 +1721,7 @@ For reading epub files in Emacs! Useful with org-noter.
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
+						   ("refresh" 'dkj/nov-render-document 'render-btn map)
 						   ("search-replace" 'org-noter-insert-note 'insert-note-btn map))
 
 (defun dkj/nov-render-document ()
