@@ -1866,22 +1866,26 @@ LLMs in Emacs
 Create and review flashcards all from within Emacs.
 
 #+begin_src emacs-lisp
+(defun dkj/org-good-or-scroll ()
+	(interactive)
+  (if (org-srs-reviewing-p)
+	  (org-srs-review-rate-good)
+	(scroll-down-command)))
+(defun dkj/org-again-or-scroll ()
+	(interactive)
+  (if (org-srs-reviewing-p)
+	  (org-srs-review-rate-again)
+	(scroll-up-command)))
 (use-package org-srs
   :ensure t
-  :defer t
+  :config
+  (org-srs-ui-mode +1)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
          ("C-c C-1" . org-srs-review-rate-good)
-         ("C-c C-2" . org-srs-review-rate-again)))
-
-(use-package org-srs
-  :when (eq system-type 'android)
-  :ensure t
-  :defer t
-  :custom
-  (org-srs-item-confirm #'org-srs-item-confirm-command)
-  :config
-  (org-srs-ui-mode +1))
+		 ("C-c C-2" . org-srs-review-rate-again)
+		 ("<volume-up>" . dkj/org-good-or-scroll)
+		 ("<volume-down>" . dkj/org-again-or-scroll)))
 
 (defun dkj/create-card ()
   (interactive)
@@ -1895,9 +1899,20 @@ Create and review flashcards all from within Emacs.
   (org-srs-item-new-interactively 'card-reversible))
 (define-key dkj-keys (kbd "C-v") #'dkj/create-reversible)
 
+(defun dkj/create-cloze ()
+  (interactive)
+  (org-id-get-create)
+  (org-srs-item-cloze-dwim)
+  (org-srs-item-cloze-update 2)) ;; Arg > 1 to update all clozes
+(define-key dkj-keys (kbd "C-z") #'dkj/create-cloze)
+
 (defun dkj/org-srs-review-all ()
   (interactive)
   (org-srs-review-start "~/org/"))
+
+(defun dkj/org-srs-hook-fold-drawers (&rest _)
+  (org-fold-hide-drawer-all))
+(add-hook 'org-srs-item-before-review-hook #'dkj/org-srs-hook-fold-drawers)
 #+end_src
 *** keyfreq
 :PROPERTIES:
