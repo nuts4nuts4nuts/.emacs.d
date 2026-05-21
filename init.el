@@ -1313,6 +1313,7 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (org-srs-ui-mode +1)
+  (setq org-srs-schedule-bury-sibling-items-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
          ("C-c C-1" . org-srs-review-rate-good)
@@ -1346,6 +1347,21 @@ and leaving a noweb reference in its place."
 (defun dkj/org-srs-hook-fold-drawers (&rest _)
   (org-fold-hide-drawer-all))
 (add-hook 'org-srs-item-before-review-hook #'dkj/org-srs-hook-fold-drawers)
+
+(defun dkj/org-srs-breadcrumbs ()
+  "Fetch the parent hierarchy of the current flashcard headline during reviews."
+  (when (and (fboundp 'org-srs-reviewing-p) ; Safety check: is the package loaded?
+             (org-srs-reviewing-p))       ; State check: are we reviewing?
+    (let ((path (reverse (org-get-outline-path))))
+      (if path
+          (concat "* " (mapconcat 'identity path " < ") " 📂 ") ; Added a trailing space
+        "TOP 📂"))))
+
+;; Safely prepend the evaluation to the beginning of the global mode-line
+(unless (member '(:eval (dkj/org-srs-breadcrumbs)) (default-value 'mode-line-format))
+  (setq-default mode-line-format
+                (cons '(:eval (dkj/org-srs-breadcrumbs))
+                      (default-value 'mode-line-format))))
 
 (use-package keyfreq)
 (keyfreq-mode t)
