@@ -1331,7 +1331,6 @@ and leaving a noweb reference in its place."
   (interactive)
   (org-id-get-create)
   (org-srs-item-new-interactively 'card-reversible))
-(define-key dkj-keys (kbd "C-v") #'dkj/create-reversible)
 
 (defun dkj/create-cloze ()
   (interactive)
@@ -1339,6 +1338,19 @@ and leaving a noweb reference in its place."
   (org-srs-item-cloze-dwim)
   (org-srs-item-cloze-update 2)) ;; Arg > 1 to update all clozes
 (define-key dkj-keys (kbd "C-z") #'dkj/create-cloze)
+
+(defun dkj/create-noter-vocab-card ()
+  (interactive)
+  (save-excursion
+  (backward-word)
+  (mark-word)
+  (org-noter-insert-note)
+  (other-window 1)
+  (dkj/create-reversible)
+  (save-buffer)
+  (other-window 1)
+  (deactivate-mark)))
+(define-key dkj-keys (kbd "C-v") #'dkj/create-noter-vocab-card)
 
 (defun dkj/org-srs-review-all ()
   (interactive)
