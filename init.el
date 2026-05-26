@@ -160,6 +160,13 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
+;; Start on bookmark buffer
+(add-hook 'after-init-hook
+          '(lambda ()
+             (require 'bookmark)
+             (bookmark-bmenu-list)))
+(setq initial-buffer-choice (lambda () (get-buffer "*Bookmark List*")))
+
 ;; I don't want to accidentally clear the terminal (or scrollback)
 (with-eval-after-load "vterm"
   (define-key vterm-mode-map (kbd "C-l") nil)
@@ -951,16 +958,6 @@ ITEMS is a list of item definitions, where each definition is:
 
 ;; Default to dark theme
 (load-theme dkj/theme-dark t)
-
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-center-content t
-		dashboard-startupify-list '(dashboard-insert-navigator
-									dashboard-insert-newline
-									dashboard-insert-init-info
-									dashboard-insert-items)))
 
 (use-package dot-mode
   :config

@@ -200,6 +200,13 @@ These are some basic settings to make life a little better. They don't relate to
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
+;; Start on bookmark buffer
+(add-hook 'after-init-hook
+          '(lambda ()
+             (require 'bookmark)
+             (bookmark-bmenu-list)))
+(setq initial-buffer-choice (lambda () (get-buffer "*Bookmark List*")))
+
 ;; I don't want to accidentally clear the terminal (or scrollback)
 (with-eval-after-load "vterm"
   (define-key vterm-mode-map (kbd "C-l") nil)
@@ -1209,25 +1216,6 @@ To dynamically adjust ~gc-cons-threshold~ based on idleness.
 
 ;; Default to dark theme
 (load-theme dkj/theme-dark t)
-#+end_src
-
-*** Dashboard
-:PROPERTIES:
-:ID:       c46f4b81-53f2-4510-88e0-10b9a0f60cb9
-:END:
-https://github.com/emacs-dashboard/dashboard
-Useful information at start up (and at other times).
-
-#+begin_src emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-center-content t
-		dashboard-startupify-list '(dashboard-insert-navigator
-									dashboard-insert-newline
-									dashboard-insert-init-info
-									dashboard-insert-items)))
 #+end_src
 
 *** Dot-mode
