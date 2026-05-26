@@ -1301,15 +1301,16 @@ and leaving a noweb reference in its place."
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-good)
 	(scroll-down-command)))
+
 (defun dkj/org-again-or-scroll ()
 	(interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-again)
 	(scroll-up-command)))
+
 (use-package org-srs
   :ensure t
   :config
-  (org-srs-ui-mode +1)
   (setq org-srs-schedule-bury-sibling-items-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
@@ -1317,6 +1318,9 @@ and leaving a noweb reference in its place."
 		 ("C-c C-2" . org-srs-review-rate-again)
 		 ("<volume-up>" . dkj/org-good-or-scroll)
 		 ("<volume-down>" . dkj/org-again-or-scroll)))
+
+;; Enable the header without enabling the whole UI
+(org-srs-ui-header-line-mode 1)
 
 (defun dkj/create-card ()
   (interactive)
