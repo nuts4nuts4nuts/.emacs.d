@@ -160,12 +160,11 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
-;; Start on bookmark buffer
+;; Start on agenda buffer
 (add-hook 'after-init-hook
           '(lambda ()
-             (require 'bookmark)
-             (bookmark-bmenu-list)))
-(setq initial-buffer-choice (lambda () (get-buffer "*Bookmark List*")))
+             (dkj/open-agenda-main-view '(16))))
+(setq initial-buffer-choice (lambda () (get-buffer "*Org Agenda*")))
 
 ;; I don't want to accidentally clear the terminal (or scrollback)
 (with-eval-after-load "vterm"
@@ -778,6 +777,7 @@ ITEMS is a list of item definitions, where each definition is:
 								 ("@home" . ?h)
 								 ("@out" . ?o)))
 
+(require 'org-capture)
 (setq org-capture-templates
 	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
 			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
