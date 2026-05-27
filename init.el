@@ -1312,6 +1312,8 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (setq org-srs-schedule-bury-sibling-items-p t)
+  ;; Speed up reviewing
+  (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
          ("C-c C-1" . org-srs-review-rate-good)
