@@ -1092,10 +1092,18 @@ https://stackoverflow.com/a/16247032
 :END:
 
 #+begin_src emacs-lisp
+(defun dkj/org-cc-cc ()
+  "Simulate pressing C-c C-c"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-c")))
+
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo"))
+							:label "org-todo")
+						   ("print" 'dkj/org-cc-cc 'cccc
+							:help "Trigger C-c C-c"
+							:label "org-C-c C-c"))
 #+end_src
 
 ** Packages

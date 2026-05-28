@@ -883,10 +883,18 @@ ITEMS is a list of item definitions, where each definition is:
 
 (setq org-export-backends '(ascii html icalendar latex md odt))
 
+(defun dkj/org-cc-cc ()
+  "Simulate pressing C-c C-c"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-c")))
+
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo"))
+							:label "org-todo")
+						   ("print" 'dkj/org-cc-cc 'cccc
+							:help "Trigger C-c C-c"
+							:label "org-C-c C-c"))
 
 ;; Initialize package sources
 (require 'package)
