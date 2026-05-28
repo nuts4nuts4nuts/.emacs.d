@@ -289,7 +289,7 @@
 								    (:type pbm :file "open.pbm" :foreground "black")
 								    (:type xbm :file "open.xbm" :foreground "black")))
 						 :vert-only t)
-				(cc-cc menu-item "C-c C-c" dkj/org-cc-cc
+				(cc-cc menu-item "C-c C-c" dkj/cc-cc
 						 :help "C-c C-c"
 						 :image ,(find-image
 								  '((:type xpm :file "print.xpm")
