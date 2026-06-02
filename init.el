@@ -172,6 +172,11 @@
   (define-key vterm-mode-map (kbd "C-c C-l") nil)
   (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
+(defun dkj/cc-cc ()
+  "Simulate pressing C-c C-c"
+  (interactive)
+  (execute-kbd-macro (kbd "C-c C-c")))
+
 (setq-default tool-bar-map
 			  `(keymap
 				(save-buffer menu-item "Save" save-buffer
@@ -223,52 +228,53 @@
 
 				(separator-1 "--")
 
-				(cut menu-item "Cut" kill-region
-					 :enable (and mark-active (not buffer-read-only))
-					 :help "Cut (kill) text in region between mark and current position"
-					 :image ,(find-image
-							  (cond
-							   ((not (display-color-p))
-								'((:type pbm :file "cut.pbm" :foreground "black")
-								  (:type xbm :file "cut.xbm" :foreground "black")
-								  (:type xpm :file "low-color/cut.xpm")
-								  (:type xpm :file "cut.xpm")))
-							   ((< (display-color-cells) 256)
-								'((:type xpm :file "low-color/cut.xpm")
-								  (:type xpm :file "cut.xpm")
-								  (:type pbm :file "cut.pbm" :foreground "black")
-								  (:type xbm :file "cut.xbm" :foreground "black")))
-							   (t
-								'((:type xpm :file "cut.xpm")
-								  (:type pbm :file "cut.pbm" :foreground "black")
-								  (:type xbm :file "cut.xbm" :foreground "black")))))
-					 :vert-only t)
+				;; I never use these but maybe they'll be useful
+				;; (cut menu-item "Cut" kill-region
+				;; 	 :enable (and mark-active (not buffer-read-only))
+				;; 	 :help "Cut (kill) text in region between mark and current position"
+				;; 	 :image ,(find-image
+				;; 			  (cond
+				;; 			   ((not (display-color-p))
+				;; 				'((:type pbm :file "cut.pbm" :foreground "black")
+				;; 				  (:type xbm :file "cut.xbm" :foreground "black")
+				;; 				  (:type xpm :file "low-color/cut.xpm")
+				;; 				  (:type xpm :file "cut.xpm")))
+				;; 			   ((< (display-color-cells) 256)
+				;; 				'((:type xpm :file "low-color/cut.xpm")
+				;; 				  (:type xpm :file "cut.xpm")
+				;; 				  (:type pbm :file "cut.pbm" :foreground "black")
+				;; 				  (:type xbm :file "cut.xbm" :foreground "black")))
+				;; 			   (t
+				;; 				'((:type xpm :file "cut.xpm")
+				;; 				  (:type pbm :file "cut.pbm" :foreground "black")
+				;; 				  (:type xbm :file "cut.xbm" :foreground "black")))))
+				;; 	 :vert-only t)
 
-				(paste menu-item "Paste" yank
-					   :enable (and (not buffer-read-only)
-									(or (and (fboundp 'gui-backend-selection-exists-p)
-											 (or (gui-backend-selection-exists-p 'CLIPBOARD)
-												 (gui-backend-selection-exists-p 'PRIMARY)))
-										kill-ring))
-					   :help "Paste (yank) text most recently cut/copied"
-					   :image ,(find-image
-								(cond
-								 ((not (display-color-p))
-								  '((:type pbm :file "paste.pbm" :foreground "black")
-									(:type xbm :file "paste.xbm" :foreground "black")
-									(:type xpm :file "low-color/paste.xpm")
-									(:type xpm :file "paste.xpm")))
-								 ((< (display-color-cells) 256)
-								  '((:type xpm :file "low-color/paste.xpm")
-									(:type xpm :file "paste.xpm")
-									(:type pbm :file "paste.pbm" :foreground "black")
-									(:type xbm :file "paste.xbm" :foreground "black")))
-								 (t
-								  '((:type xpm :file "paste.xpm")
-									(:type pbm :file "paste.pbm" :foreground "black")
-									(:type xbm :file "paste.xbm" :foreground "black")))))
-					   :vert-only t)
-				(separator-2 "--")
+				;; (paste menu-item "Paste" yank
+				;; 	   :enable (and (not buffer-read-only)
+				;; 					(or (and (fboundp 'gui-backend-selection-exists-p)
+				;; 							 (or (gui-backend-selection-exists-p 'CLIPBOARD)
+				;; 								 (gui-backend-selection-exists-p 'PRIMARY)))
+				;; 						kill-ring))
+				;; 	   :help "Paste (yank) text most recently cut/copied"
+				;; 	   :image ,(find-image
+				;; 				(cond
+				;; 				 ((not (display-color-p))
+				;; 				  '((:type pbm :file "paste.pbm" :foreground "black")
+				;; 					(:type xbm :file "paste.xbm" :foreground "black")
+				;; 					(:type xpm :file "low-color/paste.xpm")
+				;; 					(:type xpm :file "paste.xpm")))
+				;; 				 ((< (display-color-cells) 256)
+				;; 				  '((:type xpm :file "low-color/paste.xpm")
+				;; 					(:type xpm :file "paste.xpm")
+				;; 					(:type pbm :file "paste.pbm" :foreground "black")
+				;; 					(:type xbm :file "paste.xbm" :foreground "black")))
+				;; 				 (t
+				;; 				  '((:type xpm :file "paste.xpm")
+				;; 					(:type pbm :file "paste.pbm" :foreground "black")
+				;; 					(:type xbm :file "paste.xbm" :foreground "black")))))
+				;; 	   :vert-only t)
+				;; (separator-2 "--")
 				(agenda menu-item "Agenda" dkj/open-agenda-main-one-window
 						 :help "Full screen agenda"
 						 :image ,(find-image
@@ -282,6 +288,13 @@
 								  '((:type xpm :file "open.xpm")
 								    (:type pbm :file "open.pbm" :foreground "black")
 								    (:type xbm :file "open.xbm" :foreground "black")))
+						 :vert-only t)
+				(cc-cc menu-item "C-c C-c" dkj/cc-cc
+						 :help "C-c C-c"
+						 :image ,(find-image
+								  '((:type xpm :file "print.xpm")
+								    (:type pbm :file "print.pbm" :foreground "black")
+								    (:type xbm :file "print.xbm" :foreground "black")))
 						 :vert-only t)
 				(separator-3 "--")))
 
@@ -1316,6 +1329,8 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (setq org-srs-schedule-bury-sibling-items-p t)
+  ;; Speed up reviewing
+  (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
          ("C-c C-1" . org-srs-review-rate-good)
