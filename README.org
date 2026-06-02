@@ -808,17 +808,18 @@ All flows from the agenda
 	  org-outline-path-complete-in-steps nil
 	  org-refile-use-outline-path 'file
 	  org-agenda-span 'day
-	  org-agenda-tags-todo-honor-ignore-options t)
+	  org-agenda-tags-todo-honor-ignore-options t
+	  org-agenda-compact-blocks t)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
+											   (org-agenda-overriding-header "Inbox tasks")))
 									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
 									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "TASKS in progress")))
-									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))
-									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
-											   (org-agenda-overriding-header "Inbox tasks")))))
+									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))))
 								   ("h"
 									"Next steps at home organized by sizes"
 									((tags-todo "+@home/TODO" ((org-agenda-todo-ignore-deadlines 'all)
@@ -1846,7 +1847,13 @@ LLMs in Emacs
 			  (gptel-get-tool "WebSearch")
 			  (gptel-get-tool "WebFetch"))))
 #+end_src
+*** ECA
+Agentic IDE experience for Emacs?
 
+#+begin_src emacs-lisp
+(use-package eca
+  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
+#+end_src
 *** org-srs
 :PROPERTIES:
 :ID:       BC240B89-A76B-4081-984E-34C0BE2502B4

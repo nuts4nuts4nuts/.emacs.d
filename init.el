@@ -689,17 +689,18 @@ ITEMS is a list of item definitions, where each definition is:
 	  org-outline-path-complete-in-steps nil
 	  org-refile-use-outline-path 'file
 	  org-agenda-span 'day
-	  org-agenda-tags-todo-honor-ignore-options t)
+	  org-agenda-tags-todo-honor-ignore-options t
+	  org-agenda-compact-blocks t)
 
 ;; Open my custom agenda view
 (setq org-agenda-custom-commands '(("n"
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
+									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
+											   (org-agenda-overriding-header "Inbox tasks")))
 									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
 									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "TASKS in progress")))
-									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))
-									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
-											   (org-agenda-overriding-header "Inbox tasks")))))
+									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))))
 								   ("h"
 									"Next steps at home organized by sizes"
 									((tags-todo "+@home/TODO" ((org-agenda-todo-ignore-deadlines 'all)
@@ -1295,6 +1296,9 @@ and leaving a noweb reference in its place."
 			  (gptel-get-tool "Skill")
 			  (gptel-get-tool "WebSearch")
 			  (gptel-get-tool "WebFetch"))))
+
+(use-package eca
+  :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 
 (defun dkj/org-good-or-scroll ()
 	(interactive)
