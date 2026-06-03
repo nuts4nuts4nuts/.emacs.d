@@ -710,10 +710,10 @@ ITEMS is a list of item definitions, where each definition is:
 									"Today's agenda"
 									((agenda "" ((org-deadline-warning-days 7)))
 									 (todo "" ((org-agenda-files '("~/org/inbox.org"))
-											   (org-agenda-overriding-header "Inbox tasks")))
-									 (todo "BLCK" ((org-agenda-overriding-header "Blocked tasks")))
-									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "TASKS in progress")))
-									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "READING in progress")))))
+											   (org-agenda-overriding-header "== Inbox tasks ==")))
+									 (todo "BLCK" ((org-agenda-overriding-header "== Blocked tasks ==")))
+									 (tags-todo "-CONSUME/PROG" ((org-agenda-overriding-header "== TASKS in progress ==")))
+									 (tags-todo "+CONSUME/PROG" ((org-agenda-overriding-header "== READING in progress ==")))))
 								   ("h"
 									"Next steps at home organized by sizes"
 									((tags-todo "+@home/TODO" ((org-agenda-todo-ignore-deadlines 'all)
