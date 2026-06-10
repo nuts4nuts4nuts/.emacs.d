@@ -867,9 +867,28 @@ All flows from the agenda
 
 ;; Number of breadcrumbs to format into my agenda prefix
 (setq breadcrumbs-to-format 2)
+
+;; Concise scheduling text
+(defun dkj/org-agenda-schedule-concise ()
+  "Return custom concise scheduling (\"S\") and deadline (\"D:n\") strings."
+  (let* ((scheduled (org-get-scheduled-time (point)))
+         (deadline (org-get-deadline-time (point)))
+         (reference-day (if (bound-and-true-p org-agenda-current-date)
+                            (calendar-absolute-from-gregorian org-agenda-current-date)
+                          (org-today)))
+         (indicators '()))
+    (when scheduled
+      (push "S" indicators))
+    (when deadline
+      (let ((days-left (- (time-to-days deadline) reference-day)))
+        (push (if (/= days-left 0) (format "D:%d" days-left) "D") indicators)))
+    (if indicators
+        (string-join (nreverse indicators) " ")
+      "")))
+
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e % s")
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %(dkj/org-agenda-schedule-concise):")
 		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(search . "%-12:c %?|e ")))
@@ -2010,7 +2029,7 @@ Its helpful to have different settings for mobile use.
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
-		'((agenda . "%?-12t")
+		'((agenda . "%?-12t %(dkj/org-agenda-schedule-concise):")
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
