@@ -1861,6 +1861,9 @@ LLMs in Emacs
 			  (gptel-get-tool "WebFetch"))))
 #+end_src
 *** ECA
+:PROPERTIES:
+:ID:       47fa597c-1ac3-4be8-b6e8-fe59e2f72207
+:END:
 Agentic IDE experience for Emacs?
 
 #+begin_src emacs-lisp
@@ -1944,7 +1947,8 @@ Create and review flashcards all from within Emacs.
 (defun dkj/org-srs-breadcrumbs ()
   "Fetch the parent hierarchy of the current flashcard headline during reviews."
   (when (and (fboundp 'org-srs-reviewing-p) ; Safety check: is the package loaded?
-             (org-srs-reviewing-p))       ; State check: are we reviewing?
+             (org-srs-reviewing-p)       ; State check: are we reviewing?
+			 (derived-mode-p 'org-mode))
     (let ((path (reverse (org-get-outline-path))))
       (if path
           (concat "* " (mapconcat 'identity path " < ") " 📂 ") ; Added a trailing space

@@ -1383,7 +1383,8 @@ and leaving a noweb reference in its place."
 (defun dkj/org-srs-breadcrumbs ()
   "Fetch the parent hierarchy of the current flashcard headline during reviews."
   (when (and (fboundp 'org-srs-reviewing-p) ; Safety check: is the package loaded?
-             (org-srs-reviewing-p))       ; State check: are we reviewing?
+             (org-srs-reviewing-p)       ; State check: are we reviewing?
+			 (derived-mode-p 'org-mode))
     (let ((path (reverse (org-get-outline-path))))
       (if path
           (concat "* " (mapconcat 'identity path " < ") " 📂 ") ; Added a trailing space
