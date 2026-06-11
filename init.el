@@ -759,7 +759,8 @@ ITEMS is a list of item definitions, where each definition is:
                           (org-today)))
          (indicators '()))
     (when scheduled
-      (push "S" indicators))
+      (let ((days-left (- (time-to-days scheduled) reference-day)))
+        (push (if (/= days-left 0) (format "S:%d" days-left) "S") indicators)))
     (when deadline
       (let ((days-left (- (time-to-days deadline) reference-day)))
         (push (if (/= days-left 0) (format "D:%d" days-left) "D") indicators)))
