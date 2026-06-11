@@ -750,27 +750,12 @@ ITEMS is a list of item definitions, where each definition is:
 (setq breadcrumbs-to-format 2)
 
 ;; Concise scheduling text
-(defun dkj/org-agenda-schedule-concise ()
-  "Return custom concise scheduling (\"S\") and deadline (\"D:n\") strings."
-  (let* ((scheduled (org-get-scheduled-time (point)))
-         (deadline (org-get-deadline-time (point)))
-         (reference-day (if (bound-and-true-p org-agenda-current-date)
-                            (calendar-absolute-from-gregorian org-agenda-current-date)
-                          (org-today)))
-         (indicators '()))
-    (when scheduled
-      (let ((days-left (- (time-to-days scheduled) reference-day)))
-        (push (if (/= days-left 0) (format "S:%d" days-left) "S") indicators)))
-    (when deadline
-      (let ((days-left (- (time-to-days deadline) reference-day)))
-        (push (if (/= days-left 0) (format "D:%d" days-left) "D") indicators)))
-    (if indicators
-        (string-join (nreverse indicators) " ")
-      "")))
+(setq org-agenda-scheduled-leaders '("S " "S-%d ")
+      org-agenda-deadline-leaders '("D " "D%d " "D-%d "))
 
-;; Set prefix to use top level header instead of file name in todo list
+;; prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %?3(dkj/org-agenda-schedule-concise) ")
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %s")
 		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(search . "%-12:c %?|e ")))
@@ -1445,7 +1430,7 @@ and leaving a noweb reference in its place."
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
-		'((agenda . "%?-12t %?(dkj/org-agenda-schedule-concise) ")
+		'((agenda . "%?-12t %s")
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
