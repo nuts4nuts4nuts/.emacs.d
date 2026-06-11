@@ -888,7 +888,7 @@ All flows from the agenda
 
 ;; Set prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %(dkj/org-agenda-schedule-concise):")
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %?3(dkj/org-agenda-schedule-concise): ")
 		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(search . "%-12:c %?|e ")))
@@ -2029,7 +2029,7 @@ Its helpful to have different settings for mobile use.
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
-		'((agenda . "%?-12t %(dkj/org-agenda-schedule-concise):")
+		'((agenda . "%?-12t %?(dkj/org-agenda-schedule-concise): ")
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
