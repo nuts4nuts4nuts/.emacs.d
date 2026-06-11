@@ -750,12 +750,12 @@ ITEMS is a list of item definitions, where each definition is:
 (setq breadcrumbs-to-format 2)
 
 ;; Concise scheduling text
-(setq org-agenda-scheduled-leaders '("S " "S-%d ")
-      org-agenda-deadline-leaders '("D " "D%d " "D-%d "))
+(setq org-agenda-scheduled-leaders '("S" "S-%d")
+      org-agenda-deadline-leaders '("D" "D%d" "D-%d"))
 
 ;; prefix to use top level header instead of file name in todo list
 (setq org-agenda-prefix-format
-	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e %s")
+	  '((agenda . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %?-12t %?|e % s")
 		(todo . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(tags . "%(dkj/format-n-breadcrumbs breadcrumbs-to-format) %s %?|e ")
 		(search . "%-12:c %?|e ")))
@@ -1430,7 +1430,7 @@ and leaving a noweb reference in its place."
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
-		'((agenda . "%?-12t %s")
+		'((agenda . "%?-12t % s")
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
