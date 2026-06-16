@@ -324,12 +324,12 @@ Custom default tool-bar-map
 				;; 	   :vert-only t)
 				;; (separator-2 "--")
 				(agenda menu-item "Agenda" dkj/open-agenda-main-one-window
-						 :help "Full screen agenda"
-						 :image ,(find-image
-								  '((:type xpm :file "home.xpm")
-								    (:type pbm :file "home.pbm" :foreground "black")
-								    (:type xbm :file "home.xbm" :foreground "black")))
-						 :vert-only t)
+						:help "Full screen agenda"
+						:image ,(find-image
+								 '((:type xpm :file "home.xpm")
+								   (:type pbm :file "home.pbm" :foreground "black")
+								   (:type xbm :file "home.xbm" :foreground "black")))
+						:vert-only t)
 				(capture menu-item "Capture" org-capture
 						 :help "Capture to org-mode"
 						 :image ,(find-image
@@ -338,12 +338,12 @@ Custom default tool-bar-map
 								    (:type xbm :file "open.xbm" :foreground "black")))
 						 :vert-only t)
 				(cc-cc menu-item "C-c C-c" dkj/cc-cc
-						 :help "C-c C-c"
-						 :image ,(find-image
-								  '((:type xpm :file "print.xpm")
-								    (:type pbm :file "print.pbm" :foreground "black")
-								    (:type xbm :file "print.xbm" :foreground "black")))
-						 :vert-only t)
+					   :help "C-c C-c"
+					   :image ,(find-image
+								'((:type xpm :file "print.xpm")
+								  (:type pbm :file "print.pbm" :foreground "black")
+								  (:type xbm :file "print.xbm" :foreground "black")))
+					   :vert-only t)
 				(separator-3 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
@@ -1883,13 +1883,13 @@ Create and review flashcards all from within Emacs.
 
 #+begin_src emacs-lisp
 (defun dkj/org-good-or-scroll ()
-	(interactive)
+  (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-good)
 	(scroll-down-command)))
 
 (defun dkj/org-again-or-scroll ()
-	(interactive)
+  (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-again)
 	(scroll-up-command)))
@@ -1902,10 +1902,10 @@ Create and review flashcards all from within Emacs.
   (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
-         ("C-c C-1" . org-srs-review-rate-good)
-		 ("C-c C-2" . org-srs-review-rate-again)
-		 ("<volume-up>" . dkj/org-good-or-scroll)
-		 ("<volume-down>" . dkj/org-again-or-scroll)))
+			  ("C-c C-1" . org-srs-review-rate-good)
+			  ("C-c C-2" . org-srs-review-rate-again)
+			  ("<volume-up>" . dkj/org-good-or-scroll)
+			  ("<volume-down>" . dkj/org-again-or-scroll)))
 
 ;; Enable the header without enabling the whole UI
 (org-srs-ui-header-line-mode 1)
@@ -1931,14 +1931,15 @@ Create and review flashcards all from within Emacs.
 (defun dkj/create-noter-vocab-card ()
   (interactive)
   (save-excursion
-  (backward-word)
-  (mark-word)
-  (org-noter-insert-note)
-  (other-window 1)
-  (dkj/create-reversible)
-  (save-buffer)
-  (other-window 1)
-  (deactivate-mark)))
+	(unless (region-active-p)
+	  (backward-word)
+	  (mark-word))
+	(org-noter-insert-note)
+	(other-window 1)
+	(dkj/create-reversible)
+	(save-buffer)
+	(other-window 1)
+	(deactivate-mark)))
 (define-key dkj-keys (kbd "C-v") #'dkj/create-noter-vocab-card)
 
 (defun dkj/org-srs-review-all ()
