@@ -940,7 +940,7 @@ ITEMS is a list of item definitions, where each definition is:
 (custom-set-faces
  '(god-mode-lighter ((t (:inherit error)))))
 (defun dkj/god-mode-update-cursor-type ()
-  (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+  (setq cursor-type (if (or god-local-mode) 'box 'bar)))
 (add-hook 'post-command-hook #'dkj/god-mode-update-cursor-type)
 
 ;; Manual which-key
