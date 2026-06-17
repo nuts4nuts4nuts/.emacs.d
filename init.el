@@ -940,7 +940,9 @@ ITEMS is a list of item definitions, where each definition is:
 (custom-set-faces
  '(god-mode-lighter ((t (:inherit error)))))
 (defun dkj/god-mode-update-cursor-type ()
-  (setq cursor-type (if (or god-local-mode) 'box 'bar)))
+  (setq cursor-type (if god-local-mode 'box 'bar))
+  ;; Make God work on Android
+  (setq overriding-text-conversion-style (if god-local-mode nil 'lambda)))
 (add-hook 'post-command-hook #'dkj/god-mode-update-cursor-type)
 
 ;; Manual which-key
