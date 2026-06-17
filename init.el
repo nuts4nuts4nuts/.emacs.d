@@ -933,6 +933,16 @@ ITEMS is a list of item definitions, where each definition is:
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
+(use-package god-mode)
+(require 'god-mode)
+(god-mode)
+(global-set-key (kbd "<escape>") #'god-mode-all)
+(custom-set-faces
+ '(god-mode-lighter ((t (:inherit error)))))
+(defun dkj/god-mode-update-cursor-type ()
+  (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+(add-hook 'post-command-hook #'dkj/god-mode-update-cursor-type)
+
 ;; Manual which-key
 (setq which-key-show-early-on-C-h t
       which-key-idle-delay 1e6 ; 11 days
