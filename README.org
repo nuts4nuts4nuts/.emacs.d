@@ -1166,23 +1166,6 @@ You can also use ~M-x auto-package-update-now~ to update right now!
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 #+end_src
-
-*** God mode
-Maybe this will be better for my fingers.
-#+begin_src emacs-lisp
-(use-package god-mode)
-(require 'god-mode)
-(god-mode)
-(global-set-key (kbd "<escape>") #'god-mode-all)
-(custom-set-faces
- '(god-mode-lighter ((t (:inherit error)))))
-(defun dkj/god-mode-update-cursor-type ()
-  (setq cursor-type (if god-local-mode 'box 'bar))
-  ;; Make God work on Android
-  (setq overriding-text-conversion-style (if god-local-mode nil 'lambda)))
-(add-hook 'post-command-hook #'dkj/god-mode-update-cursor-type)
-#+end_src
-
 *** Which-key
 :PROPERTIES:
 :ID:       72BD8981-CE05-4297-8793-A12FB90D609C
