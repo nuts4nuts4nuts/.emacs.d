@@ -55,9 +55,8 @@
 ;; Set a buffer as readonly with C-x C-q
 (setq view-read-only t)
 
-;; Use bar cursor since it matches the emacs model better
-;; but make it a little thick
-(setq-default cursor-type '(bar . 3))
+;; Box cursor
+(setq-default cursor-type 'box)
 
 ;; Move to the top or bottom of the buffer when scrolling
 (setq scroll-error-top-bottom 1)
