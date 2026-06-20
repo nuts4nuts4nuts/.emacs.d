@@ -55,9 +55,8 @@
 ;; Set a buffer as readonly with C-x C-q
 (setq view-read-only t)
 
-;; Use bar cursor since it matches the emacs model better
-;; but make it a little thick
-(setq-default cursor-type '(bar . 3))
+;; Box cursor
+(setq-default cursor-type 'box)
 
 ;; Move to the top or bottom of the buffer when scrolling
 (setq scroll-error-top-bottom 1)
@@ -935,18 +934,6 @@ ITEMS is a list of item definitions, where each definition is:
   :config
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
-
-(use-package god-mode)
-(require 'god-mode)
-(god-mode)
-(global-set-key (kbd "<escape>") #'god-mode-all)
-(custom-set-faces
- '(god-mode-lighter ((t (:inherit error)))))
-(defun dkj/god-mode-update-cursor-type ()
-  (setq cursor-type (if god-local-mode 'box 'bar))
-  ;; Make God work on Android
-  (setq overriding-text-conversion-style (if god-local-mode nil 'lambda)))
-(add-hook 'post-command-hook #'dkj/god-mode-update-cursor-type)
 
 ;; Manual which-key
 (setq which-key-show-early-on-C-h t
