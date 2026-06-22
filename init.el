@@ -1110,16 +1110,6 @@ and leaving a noweb reference in its place."
 	(indent-region rb re)))
 (define-key dkj-keys (kbd "C-k") #'dkj/extract-code-block-noweb)
 
-(use-package anki-editor)
-
-;; Create a named command for inserting a hiragana from the clipbard
-(defalias 'dkj/anki-insert-hiragana-from-clipboard
-  (kmacro "M-x a n k i - e d i t o r - i n d e r <backspace> <backspace> <backspace> s e r t - n o t e <return> b a s i c SPC a n d SPC r e <return> C-y <return> M-S-<left> C-c C-n C-e <return> C-y C-n C-e <return>"))
-
-;; Command for creating a new card using a structure in the "a" register
-(defalias 'dkj/insert-from-a
-  (kmacro "C-u C-<return> C-a C-k C-x r i a C-c C-u C-e" 4 "%d"))
-
 ;; Back up and autosave into directories, instead of all over the place
 (make-directory "~/.emacs_backups/" t)
 (make-directory "~/.emacs_autosave/" t)
@@ -1345,16 +1335,15 @@ and leaving a noweb reference in its place."
 ;; Enable the header without enabling the whole UI
 (org-srs-ui-header-line-mode 1)
 
-(defun dkj/create-card ()
-  (interactive)
+(defun dkj/create-card (prefix)
+  "Turn an org node into a flashcard. Prefix makes it a reversible card."
+  (interactive "P")
   (org-id-get-create)
-  (org-srs-item-new-interactively 'card))
-(define-key dkj-keys (kbd "C-c") #'dkj/create-card)
+  (if (equal prefix '(4))
+	  (org-srs-item-new-interactively 'card)
+	(org-srs-item-new-interactively 'card-reversible)))
 
-(defun dkj/create-reversible ()
-  (interactive)
-  (org-id-get-create)
-  (org-srs-item-new-interactively 'card-reversible))
+(define-key dkj-keys (kbd "C-c") #'dkj/create-card)
 
 (defun dkj/create-cloze ()
   (interactive)
