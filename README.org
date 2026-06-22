@@ -117,7 +117,10 @@ These are some basic settings to make life a little better. They don't relate to
 	  `(("." . ,(concat user-emacs-directory "backups"))))
 
 ;; When I send mail from emacs, open the default mail client (because I haven't set up sending mail from emacs yet).
-(setq send-mail-function 'mailclient-send-it)
+;; (setq send-mail-function 'mailclient-send-it)
+(setq sendmail-program "gmi")
+(setq message-sendmail-extra-arguments '("send" "--quiet" "-t" "-C" "~/.mail/dvdjoh.gmail"))
+(setq notmuch-fcc-dirs nil)
 
 ;; Winner mode remembers my window layouts
 (winner-mode 1)
