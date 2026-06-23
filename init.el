@@ -1343,8 +1343,8 @@ and leaving a noweb reference in its place."
   (interactive "P")
   (org-id-get-create)
   (if (equal prefix '(4))
-	  (org-srs-item-new-interactively 'card)
-	(org-srs-item-new-interactively 'card-reversible)))
+	  (org-srs-item-new-interactively 'card-reversible)
+	(org-srs-item-new-interactively 'card)))
 
 (define-key dkj-keys (kbd "C-c") #'dkj/create-card)
 
