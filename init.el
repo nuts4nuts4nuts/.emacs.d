@@ -699,8 +699,10 @@ ITEMS is a list of item definitions, where each definition is:
 (global-set-key (kbd "C-o") #'dkj/open-agenda-main-view)
 
 ;; ~/org for agenda and refile settings
-(setq org-agenda-files '("~/org")
-	  org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
+(if (file-directory-p "~/Documents/projects/tracksaretracks/design/")
+	(setq org-agenda-files '("~/org" "~/Documents/projects/tracksaretracks/design/"))
+  (setq org-agenda-files '("~/org")))
+(setq org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9))
 	  org-outline-path-complete-in-steps nil
 	  org-refile-use-outline-path 'file
 	  org-agenda-span 'day
