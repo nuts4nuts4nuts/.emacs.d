@@ -1122,6 +1122,17 @@ https://stackoverflow.com/a/16247032
 							:label "org-todo"))
 #+end_src
 
+*** Bash src block shortcut
+
+#+begin_src emacs-lisp
+(define-skeleton dkj/org-bash-block
+  "Inserts a bash source block" nil
+  "#+begin_src bash" \n
+  _ \n
+  "#+end_src")
+(define-key dkj-keys (kbd "C-b") #'dkj/org-bash-block)
+#+end_src
+
 ** Packages
 :PROPERTIES:
 :ID:       2652087B-5DDB-4FA7-895E-86AA6BD1114F

@@ -912,6 +912,13 @@ ITEMS is a list of item definitions, where each definition is:
 							:help "Trigger org-todo"
 							:label "org-todo"))
 
+(define-skeleton dkj/org-bash-block
+  "Inserts a bash source block" nil
+  "#+begin_src bash" \n
+  _ \n
+  "#+end_src")
+(define-key dkj-keys (kbd "C-b") #'dkj/org-bash-block)
+
 ;; Initialize package sources
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
