@@ -1364,7 +1364,7 @@ and leaving a noweb reference in its place."
 	  (mark-word))
 	(org-noter-insert-note)
 	(other-window 1)
-	(dkj/create-reversible)
+	(dkj/create-card '(4))
 	(save-buffer)
 	(other-window 1)
 	(deactivate-mark)))

@@ -1915,7 +1915,7 @@ Create and review flashcards all from within Emacs.
 	  (mark-word))
 	(org-noter-insert-note)
 	(other-window 1)
-	(dkj/create-reversible)
+	(dkj/create-card '(4))
 	(save-buffer)
 	(other-window 1)
 	(deactivate-mark)))
