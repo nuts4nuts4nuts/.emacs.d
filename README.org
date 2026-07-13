@@ -1123,6 +1123,9 @@ https://stackoverflow.com/a/16247032
 #+end_src
 
 *** Bash src block shortcut
+:PROPERTIES:
+:ID:       bace6057-933d-45db-a4fb-736ebe0d5ded
+:END:
 
 #+begin_src emacs-lisp
 (define-skeleton dkj/org-bash-block
@@ -1775,6 +1778,16 @@ Emulate a Terminal
 https://codeberg.org/akib/emacs-eat/
 #+begin_src emacs-lisp
 (use-package eat)
+#+end_src
+*** Ghostel
+:PROPERTIES:
+:ID:       d8416ae6-29a3-449b-8082-66eda0d64e2e
+:END:
+New hot terminal just dropped
+
+#+begin_src emacs-lisp
+(use-package ghostel
+  :ensure t)
 #+end_src
 *** ox-gfm
 :PROPERTIES:

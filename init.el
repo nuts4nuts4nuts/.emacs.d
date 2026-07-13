@@ -1255,6 +1255,9 @@ and leaving a noweb reference in its place."
 
 (use-package eat)
 
+(use-package ghostel
+  :ensure t)
+
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
