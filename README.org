@@ -1990,6 +1990,17 @@ https://github.com/jj-vcs/jj
 #+begin_src emacs-lisp
 (use-package vc-jj)
 #+end_src
+*** Denote
+:PROPERTIES:
+:ID:       475bd7cf-e317-421e-b5fe-04d8cee64129
+:END:
+Prot's efficient file-naming and note taking scheme
+
+#+begin_src emacs-lisp
+(use-package denote
+  :config
+  (setq denote-directory "~/org/"))
+#+end_src
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d

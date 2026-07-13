@@ -1412,6 +1412,10 @@ and leaving a noweb reference in its place."
 
 (use-package vc-jj)
 
+(use-package denote
+  :config
+  (setq denote-directory "~/org/"))
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
