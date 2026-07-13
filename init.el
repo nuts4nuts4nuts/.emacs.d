@@ -143,7 +143,7 @@
 	  ediff-window-setup-function 'ediff-setup-windows-plain) ; no float
 
 ;; Made M-x grep use rg by default
-(setq grep-command "rg -n -H --no-heading -e ")
+(setq grep-command "rg -n -S -H --no-heading -e ")
 ;; Don't append null-device to greps
 ;; It's not needed for rg
 (setq grep-use-null-device nil)
