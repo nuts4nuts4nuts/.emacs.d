@@ -1344,7 +1344,8 @@ and leaving a noweb reference in its place."
   (setq org-srs-review-order-new 'random
 		org-srs-review-order-review 'random
 		org-srs-review-max-reviews-per-day 999
-		org-srs-review-new-items-per-day 50)
+		org-srs-review-new-items-per-day 50
+		org-srs-item-cloze-visibility t)
   ;; Speed up reviewing
   (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
