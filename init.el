@@ -910,7 +910,10 @@ ITEMS is a list of item definitions, where each definition is:
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo"))
+							:label "org-todo")
+						   ("search-replace" 'dkj/create-card 'create-card
+							:help "Make the current node an org-srs card"
+							:label "dkj/create-card"))
 
 (define-skeleton dkj/org-bash-block
   "Inserts a bash source block" nil
@@ -1225,8 +1228,7 @@ and leaving a noweb reference in its place."
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
-						   ("refresh" 'dkj/nov-render-document 'render-btn map)
-						   ("search-replace" 'org-noter-insert-note 'insert-note-btn map))
+						   ("refresh" 'dkj/nov-render-document 'render-btn map))
 
 (defun dkj/nov-render-document ()
   "Rerender document and restore old point"
@@ -1339,6 +1341,10 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (setq org-srs-schedule-bury-sibling-items-p t)
+  (setq org-srs-review-order-new 'random
+		org-srs-review-order-review 'random
+		org-srs-review-max-reviews-per-day 999
+		org-srs-review-new-items-per-day 50)
   ;; Speed up reviewing
   (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
