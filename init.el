@@ -377,7 +377,10 @@ ITEMS is a list of item definitions, where each definition is:
 (dkj/define-local-tool-bar org-agenda-mode
 						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
 							:help "Switch to agenda item and run mobile-org-noter"
-							:label "Noter"))
+							:label "Noter")
+						   ("jump-to" 'org-agenda-schedule 'schedule
+							:help "org-agenda-schedule"
+							:label "Schedule"))
 
 ;; Nicer winner-mode bindings
 (define-key dkj-keys (kbd "C-p") #'winner-undo)
