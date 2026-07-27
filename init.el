@@ -772,6 +772,8 @@ ITEMS is a list of item definitions, where each definition is:
 (with-eval-after-load "org"
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
 
+(setq org-agenda-log-mode-items '(closed clock state))
+
 (setq org-todo-keywords
 	  '((sequence "TODO(t)" "PROG(p)" "BLCK(b)" "|" "DONE(d!)" "CNCL(c!)"))
 	  org-clock-into-drawer t

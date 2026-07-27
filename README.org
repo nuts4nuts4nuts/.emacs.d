@@ -890,6 +890,8 @@ All flows from the agenda
 ;; Remap h (org-agenda-holidays) to org-revert-all-org-buffers
 (with-eval-after-load "org"
   (define-key org-agenda-mode-map (kbd "h") #'org-revert-all-org-buffers))
+
+(setq org-agenda-log-mode-items '(closed clock state))
 #+end_src
 
 *** Todo settings
