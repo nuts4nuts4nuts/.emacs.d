@@ -1107,6 +1107,9 @@ ITEMS is a list of item definitions, where each definition is:
    (go . t)
    (shell . t)))
 
+;; Don't ask for permission
+(setq org-confirm-babel-evaluate nil)
+
 (setq org-babel-python-command "python3")
 
 (setq org-plantuml-exec-mode 'plantuml)
