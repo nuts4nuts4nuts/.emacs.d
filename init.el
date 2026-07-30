@@ -485,6 +485,21 @@ ITEMS is a list of item definitions, where each definition is:
 		(funcall dkj/polya-items)
 	  (funcall dkj/polya-headers))))
 
+(defun dkj/add-q (q)
+  (save-excursion
+	(org-insert-subheading '(4))
+	(insert q)
+	(dkj/create-card nil)))
+
+(setq dkj/reading-qs
+	  '("What is it about?"
+		"How is it argued?"
+		"How true is it?"
+		"What is the significance?"))
+(defun dkj/add-qs ()
+  (interactive)
+  (seq-do #'dkj/add-q dkj/reading-qs))
+
 (setq org-directory "~/org"
 	  org-default-notes-file "~/org/inbox.org"
 	  org-id-locations-file "~/org/.org-id-locations"
