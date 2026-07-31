@@ -1373,8 +1373,10 @@ and leaving a noweb reference in its place."
   (setq org-srs-review-cache-p t)
   :hook (org-mode . org-srs-embed-overlay-mode)
   :bind (:map org-mode-map
-			  ("C-c C-1" . org-srs-review-rate-good)
-			  ("C-c C-2" . org-srs-review-rate-again)
+			  ("C-c 1" . org-srs-review-rate-good)
+			  ("C-c 2" . org-srs-review-rate-again)
+			  ("C-c u" . org-srs-review-undo)
+			  ("C-c q" . org-srs-review-quit)
 			  ("<volume-up>" . dkj/org-good-or-scroll)
 			  ("<volume-down>" . dkj/org-again-or-scroll)))
 
