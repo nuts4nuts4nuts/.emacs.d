@@ -2077,6 +2077,10 @@ Its helpful to have different settings for mobile use.
 			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
+
+;; Offline dictionary
+(use-package quick-sdcv)
+(global-set-key (kbd "M-#") #'quick-sdcv-search-at-point)
 #+end_src
 
 ** Load other files

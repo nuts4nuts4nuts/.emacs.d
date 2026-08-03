@@ -1485,6 +1485,10 @@ and leaving a noweb reference in its place."
 			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
 			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 
+;; Offline dictionary
+(use-package quick-sdcv)
+(global-set-key (kbd "M-#") #'quick-sdcv-search-at-point)
+
 ;; Load customize stuff
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (when (file-exists-p custom-file)
