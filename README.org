@@ -2071,16 +2071,86 @@ Its helpful to have different settings for mobile use.
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
   (setq ispell-program-name (executable-find "hunspell"))
   (setq org-capture-templates
-	  (quote (("t" "Todo" entry (file "~/org/inbox.org")
-			   "* TODO %?\n%U\n" :clock-in t :clock-resume t)
-			  ("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
-			   "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
-			  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-			   "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
+		(quote (("t" "Todo" entry (file "~/org/inbox.org")
+				 "* TODO %?\n%U\n" :clock-in t :clock-resume t)
+				("m" "Meeting" entry (file+olp+datetree "~/org/meetings.org")
+				 "* TODO %? :MEETING:\n%U\n" :clock-in t :clock-resume t)
+				("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+				 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 
 ;; Offline dictionary
 (use-package quick-sdcv)
 (global-set-key (kbd "M-#") #'quick-sdcv-search-at-point)
+
+  ;;; Android touch selection for pdf-tools.
+
+(defun dkj/pdf-touch-selection-update (event state)
+  "Update the live PDF selection from touchscreen EVENT."
+  (let* ((touch-id (aref state 0))
+         (window (aref state 1))
+         (page (aref state 2))
+         (begin (aref state 3))
+         (style (aref state 4))
+         (tool (assq touch-id (cadr event)))
+         (posn (cdr-safe tool)))
+    (when (and posn
+               (eq window (posn-window posn))
+               (posn-image posn))
+      (let* ((end (posn-object-x-y posn))
+             (pixels (list (car begin)
+                           (cdr begin)
+                           (car end)
+                           (cdr end)))
+             (region
+              (pdf-util-scale-pixel-to-relative pixels)))
+        (aset state 5 region)
+        (with-selected-window window
+          (setq pdf-view-active-region (list page region))
+          (pdf-view-display-region
+           pdf-view-active-region nil style))))))
+
+(defun dkj/pdf-touch-select-live (event)
+  "Select PDF text with a live touchscreen drag."
+  (interactive "e")
+  (let* ((start (cdadr event))
+         (window (and start (posn-window start))))
+    (when (and (windowp window) (posn-image start))
+      (with-selected-window window
+        (let* ((page
+                (if pdf-view-roll-minor-mode
+                    (/ (+ 3 (posn-point start)) 4)
+                  (pdf-view-current-page)))
+               (state
+                (vector (caadr event)
+                        window
+                        page
+                        (posn-object-x-y start)
+                        pdf-view-selection-style
+                        nil))
+               (result
+                (touch-screen-track-drag
+                 event
+                 #'dkj/pdf-touch-selection-update
+                 state)))
+          (if (and (eq result t) (aref state 5))
+              (progn
+                (setq pdf-view-active-region
+                      (list page (aref state 5)))
+                (pdf-view--push-mark))
+            (pdf-view-deactivate-region)))))))
+
+(defun dkj/pdf-enable-live-touch-selection ()
+  "Enable live touch selection in the current PDF buffer."
+  (setq-local touch-screen-simple-mouse-conversion nil)
+  (setq-local pdf-view-inhibit-hotspots t))
+
+(with-eval-after-load 'pdf-view
+  (define-key pdf-view-mode-map
+              [touchscreen-begin]
+              #'dkj/pdf-touch-select-live)
+  (define-key pdf-view-mode-map [drag-mouse-1] nil)
+  (add-hook 'pdf-view-mode-hook
+            #'dkj/pdf-enable-live-touch-selection))
 #+end_src
 
 ** Load other files
