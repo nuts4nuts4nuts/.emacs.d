@@ -1395,15 +1395,6 @@ Vertico is a vertical completing-read interface. It's pretty much the same as fi
 (setq tab-always-indent 'complete)
 #+end_src
 
-Corfu uses child frames that don't work in terminal emacs. For that we need [[https://codeberg.org/akib/emacs-corfu-terminal#user-content-headline-2][emacs-corfu-terminal]].
-
-#+begin_src emacs-lisp
-(use-package corfu-terminal
-  :init
-  (unless (display-graphic-p)
-	(corfu-terminal-mode +1)))
-#+end_src
-
 *** Embark
 :PROPERTIES:
 :ID:       DF51D8AA-8504-4429-A40D-E3BE5CC5AA7A
@@ -1751,7 +1742,8 @@ For reading epub files in Emacs! Useful with org-noter.
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
-						   ("refresh" 'dkj/nov-render-document 'render-btn map))
+						   ("refresh" 'dkj/nov-render-document 'render-btn map)
+						   ("search" 'quick-sdcv-search-at-point 'dict-btn map))
 
 (defun dkj/nov-render-document ()
   "Rerender document and restore old point"
@@ -1811,8 +1803,9 @@ https://codeberg.org/akib/emacs-eat/
 New hot terminal just dropped
 
 #+begin_src emacs-lisp
-(use-package ghostel
-  :ensure t)
+(unless (eq system-type 'android)
+  (use-package ghostel
+  :ensure t))
 #+end_src
 *** ox-gfm
 :PROPERTIES:
@@ -2079,8 +2072,39 @@ Its helpful to have different settings for mobile use.
 				 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 
 ;; Offline dictionary
-(use-package quick-sdcv)
-(global-set-key (kbd "M-#") #'quick-sdcv-search-at-point)
+(use-package quick-sdcv
+  :bind
+  ("M-#" . quick-sdcv-search-at-point)
+  (:map quick-sdcv-mode-map
+		("q" . quit-window)
+		("<tab>" . outline-toggle-children)
+		("C-i" . outline-toggle-children))
+  :hook
+  (quick-sdcv-mode . goto-address-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+			   '("\\*sdcv"
+				 (display-buffer-reuse-window display-buffer-at-bottom)
+				 (window-height . 0.3)))
+  (defun dkj/quick-sdcv-clean-html (orig-fun &rest args)
+	"Run sdcv function and format html with pandoc"
+	(apply orig-fun args)
+	(let ((buf (get-buffer "*sdcv*")))
+	  (when (and buf (get-buffer-window buf))
+		(with-current-buffer buf
+		  (let ((inhibit-read-only t))
+			(shell-command-on-region (point-min) (point-max)
+									 "pandoc -f html -t plain"
+									 (current-buffer) t)
+			(deactivate-mark))))))
+  (advice-add #'quick-sdcv-search-at-point :around #'dkj/quick-sdcv-clean-html)
+  (advice-add #'quick-sdcv-search-input :around #'dkj/quick-sdcv-clean-html)
+  :custom
+  (quick-sdcv-fold-on-search t))
+
+(use-package olivetti
+  :hook
+  (quick-sdcv-mode . olivetti-mode))
 
   ;;; Android touch selection for pdf-tools.
 

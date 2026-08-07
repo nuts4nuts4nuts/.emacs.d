@@ -1073,11 +1073,6 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Enable indentation+completion using the TAB key.
 (setq tab-always-indent 'complete)
 
-(use-package corfu-terminal
-  :init
-  (unless (display-graphic-p)
-	(corfu-terminal-mode +1)))
-
 (use-package embark
   :ensure t
   :bind
@@ -1251,7 +1246,8 @@ and leaving a noweb reference in its place."
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
-						   ("refresh" 'dkj/nov-render-document 'render-btn map))
+						   ("refresh" 'dkj/nov-render-document 'render-btn map)
+						   ("search" 'quick-sdcv-search-at-point 'dict-btn map))
 
 (defun dkj/nov-render-document ()
   "Rerender document and restore old point"
@@ -1280,8 +1276,9 @@ and leaving a noweb reference in its place."
 
 (use-package eat)
 
-(use-package ghostel
-  :ensure t)
+(unless (eq system-type 'android)
+  (use-package ghostel
+  :ensure t))
 
 (use-package ox-gfm)
 (eval-after-load "org"
@@ -1486,8 +1483,39 @@ and leaving a noweb reference in its place."
 				 "* %? :JOURNAL:\n%U\n" :clock-in t :clock-resume t)))))
 
 ;; Offline dictionary
-(use-package quick-sdcv)
-(global-set-key (kbd "M-#") #'quick-sdcv-search-at-point)
+(use-package quick-sdcv
+  :bind
+  ("M-#" . quick-sdcv-search-at-point)
+  (:map quick-sdcv-mode-map
+		("q" . quit-window)
+		("<tab>" . outline-toggle-children)
+		("C-i" . outline-toggle-children))
+  :hook
+  (quick-sdcv-mode . goto-address-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+			   '("\\*sdcv"
+				 (display-buffer-reuse-window display-buffer-at-bottom)
+				 (window-height . 0.3)))
+  (defun dkj/quick-sdcv-clean-html (orig-fun &rest args)
+	"Run sdcv function and format html with pandoc"
+	(apply orig-fun args)
+	(let ((buf (get-buffer "*sdcv*")))
+	  (when (and buf (get-buffer-window buf))
+		(with-current-buffer buf
+		  (let ((inhibit-read-only t))
+			(shell-command-on-region (point-min) (point-max)
+									 "pandoc -f html -t plain"
+									 (current-buffer) t)
+			(deactivate-mark))))))
+  (advice-add #'quick-sdcv-search-at-point :around #'dkj/quick-sdcv-clean-html)
+  (advice-add #'quick-sdcv-search-input :around #'dkj/quick-sdcv-clean-html)
+  :custom
+  (quick-sdcv-fold-on-search t))
+
+(use-package olivetti
+  :hook
+  (quick-sdcv-mode . olivetti-mode))
 
   ;;; Android touch selection for pdf-tools.
 
