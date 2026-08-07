@@ -227,6 +227,13 @@
 								   (:type pbm :file "undo.pbm" :foreground "black")
 								   (:type xbm :file "undo.xbm" :foreground "black")))))
 					  :vert-only t)
+				(cc-cc menu-item "C-c C-c" dkj/cc-cc
+					   :help "C-c C-c"
+					   :image ,(find-image
+								'((:type xpm :file "print.xpm")
+								  (:type pbm :file "print.pbm" :foreground "black")
+								  (:type xbm :file "print.xbm" :foreground "black")))
+					   :vert-only t)
 
 				(separator-1 "--")
 
@@ -291,13 +298,13 @@
 								    (:type pbm :file "open.pbm" :foreground "black")
 								    (:type xbm :file "open.xbm" :foreground "black")))
 						 :vert-only t)
-				(cc-cc menu-item "C-c C-c" dkj/cc-cc
-					   :help "C-c C-c"
-					   :image ,(find-image
-								'((:type xpm :file "print.xpm")
-								  (:type pbm :file "print.pbm" :foreground "black")
-								  (:type xbm :file "print.xbm" :foreground "black")))
-					   :vert-only t)
+				(dictionary menu-item "Dictionary" quick-sdcv-search-at-point
+						 :help "Look up with sdcv"
+						 :image ,(find-image
+								  '((:type xpm :file "search.xpm")
+								    (:type pbm :file "search.pbm" :foreground "black")
+								    (:type xbm :file "search.xbm" :foreground "black")))
+						 :vert-only t)
 				(separator-3 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
@@ -930,10 +937,7 @@ ITEMS is a list of item definitions, where each definition is:
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo")
-						   ("search-replace" 'dkj/create-card 'create-card
-							:help "Make the current node an org-srs card"
-							:label "dkj/create-card"))
+							:label "org-todo"))
 
 (define-skeleton dkj/org-bash-block
   "Inserts a bash source block" nil
@@ -1246,8 +1250,7 @@ and leaving a noweb reference in its place."
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
 						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
 						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
-						   ("refresh" 'dkj/nov-render-document 'render-btn map)
-						   ("search" 'quick-sdcv-search-at-point 'dict-btn map))
+						   ("refresh" 'dkj/nov-render-document 'render-btn map))
 
 (defun dkj/nov-render-document ()
   "Rerender document and restore old point"
@@ -1496,7 +1499,7 @@ and leaving a noweb reference in its place."
   (add-to-list 'display-buffer-alist
 			   '("\\*sdcv"
 				 (display-buffer-reuse-window display-buffer-at-bottom)
-				 (window-height . 0.3)))
+				 (window-height . 0.5)))
   (defun dkj/quick-sdcv-clean-html (orig-fun &rest args)
 	"Run sdcv function and format html with pandoc"
 	(apply orig-fun args)
