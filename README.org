@@ -1922,7 +1922,7 @@ Create and review flashcards all from within Emacs.
 	(scroll-up-command)))
 
 (use-package org-srs
-  :ensure t
+  :demand t
   :config
   (setq org-srs-schedule-bury-sibling-items-p t)
   (setq org-srs-review-order-new 'random

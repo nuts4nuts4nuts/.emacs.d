@@ -1361,7 +1361,7 @@ and leaving a noweb reference in its place."
 	(scroll-up-command)))
 
 (use-package org-srs
-  :ensure t
+  :demand t
   :config
   (setq org-srs-schedule-bury-sibling-items-p t)
   (setq org-srs-review-order-new 'random
