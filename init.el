@@ -1448,9 +1448,30 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
-(use-package devil
+(use-package god-mode
+  :bind
+  (("C-SPC" . god-mode-all))
+  (:map god-local-mode-map
+		("SPC" . god-mode-all))
   :config 
-  (global-devil-mode))
+  (god-mode-all))
+
+
+;; God Modeline
+(defvar-local dkj/god-modeline-remap-cookies nil
+  "Stores the face remap cookies for the mode-line.")
+
+(defun dkj/apply-god-mode-modeline ()
+  "Make the active modeline bright red when god-mode is enabled."
+  (when dkj/god-modeline-remap-cookies
+    (mapc #'face-remap-remove-relative dkj/god-modeline-remap-cookies)
+    (setq dkj/god-modeline-remap-cookies nil))
+  (when god-local-mode
+    (push (face-remap-add-relative 'mode-line-active :background "orangered" :foreground "white")
+          dkj/god-modeline-remap-cookies)
+    (push (face-remap-add-relative 'mode-line-inactive :background "maroon" :foreground "white")
+          dkj/god-modeline-remap-cookies)))
+(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
