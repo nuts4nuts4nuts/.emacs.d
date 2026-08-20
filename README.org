@@ -2099,6 +2099,10 @@ https://github.com/emacsorphanage/god-mode.
 (dkj/god-conditional-passthrough
  '("I" "z")
  (lambda () (equal major-mode 'org-agenda-mode)))
+
+(dkj/god-conditional-passthrough
+ '("F" "P")
+ (lambda () (equal major-mode 'magit-status-mode)))
 #+end_src
 ** Android stuff
 :PROPERTIES:

@@ -1511,6 +1511,10 @@ and leaving a noweb reference in its place."
  '("I" "z")
  (lambda () (equal major-mode 'org-agenda-mode)))
 
+(dkj/god-conditional-passthrough
+ '("F" "P")
+ (lambda () (equal major-mode 'magit-status-mode)))
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
