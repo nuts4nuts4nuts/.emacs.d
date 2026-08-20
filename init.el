@@ -1504,8 +1504,12 @@ and leaving a noweb reference in its place."
 								  #'god-mode-self-insert)))))))
 
 (dkj/god-conditional-passthrough
- '("q" "I" "n" "p" "z")
+ '("q" "g" "n" "p")
  (lambda () buffer-read-only))
+
+(dkj/god-conditional-passthrough
+ '("I" "z")
+ (lambda () (equal major-mode 'org-agenda-mode)))
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom

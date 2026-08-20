@@ -2093,8 +2093,12 @@ https://github.com/emacsorphanage/god-mode.
 								  #'god-mode-self-insert)))))))
 
 (dkj/god-conditional-passthrough
- '("q" "I" "n" "p" "z")
+ '("q" "g" "n" "p")
  (lambda () buffer-read-only))
+
+(dkj/god-conditional-passthrough
+ '("I" "z")
+ (lambda () (equal major-mode 'org-agenda-mode)))
 #+end_src
 ** Android stuff
 :PROPERTIES:
