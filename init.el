@@ -1186,11 +1186,11 @@ and leaving a noweb reference in its place."
 (use-package avy
   :ensure t
   :bind
-  (("C-;" . #'avy-goto-char-2))
+  (("C-'" . #'avy-goto-char-2))
   (:map org-mode-map
-		("C-;" . #'avy-goto-char-2))
+		("C-'" . #'avy-goto-char-2))
   (:map isearch-mode-map
-		("C-;" . #'avy-isearch))
+		("C-'" . #'avy-isearch))
   :config
   (setq avy-timeout-seconds 0.25
 		avy-single-candidate-jump nil)
@@ -1199,7 +1199,7 @@ and leaving a noweb reference in its place."
 (use-package ace-window
   :ensure t
   :bind
-  (("C-M-;" . ace-window))
+  (("C-M-'" . ace-window))
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
 		aw-dispatch-always t))
@@ -1448,17 +1448,26 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
+(defun dkj/god-readonly-q ()
+  "Send a literal q in read only buffers"
+  (interactive)
+  (if buffer-read-only
+	  (setq unread-command-events (listify-key-sequence "q"))
+	(call-interactively 'quoted-insert)))
+
 (use-package god-mode
   :bind
-  (("C-SPC" . god-mode-all))
+  ((";" . god-mode-all)
+   ("C-;" . god-mode-all))
   (:map god-local-mode-map
-		("SPC" . god-mode-all))
+		("q" . dkj/god-readonly-q))
+  (:map org-agenda-mode-map
+		(";" . god-mode-all))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil)
   :init
   (god-mode-all))
-
 
 ;; God Modeline
 (defvar-local dkj/god-modeline-remap-cookies nil
