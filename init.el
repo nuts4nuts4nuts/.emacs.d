@@ -1448,19 +1448,10 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
-(defun dkj/god-readonly-q ()
-  "Send a literal q in read only buffers"
-  (interactive)
-  (if buffer-read-only
-	  (setq unread-command-events (listify-key-sequence "q"))
-	(call-interactively 'quoted-insert)))
-
 (use-package god-mode
   :bind
   ((";" . god-mode-all)
    ("C-;" . god-mode-all))
-  (:map god-local-mode-map
-		("q" . dkj/god-readonly-q))
   (:map org-agenda-mode-map
 		(";" . god-mode-all))
   :config
@@ -1484,6 +1475,27 @@ and leaving a noweb reference in its place."
     (push (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
           dkj/god-modeline-remap-cookies)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
+
+(require 'cl-lib)
+(defvar dkj/god-passthrough-rules nil)
+
+(defun dkj/god-conditional-passthrough (keys condition-p)
+  "Register KEYS to pass through if CONDITION-P is non-nil"
+  (dolist (key keys)
+	(let ((existing-ps (alist-get key dkj/god-passthrough-rules nil nil #'equal)))
+	  (setf (alist-get key dkj/god-passthrough-rules nil nil #'equal)
+			(cons condition-p existing-ps)))
+	(define-key god-local-mode-map (kbd key)
+				`(menu-item "" nil :filter
+							(lambda (_)
+							  (let ((ps (alist-get ,key dkj/god-passthrough-rules nil nil #'equal)))
+								(if (cl-some (lambda (fn) (ignore-errors (funcall fn))) ps)
+									nil
+								  #'god-mode-self-insert)))))))
+
+(dkj/god-conditional-passthrough
+ '("q" "I" "n" "p" "z")
+ (lambda () buffer-read-only))
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
