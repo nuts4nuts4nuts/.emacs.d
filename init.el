@@ -1453,7 +1453,10 @@ and leaving a noweb reference in its place."
   (("C-SPC" . god-mode-all))
   (:map god-local-mode-map
 		("SPC" . god-mode-all))
-  :config 
+  :config
+  (setq god-exempt-major-modes nil
+		god-exempt-predicates nil)
+  :init
   (god-mode-all))
 
 
