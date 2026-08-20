@@ -1694,7 +1694,7 @@ Take synched org notes on documents in Emacs!
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.1 . 0.9)))
+		 (org-noter-doc-split-fraction '(0.3 . 0.7)))
 	(org-noter)))
 #+end_src
 
@@ -2029,6 +2029,17 @@ Prot's efficient file-naming and note taking scheme
   :config
   (setq denote-directory "~/org/"))
 #+end_src
+*** Devil mode
+:PROPERTIES:
+:ID:       46eb3a2b-65ef-4f92-80e2-3bdcdf62570e
+:END:
+Trade your comma to the devil.
+
+#+begin_src emacs-lisp
+(use-package devil
+  :config 
+  (global-devil-mode))
+#+end_src
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d
@@ -2045,6 +2056,8 @@ Its helpful to have different settings for mobile use.
   (dkj/font-height 230)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
+  ;; raw inputs from virtual keyboard
+  (setq overriding-text-conversion-style nil)
   ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)

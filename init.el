@@ -1221,7 +1221,7 @@ and leaving a noweb reference in its place."
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.1 . 0.9)))
+		 (org-noter-doc-split-fraction '(0.3 . 0.7)))
 	(org-noter)))
 
 (use-package doc-view
@@ -1448,6 +1448,10 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
+(use-package devil
+  :config 
+  (global-devil-mode))
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
@@ -1456,6 +1460,8 @@ and leaving a noweb reference in its place."
   (dkj/font-height 230)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
+  ;; raw inputs from virtual keyboard
+  (setq overriding-text-conversion-style nil)
   ;; extra light and dark themes for eink
   (setq dkj/theme-light 'modus-operandi)
   (setq dkj/theme-dark 'modus-vivendi)
