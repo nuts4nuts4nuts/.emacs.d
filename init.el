@@ -1470,9 +1470,9 @@ and leaving a noweb reference in its place."
     (mapc #'face-remap-remove-relative dkj/god-modeline-remap-cookies)
     (setq dkj/god-modeline-remap-cookies nil))
   (when god-local-mode
-    (push (face-remap-add-relative 'mode-line-active :background "orangered" :foreground "white")
+    (push (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
           dkj/god-modeline-remap-cookies)
-    (push (face-remap-add-relative 'mode-line-inactive :background "maroon" :foreground "white")
+    (push (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
           dkj/god-modeline-remap-cookies)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 
