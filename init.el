@@ -1476,6 +1476,16 @@ and leaving a noweb reference in its place."
           dkj/god-modeline-remap-cookies)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 
+;; Also prepend a G in god mode
+(defun dkj/god-line ()
+  (if god-local-mode
+	  "G"
+	nil))
+(unless (member '(:eval (dkj/god-line)) (default-value 'mode-line-format))
+  (setq-default mode-line-format
+                (cons '(:eval (dkj/god-line))
+                      (default-value 'mode-line-format))))
+
 (require 'cl-lib)
 (defvar dkj/god-passthrough-rules nil)
 
