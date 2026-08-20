@@ -1508,11 +1508,11 @@ and leaving a noweb reference in its place."
  (lambda () buffer-read-only))
 
 (dkj/god-conditional-passthrough
- '("I" "z")
+ '("I" "z" "f" "b")
  (lambda () (equal major-mode 'org-agenda-mode)))
 
 (dkj/god-conditional-passthrough
- '("F" "P")
+ '("F" "P" "c")
  (lambda () (equal major-mode 'magit-status-mode)))
 
 (when (eq system-type 'android)
