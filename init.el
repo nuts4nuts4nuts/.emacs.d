@@ -1461,30 +1461,14 @@ and leaving a noweb reference in its place."
   (god-mode-all))
 
 ;; God Modeline
-(defvar-local dkj/god-modeline-remap-cookies nil
-  "Stores the face remap cookies for the mode-line.")
-
 (defun dkj/apply-god-mode-modeline ()
   "Make the active modeline bright red when god-mode is enabled."
-  (when dkj/god-modeline-remap-cookies
-    (mapc #'face-remap-remove-relative dkj/god-modeline-remap-cookies)
-    (setq dkj/god-modeline-remap-cookies nil))
-  (when god-local-mode
-    (push (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-          dkj/god-modeline-remap-cookies)
-    (push (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
-          dkj/god-modeline-remap-cookies)))
-(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
-
-;; Also prepend a G in god mode
-(defun dkj/god-line ()
   (if god-local-mode
-	  "G"
-	nil))
-(unless (member '(:eval (dkj/god-line)) (default-value 'mode-line-format))
-  (setq-default mode-line-format
-                (cons '(:eval (dkj/god-line))
-                      (default-value 'mode-line-format))))
+    (progn
+	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
+	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white"))
+	(setq-local face-remapping-alist nil)))
+(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 
 (require 'cl-lib)
 (defvar dkj/god-passthrough-rules nil)
