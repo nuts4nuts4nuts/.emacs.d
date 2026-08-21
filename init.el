@@ -1460,7 +1460,9 @@ and leaving a noweb reference in its place."
 		(";" . god-mode-all))
   :config
   (setq god-exempt-major-modes nil
-		god-exempt-predicates nil)
+		god-exempt-predicates nil
+		god-mode-alist '((nil . "C-")
+						 ("g" . "C-M-")))
   :init
   (god-mode-all))
 

@@ -2049,7 +2049,9 @@ https://github.com/emacsorphanage/god-mode.
 		(";" . god-mode-all))
   :config
   (setq god-exempt-major-modes nil
-		god-exempt-predicates nil)
+		god-exempt-predicates nil
+		god-mode-alist '((nil . "C-")
+						 ("g" . "C-M-")))
   :init
   (god-mode-all))
 
