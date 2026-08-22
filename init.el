@@ -1378,9 +1378,7 @@ and leaving a noweb reference in its place."
 			  ("C-c 2" . org-srs-review-rate-again)
 			  ("C-c C-2" . org-srs-review-rate-again)
 			  ("C-c u" . org-srs-review-undo)
-			  ("C-c C-u" . org-srs-review-undo)
 			  ("C-c q" . org-srs-review-quit)
-			  ("C-c C-q" . org-srs-review-quit)
 			  ("<volume-up>" . dkj/org-good-or-scroll)
 			  ("<volume-down>" . dkj/org-again-or-scroll)))
 
