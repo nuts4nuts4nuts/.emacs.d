@@ -1454,6 +1454,16 @@ and leaving a noweb reference in its place."
   (interactive)
   (insert ";"))
 
+(defun dkj/god-passthrough ()
+  "Pass the next key through without god interpretation"
+  (interactive)
+  (god-local-mode-pause)
+  (unwind-protect
+   (let ((keys (read-key-sequence-vector nil)))
+	 (setq last-command-event (aref keys (1- (length keys))))
+	 (call-interactively (key-binding keys)))
+   (god-local-mode-resume)))
+
 (use-package god-mode
   :bind
   ((";" . god-mode-all)
@@ -1461,7 +1471,8 @@ and leaving a noweb reference in its place."
   (:map org-agenda-mode-map
 		(";" . god-mode-all))
   (:map god-local-mode-map
-		("C-;" . god-mode-all))
+		("C-;" . god-mode-all)
+		("q" . dkj/god-passthrough))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
