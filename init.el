@@ -1494,15 +1494,15 @@ and leaving a noweb reference in its place."
 								  #'god-mode-self-insert)))))))
 
 (dkj/god-conditional-passthrough
- '("q" "g" "n" "p")
+ '("q" "g")
  (lambda () buffer-read-only))
 
 (dkj/god-conditional-passthrough
- '("I" "z" "f" "b")
+ '("I" "z" "f" "b" "n" "p" "t" "l" "G" "R" "v")
  (lambda () (equal major-mode 'org-agenda-mode)))
 
 (dkj/god-conditional-passthrough
- '("F" "P" "c")
+ '("F" "P" "c" "n" "p")
  (lambda () (equal major-mode 'magit-status-mode)))
 
 (when (eq system-type 'android)
