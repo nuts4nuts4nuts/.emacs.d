@@ -1474,35 +1474,6 @@ and leaving a noweb reference in its place."
 	(setq-local face-remapping-alist nil)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 
-(require 'cl-lib)
-(defvar dkj/god-passthrough-rules nil)
-
-(defun dkj/god-conditional-passthrough (keys condition-p)
-  "Register KEYS to pass through if CONDITION-P is non-nil"
-  (dolist (key keys)
-	(let ((existing-ps (alist-get key dkj/god-passthrough-rules nil nil #'equal)))
-	  (setf (alist-get key dkj/god-passthrough-rules nil nil #'equal)
-			(cons condition-p existing-ps)))
-	(define-key god-local-mode-map (kbd key)
-				`(menu-item "" nil :filter
-							(lambda (_)
-							  (let ((ps (alist-get ,key dkj/god-passthrough-rules nil nil #'equal)))
-								(if (cl-some (lambda (fn) (ignore-errors (funcall fn))) ps)
-									nil
-								  #'god-mode-self-insert)))))))
-
-(dkj/god-conditional-passthrough
- '("q" "g")
- (lambda () buffer-read-only))
-
-(dkj/god-conditional-passthrough
- '("I" "z" "f" "b" "n" "p" "t" "l" "G" "R" "v")
- (lambda () (equal major-mode 'org-agenda-mode)))
-
-(dkj/god-conditional-passthrough
- '("F" "P" "c" "n" "p")
- (lambda () (equal major-mode 'magit-status-mode)))
-
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
