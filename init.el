@@ -1450,12 +1450,18 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
+(defun dkj/insert-semicolon ()
+  (interactive)
+  (insert ";"))
+
 (use-package god-mode
   :bind
   ((";" . god-mode-all)
-   ("C-;" . god-mode-all))
+   ("C-;" . dkj/insert-semicolon))
   (:map org-agenda-mode-map
 		(";" . god-mode-all))
+  (:map god-local-mode-map
+		("C-;" . god-mode-all))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
@@ -1471,6 +1477,7 @@ and leaving a noweb reference in its place."
     (progn
 	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
 	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white"))
+
 	(setq-local face-remapping-alist nil)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 

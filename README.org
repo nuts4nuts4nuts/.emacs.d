@@ -2039,12 +2039,18 @@ All praise due.
 https://github.com/emacsorphanage/god-mode.
 
 #+begin_src emacs-lisp
+(defun dkj/insert-semicolon ()
+  (interactive)
+  (insert ";"))
+
 (use-package god-mode
   :bind
   ((";" . god-mode-all)
-   ("C-;" . god-mode-all))
+   ("C-;" . dkj/insert-semicolon))
   (:map org-agenda-mode-map
 		(";" . god-mode-all))
+  (:map god-local-mode-map
+		("C-;" . god-mode-all))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
@@ -2060,10 +2066,10 @@ https://github.com/emacsorphanage/god-mode.
     (progn
 	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
 	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white"))
+
 	(setq-local face-remapping-alist nil)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
 #+end_src
-
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d
