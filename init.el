@@ -1469,10 +1469,14 @@ and leaving a noweb reference in its place."
   ((";" . god-mode-all)
    ("C-;" . dkj/insert-semicolon))
   (:map org-agenda-mode-map
-		(";" . god-mode-all))
+		(";" . god-mode-all)
+		("C-S-i" . org-agenda-clock-in))
   (:map god-local-mode-map
 		("C-;" . god-mode-all)
 		("q" . dkj/god-passthrough))
+  (:map magit-status-mode-map
+		("C-S-p" . magit-push)
+		("C-S-f" . magit-pull))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
