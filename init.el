@@ -1017,6 +1017,9 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Default to dark theme
 (load-theme dkj/theme-dark t)
 
+;; Overrides suspend-frame
+(global-set-key (kbd "C-x C-z") #'repeat)
+
 (use-package dot-mode
   :config
   (dot-mode 1)
@@ -1027,6 +1030,7 @@ ITEMS is a list of item definitions, where each definition is:
   (define-key dot-mode-map (kbd "C-.") nil)
   (define-key dot-mode-map (kbd "C-M-.") nil)
   (define-key dot-mode-map (kbd "C-c .") nil)
+  (define-key dot-mode-map (kbd "C-x .") #'dot-mode-execute)
   (define-key dot-mode-map (kbd "C-x C-.") #'dot-mode-execute)
   (define-key dot-mode-map (kbd "C-x C-M-.") #'dot-mode-override))
 

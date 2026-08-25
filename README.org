@@ -1282,10 +1282,16 @@ To dynamically adjust ~gc-cons-threshold~ based on idleness.
 (load-theme dkj/theme-dark t)
 #+end_src
 
-*** Dot-mode
+*** Repetition
 :PROPERTIES:
 :ID:       DC17C04F-7990-4D38-A4A6-9A4A73838406
 :END:
+Repeat is built into emacs. It lets you repeat the last excuted command.
+
+#+begin_src emacs-lisp
+;; Overrides suspend-frame
+(global-set-key (kbd "C-x C-z") #'repeat)
+#+end_src
 
 ~dot-mode~ gives us a function similar to Vim's ~.~, which replays the last sequence of edits.
 
@@ -1300,6 +1306,7 @@ To dynamically adjust ~gc-cons-threshold~ based on idleness.
   (define-key dot-mode-map (kbd "C-.") nil)
   (define-key dot-mode-map (kbd "C-M-.") nil)
   (define-key dot-mode-map (kbd "C-c .") nil)
+  (define-key dot-mode-map (kbd "C-x .") #'dot-mode-execute)
   (define-key dot-mode-map (kbd "C-x C-.") #'dot-mode-execute)
   (define-key dot-mode-map (kbd "C-x C-M-.") #'dot-mode-override))
 #+end_src
