@@ -1474,7 +1474,9 @@ and leaving a noweb reference in its place."
    ("C-;" . dkj/insert-semicolon))
   (:map org-agenda-mode-map
 		(";" . god-mode-all)
-		("C-S-i" . org-agenda-clock-in))
+		("C-S-i" . org-agenda-clock-in)
+		("C-S-g" . org-agenda-clock-in)
+		("C-S-r" . org-agenda-clock-in))
   (:map god-local-mode-map
 		("C-;" . god-mode-all)
 		("q" . dkj/god-passthrough))
