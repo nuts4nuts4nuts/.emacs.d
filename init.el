@@ -1498,16 +1498,17 @@ and leaving a noweb reference in its place."
   :init
   (god-mode-all))
 
-;; God Modeline
-(defun dkj/apply-god-mode-modeline ()
-  "Make the active modeline bright red when god-mode is enabled."
+;; God Visuals
+(defun dkj/apply-god-mode-visuals ()
+  "Make the active modeline bright red when god-mode is enabled and highlight the current line."
   (if god-local-mode
     (progn
 	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white"))
-
+	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
+	  (hl-line-mode 1))
+	(hl-line-mode -1)
 	(setq-local face-remapping-alist nil)))
-(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-modeline)
+(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
