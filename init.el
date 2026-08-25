@@ -1488,6 +1488,11 @@ and leaving a noweb reference in its place."
 		god-exempt-predicates nil
 		god-mode-alist '((nil . "C-")
 						 ("g" . "C-M-")))
+  ;; Ensure god mode keymap gets priority over minor modes
+  (defvar dkj/god-mode-emulation-alist
+	(list (cons 'god-local-mode god-local-mode-map))
+	"Alist for god mode.")
+  (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
   :init
   (god-mode-all))
 
