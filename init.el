@@ -1505,6 +1505,8 @@ and leaving a noweb reference in its place."
     (progn
 	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
 	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
+	  (when (eq system-type 'android)
+		(set-face-attribute 'hl-line nil :background "bisque" :inherit nil))
 	  (hl-line-mode 1))
 	(hl-line-mode -1)
 	(setq-local face-remapping-alist nil)))
