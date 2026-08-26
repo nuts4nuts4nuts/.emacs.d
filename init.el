@@ -1369,6 +1369,7 @@ and leaving a noweb reference in its place."
   (setq org-srs-schedule-bury-sibling-items-p t)
   (setq org-srs-review-order-new 'random
 		org-srs-review-order-review 'random
+		org-srs-review-order-new-review 'random
 		org-srs-review-max-reviews-per-day 999
 		org-srs-review-new-items-per-day 50
 		org-srs-item-cloze-visibility t)
