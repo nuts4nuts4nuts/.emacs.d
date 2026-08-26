@@ -1502,6 +1502,7 @@ The DWIM behaviour of this command is as follows:
 	(:map god-local-mode-map
 		  ("q" . dkj/god-passthrough)
 		  (";" . dkj/quit-and-god)
+		  ;; Just use i to enter mortal-mode for now
 		  ("i" . (lambda () (interactive) (god-mode-all -1))))
 	(:map org-agenda-mode-map
 		  (";" . dkj/quit-and-god)
