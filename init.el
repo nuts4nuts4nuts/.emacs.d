@@ -23,8 +23,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (setq confirm-kill-emacs 'y-or-n-p)
 
-;; Turn off the beeping with visible-bell
-(setq visible-bell t)
+(setq ring-bell-function #'ignore)
 
 ;; 4 space tabs
 (setq-default tab-width 4)
@@ -1285,7 +1284,7 @@ and leaving a noweb reference in its place."
 
 (unless (eq system-type 'android)
   (use-package ghostel
-  :ensure t))
+	:ensure t))
 
 (use-package ox-gfm)
 (eval-after-load "org"
@@ -1455,62 +1454,89 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
-(defun dkj/insert-semicolon ()
+(defun dkj/quit-and-god ()
+  "Combine keyboard-quit and activating god-mode into one key I can spam with abandon.
+DWIM behavior comes from prot.
+His commentary:
+The generic `keyboard-quit' does not do the expected thing when
+the minibuffer is open.  Whereas we want it to close the
+minibuffer, even without explicitly focusing it.
+
+The DWIM behaviour of this command is as follows:
+
+- When the region is active, disable it.
+- When a minibuffer is open, but not focused, close the minibuffer.
+- When the Completions buffer is selected, close it.
+- In every other case use the regular `keyboard-quit'."
   (interactive)
-  (insert ";"))
+  (god-mode-all 1)
+  (cond
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   (t
+    (keyboard-quit)))
 
-(defun dkj/god-passthrough ()
-  "Pass the next key through without god interpretation"
-  (interactive)
-  (god-local-mode-pause)
-  (unwind-protect
-   (let ((keys (read-key-sequence-vector nil)))
-	 (setq last-command-event (aref keys (1- (length keys))))
-	 (call-interactively (key-binding keys)))
-   (god-local-mode-resume)))
+  (defun dkj/insert-semicolon ()
+	(interactive)
+	(insert ";"))
 
-(use-package god-mode
-  :bind
-  ((";" . god-mode-all)
-   ("C-;" . dkj/insert-semicolon))
-  (:map org-agenda-mode-map
-		(";" . god-mode-all)
-		("C-S-i" . org-agenda-clock-in)
-		("C-S-g" . org-agenda-toggle-time-grid)
-		("C-S-r" . org-agenda-clockreport-mode))
-  (:map god-local-mode-map
-		("C-;" . god-mode-all)
-		("q" . dkj/god-passthrough))
-  (:map magit-status-mode-map
-		("C-S-p" . magit-push)
-		("C-S-f" . magit-pull))
-  :config
-  (setq god-exempt-major-modes nil
-		god-exempt-predicates nil
-		god-mode-alist '((nil . "C-")
-						 ("g" . "C-M-")
-						 ("G" . "C-M-")))
-  ;; Ensure god mode keymap gets priority over minor modes
-  (defvar dkj/god-mode-emulation-alist
-	(list (cons 'god-local-mode god-local-mode-map))
-	"Alist for god mode.")
-  (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
-  :init
-  (god-mode-all))
+  (defun dkj/god-passthrough ()
+	"Pass the next key through without god interpretation"
+	(interactive)
+	(god-local-mode-pause)
+	(unwind-protect
+		(let ((keys (read-key-sequence-vector nil)))
+		  (setq last-command-event (aref keys (1- (length keys))))
+		  (call-interactively (key-binding keys)))
+	  (god-local-mode-resume)))
 
-;; God Visuals
-(defun dkj/apply-god-mode-visuals ()
-  "Make the active modeline bright red when god-mode is enabled and highlight the current line."
-  (if god-local-mode
-    (progn
-	  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-	  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
-	  (when (eq system-type 'android)
-		(set-face-attribute 'hl-line nil :background "bisque" :inherit nil))
-	  (hl-line-mode 1))
-	(hl-line-mode -1)
-	(setq-local face-remapping-alist nil)))
-(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
+  (use-package god-mode
+	:bind
+	((";" . dkj/quit-and-god)
+	 ("C-;" . dkj/insert-semicolon))
+	(:map org-agenda-mode-map
+		  (";" . dkj/quit-and-god)
+		  ("C-S-i" . org-agenda-clock-in)
+		  ("C-S-g" . org-agenda-toggle-time-grid)
+		  ("C-S-r" . org-agenda-clockreport-mode))
+	(:map god-local-mode-map
+		  ("q" . dkj/god-passthrough)
+		  (";" . dkj/quit-and-god)
+		  ("i" . (lambda () (interactive) (god-mode-all -1))))
+	(:map magit-status-mode-map
+		  ("C-S-p" . magit-push)
+		  ("C-S-f" . magit-pull))
+	:config
+	(setq god-exempt-major-modes nil
+		  god-exempt-predicates nil
+		  god-mode-alist '((nil . "C-")
+						   ("g" . "C-M-")
+						   ("G" . "C-M-")))
+	;; Ensure god mode keymap gets priority over minor modes
+	(defvar dkj/god-mode-emulation-alist
+	  (list (cons 'god-local-mode god-local-mode-map))
+	  "Alist for god mode.")
+	(add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
+	:init
+	(god-mode-all))
+
+  ;; God Visuals
+  (defun dkj/apply-god-mode-visuals ()
+	"Make the active modeline bright red when god-mode is enabled and highlight the current line."
+	(if god-local-mode
+		(progn
+		  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
+		  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
+		  (when (eq system-type 'android)
+			(set-face-attribute 'hl-line nil :background "bisque" :inherit nil))
+		  (hl-line-mode 1))
+	  (hl-line-mode -1)
+	  (setq-local face-remapping-alist nil)))
+  (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
