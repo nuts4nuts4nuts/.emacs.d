@@ -1498,18 +1498,20 @@ The DWIM behaviour of this command is as follows:
 	:bind
 	((";" . dkj/quit-and-god)
 	 ("C-;" . dkj/insert-semicolon))
+	(:map god-local-mode-map
+		  ("q" . dkj/god-passthrough)
+		  (";" . dkj/quit-and-god)
+		  ("i" . (lambda () (interactive) (god-mode-all -1))))
 	(:map org-agenda-mode-map
 		  (";" . dkj/quit-and-god)
 		  ("C-S-i" . org-agenda-clock-in)
 		  ("C-S-g" . org-agenda-toggle-time-grid)
 		  ("C-S-r" . org-agenda-clockreport-mode))
-	(:map god-local-mode-map
-		  ("q" . dkj/god-passthrough)
-		  (";" . dkj/quit-and-god)
-		  ("i" . (lambda () (interactive) (god-mode-all -1))))
 	(:map magit-status-mode-map
 		  ("C-S-p" . magit-push)
 		  ("C-S-f" . magit-pull))
+	(:map dired-mode-map
+		  ("C-^" . dired-up-directory))
 	:config
 	(setq god-exempt-major-modes nil
 		  god-exempt-predicates nil
