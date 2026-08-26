@@ -1469,8 +1469,9 @@ The DWIM behaviour of this command is as follows:
 - When the Completions buffer is selected, close it.
 - In every other case use the regular `keyboard-quit'."
   (interactive)
-  (god-mode-all 1)
   (cond
+   ((not god-local-mode)
+	(god-mode-all 1))
    ((region-active-p)
     (keyboard-quit))
    ((derived-mode-p 'completion-list-mode)
@@ -1478,7 +1479,7 @@ The DWIM behaviour of this command is as follows:
    ((> (minibuffer-depth) 0)
     (abort-recursive-edit))
    (t
-    (keyboard-quit)))
+    (keyboard-quit))))
 
   (defun dkj/insert-semicolon ()
 	(interactive)
@@ -1533,9 +1534,9 @@ The DWIM behaviour of this command is as follows:
 		(progn
 		  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
 		  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
+		  (hl-line-mode 1)
 		  (when (eq system-type 'android)
-			(set-face-attribute 'hl-line nil :background "bisque" :inherit nil))
-		  (hl-line-mode 1))
+			(set-face-attribute 'hl-line nil :background "bisque" :inherit nil)))
 	  (hl-line-mode -1)
 	  (setq-local face-remapping-alist nil)))
   (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
