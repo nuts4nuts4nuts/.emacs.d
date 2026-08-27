@@ -2064,77 +2064,78 @@ The DWIM behaviour of this command is as follows:
 - In every other case use the regular `keyboard-quit'."
   (interactive)
   (cond
-   ((not god-local-mode)
-	(god-mode-all 1))
+   (isearch-mode
+	(isearch-abort))
    ((region-active-p)
     (keyboard-quit))
    ((derived-mode-p 'completion-list-mode)
     (delete-completion-window))
    ((> (minibuffer-depth) 0)
     (abort-recursive-edit))
+   ((not god-local-mode)
+	(god-mode-all 1))
    (t
     (keyboard-quit))))
 
-  (defun dkj/insert-semicolon ()
-	(interactive)
-	(insert ";"))
+(defun dkj/god-passthrough ()
+  "Pass the next key through without god interpretation"
+  (interactive)
+  (god-local-mode-pause)
+  (unwind-protect
+	  (let ((keys (read-key-sequence-vector nil)))
+		(setq last-command-event (aref keys (1- (length keys))))
+		(call-interactively (key-binding keys)))
+	(god-local-mode-resume)))
 
-  (defun dkj/god-passthrough ()
-	"Pass the next key through without god interpretation"
-	(interactive)
-	(god-local-mode-pause)
-	(unwind-protect
-		(let ((keys (read-key-sequence-vector nil)))
-		  (setq last-command-event (aref keys (1- (length keys))))
-		  (call-interactively (key-binding keys)))
-	  (god-local-mode-resume)))
+(use-package god-mode
+  :bind
+  ((";" . dkj/quit-and-god)
+   ("C-;" . (lambda () (interactive) (insert ";"))))
+  (:map god-local-mode-map
+		("q" . dkj/god-passthrough)
+		(";" . dkj/quit-and-god)
+		;; Just use i to enter mortal-mode for now
+		("i" . (lambda () (interactive) (god-mode-all -1))))
+  (:map org-agenda-mode-map
+		(";" . dkj/quit-and-god)
+		("C-S-i" . org-agenda-clock-in)
+		("C-S-g" . org-agenda-toggle-time-grid)
+		("C-S-r" . org-agenda-clockreport-mode))
+  (:map magit-status-mode-map
+		("C-S-p" . magit-push)
+		("C-S-f" . magit-pull))
+  (:map dired-mode-map
+		("C-^" . dired-up-directory))
+  (:map isearch-mode-map
+		(";" . dkj/quit-and-god)
+		("C-;" . (lambda () (interactive) (isearch-printing-char ?\;))))
+  :config
+  (setq god-exempt-major-modes nil
+		god-exempt-predicates nil
+		god-mode-alist '((nil . "C-")
+						 ("g" . "C-M-")
+						 ("G" . "C-M-")))
+  ;; Ensure god mode keymap gets priority over minor modes
+  (defvar dkj/god-mode-emulation-alist
+	(list (cons 'god-local-mode god-local-mode-map))
+	"Alist for god mode.")
+  (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
+  :init
+  (god-mode-all))
 
-  (use-package god-mode
-	:bind
-	((";" . dkj/quit-and-god)
-	 ("C-;" . dkj/insert-semicolon))
-	(:map god-local-mode-map
-		  ("q" . dkj/god-passthrough)
-		  (";" . dkj/quit-and-god)
-		  ;; Just use i to enter mortal-mode for now
-		  ("i" . (lambda () (interactive) (god-mode-all -1))))
-	(:map org-agenda-mode-map
-		  (";" . dkj/quit-and-god)
-		  ("C-S-i" . org-agenda-clock-in)
-		  ("C-S-g" . org-agenda-toggle-time-grid)
-		  ("C-S-r" . org-agenda-clockreport-mode))
-	(:map magit-status-mode-map
-		  ("C-S-p" . magit-push)
-		  ("C-S-f" . magit-pull))
-	(:map dired-mode-map
-		  ("C-^" . dired-up-directory))
-	:config
-	(setq god-exempt-major-modes nil
-		  god-exempt-predicates nil
-		  god-mode-alist '((nil . "C-")
-						   ("g" . "C-M-")
-						   ("G" . "C-M-")))
-	;; Ensure god mode keymap gets priority over minor modes
-	(defvar dkj/god-mode-emulation-alist
-	  (list (cons 'god-local-mode god-local-mode-map))
-	  "Alist for god mode.")
-	(add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
-	:init
-	(god-mode-all))
-
-  ;; God Visuals
-  (defun dkj/apply-god-mode-visuals ()
-	"Make the active modeline bright red when god-mode is enabled and highlight the current line."
-	(if god-local-mode
-		(progn
-		  (face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-		  (face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
-		  (hl-line-mode 1)
-		  (when (eq system-type 'android)
-			(set-face-attribute 'hl-line nil :background "bisque" :inherit nil)))
-	  (hl-line-mode -1)
-	  (setq-local face-remapping-alist nil)))
-  (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
+;; God Visuals
+(defun dkj/apply-god-mode-visuals ()
+  "Make the active modeline bright red when god-mode is enabled and highlight the current line."
+  (if god-local-mode
+	  (progn
+		(face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
+		(face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
+		(hl-line-mode 1)
+		(when (eq system-type 'android)
+		  (set-face-attribute 'hl-line nil :background "bisque" :inherit nil)))
+	(hl-line-mode -1)
+	(setq-local face-remapping-alist nil)))
+(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
 #+end_src
 
 ** Android stuff
