@@ -1455,6 +1455,10 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
+(require 'god-mode-isearch)
+(defun dkj/god-terminal-active ()
+  (equal overriding-terminal-local-map god-mode-isearch-map))
+
 (defun dkj/quit-and-god ()
   "Combine keyboard-quit and activating god-mode into one key I can spam with abandon.
 DWIM behavior comes from prot.
@@ -1471,6 +1475,10 @@ The DWIM behaviour of this command is as follows:
 - In every other case use the regular `keyboard-quit'."
   (interactive)
   (cond
+   ((and (not (dkj/god-terminal-active)) isearch-mode)
+	(god-mode-isearch-activate))
+   ((not god-local-mode)
+	(god-mode-all 1))
    (isearch-mode
 	(isearch-abort))
    ((region-active-p)
@@ -1479,8 +1487,6 @@ The DWIM behaviour of this command is as follows:
     (delete-completion-window))
    ((> (minibuffer-depth) 0)
     (abort-recursive-edit))
-   ((not god-local-mode)
-	(god-mode-all 1))
    (t
     (keyboard-quit))))
 
@@ -1503,6 +1509,8 @@ The DWIM behaviour of this command is as follows:
 		(";" . dkj/quit-and-god)
 		;; Just use i to enter mortal-mode for now
 		("i" . (lambda () (interactive) (god-mode-all -1))))
+  (:map god-mode-isearch-map
+		("i" . god-mode-isearch-disable))
   (:map org-agenda-mode-map
 		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
