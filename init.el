@@ -1455,6 +1455,35 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
+(defun dkj/quit-and-god ()
+  "Combine keyboard-quit and activating god-mode into one key I can spam with abandon.
+DWIM behavior comes from prot.
+His commentary:
+The generic `keyboard-quit' does not do the expected thing when
+the minibuffer is open.  Whereas we want it to close the
+minibuffer, even without explicitly focusing it.
+
+The DWIM behaviour of this command is as follows:
+
+- When the region is active, disable it.
+- When a minibuffer is open, but not focused, close the minibuffer.
+- When the Completions buffer is selected, close it.
+- In every other case use the regular `keyboard-quit'."
+  (interactive)
+  (cond
+   (isearch-mode
+	(isearch-abort))
+   ((region-active-p)
+    (keyboard-quit))
+   ((derived-mode-p 'completion-list-mode)
+    (delete-completion-window))
+   ((> (minibuffer-depth) 0)
+    (abort-recursive-edit))
+   ((not god-local-mode)
+	(god-mode-all 1))
+   (t
+    (keyboard-quit))))
+
 (defun dkj/god-passthrough ()
   "Pass the next key through without god interpretation"
   (interactive)
@@ -1467,13 +1496,15 @@ and leaving a noweb reference in its place."
 
 (use-package god-mode
   :bind
-  ((";" . god-mode-all)
+  ((";" . dkj/quit-and-god)
    ("C-;" . (lambda () (interactive) (insert ";"))))
   (:map god-local-mode-map
 		("q" . dkj/god-passthrough)
-		(";" . god-mode-all))
+		(";" . dkj/quit-and-god)
+		;; Just use i to enter mortal-mode for now
+		("i" . (lambda () (interactive) (god-mode-all -1))))
   (:map org-agenda-mode-map
-		(";" . god-mode-all)
+		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
 		("C-S-g" . org-agenda-toggle-time-grid)
 		("C-S-r" . org-agenda-clockreport-mode))
@@ -1482,6 +1513,9 @@ and leaving a noweb reference in its place."
 		("C-S-f" . magit-pull))
   (:map dired-mode-map
 		("C-^" . dired-up-directory))
+  (:map isearch-mode-map
+		(";" . dkj/quit-and-god)
+		("C-;" . (lambda () (interactive) (isearch-printing-char ?\;))))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
