@@ -2103,7 +2103,8 @@ The DWIM behaviour of this command is as follows:
 		;; Just use i to enter mortal-mode for now
 		("i" . (lambda () (interactive) (god-mode-all -1))))
   (:map god-mode-isearch-map
-		("i" . god-mode-isearch-disable))
+		("i" . god-mode-isearch-disable)
+		(";" . dkj/quit-and-god))
   (:map org-agenda-mode-map
 		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
