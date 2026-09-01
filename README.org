@@ -1291,6 +1291,9 @@ Repeat is built into emacs. It lets you repeat the last excuted command.
 #+begin_src emacs-lisp
 ;; Overrides suspend-frame
 (global-set-key (kbd "C-x C-z") #'repeat)
+
+;; repeat-mode makes certain command repeatable in and of themselves via maps
+(repeat-mode 1)
 #+end_src
 
 ~dot-mode~ gives us a function similar to Vim's ~.~, which replays the last sequence of edits.

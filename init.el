@@ -1019,6 +1019,9 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Overrides suspend-frame
 (global-set-key (kbd "C-x C-z") #'repeat)
 
+;; repeat-mode makes certain command repeatable in and of themselves via maps
+(repeat-mode 1)
+
 (use-package dot-mode
   :config
   (dot-mode 1)
