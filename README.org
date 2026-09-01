@@ -347,12 +347,12 @@ Custom default tool-bar-map
 								    (:type xbm :file "open.xbm" :foreground "black")))
 						 :vert-only t)
 				(dictionary menu-item "Dictionary" quick-sdcv-search-at-point
-						 :help "Look up with sdcv"
-						 :image ,(find-image
-								  '((:type xpm :file "search.xpm")
-								    (:type pbm :file "search.pbm" :foreground "black")
-								    (:type xbm :file "search.xbm" :foreground "black")))
-						 :vert-only t)
+							:help "Look up with sdcv"
+							:image ,(find-image
+									 '((:type xpm :file "search.xpm")
+								       (:type pbm :file "search.pbm" :foreground "black")
+								       (:type xbm :file "search.xbm" :foreground "black")))
+							:vert-only t)
 				(separator-3 "--")))
 
 (defmacro dkj/define-local-tool-bar (mode-or-hook &rest items)
@@ -2108,8 +2108,10 @@ The DWIM behaviour of this command is as follows:
 		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
 		("C-S-g" . org-agenda-toggle-time-grid)
-		("C-S-r" . org-agenda-clockreport-mode))
-  (:map magit-status-mode-map
+		("C-S-r" . org-agenda-clockreport-mode)
+		("C-S-l" . org-agenda-log-mode)
+		("C-S-v" . org-agenda-view-mode-dispatch))
+    (:map magit-status-mode-map
 		("C-S-p" . magit-push)
 		("C-S-f" . magit-pull))
   (:map dired-mode-map
@@ -2124,6 +2126,8 @@ The DWIM behaviour of this command is as follows:
 						 ("g" . "C-M-")
 						 ("G" . "C-M-")))
   ;; Ensure god mode keymap gets priority over minor modes
+  (setq minor-mode-map-alist
+		(assq-delete-all 'god-local-mode minor-mode-map-alist))
   (defvar dkj/god-mode-emulation-alist
 	(list (cons 'god-local-mode god-local-mode-map))
 	"Alist for god mode.")
@@ -2144,6 +2148,34 @@ The DWIM behaviour of this command is as follows:
 	(hl-line-mode -1)
 	(setq-local face-remapping-alist nil)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
+
+;; Make it so all capital letters exit god mode in text modes
+(defun dkj/exit-god-and-insert (char)
+  (interactive)
+  (god-mode-all -1)
+  (insert char))
+
+(dotimes (i 26)
+  (let* ((char (+ ?A i))
+         (key-seq (vector (list 'control char))))
+    (define-key god-local-mode-map key-seq
+				`(lambda ()
+				   (interactive)
+		           (if (and (bound-and-true-p god-local-mode)
+							(derived-mode-p 'text-mode))
+					   ;; If we are in any text-mode (like org-mode), execute directly
+					   (dkj/exit-god-and-insert ,char)
+					 ;; 1. Temporarily pull down our high-priority emulation alist
+					 (let ((emulation-mode-map-alists (delq 'dkj/god-mode-emulation-alist emulation-mode-map-alists)))
+					   ;; 2. Read what Emacs would natively resolve *beneath* our emulation map
+					   (let ((underlying-cmd (key-binding ,key-seq)))
+						 (if (and (bound-and-true-p god-local-mode)
+								  ;; If no local major mode or global mode overrode this key sequence
+								  (not (commandp underlying-cmd)))
+							 ;; Execute your custom exit-and-insert behavior
+							 (dkj/exit-god-and-insert ,char)
+						   ;; 3. Otherwise, pass execution straight through to the local override (e.g. Org Agenda)
+						   (call-interactively (or underlying-cmd 'undefined))))))))))
 #+end_src
 
 ** Android stuff
