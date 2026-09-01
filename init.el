@@ -1520,7 +1520,8 @@ The DWIM behaviour of this command is as follows:
 		("C-S-v" . org-agenda-view-mode-dispatch))
     (:map magit-status-mode-map
 		("C-S-p" . magit-push)
-		("C-S-f" . magit-pull))
+		("C-S-f" . magit-pull)
+		("C-S-c" . magit-commit))
   (:map dired-mode-map
 		("C-^" . dired-up-directory))
   (:map isearch-mode-map
@@ -1530,8 +1531,7 @@ The DWIM behaviour of this command is as follows:
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
 		god-mode-alist '((nil . "C-")
-						 ("g" . "C-M-")
-						 ("G" . "C-M-")))
+						 ("g" . "C-M-")))
   ;; Ensure god mode keymap gets priority over minor modes
   (setq minor-mode-map-alist
 		(assq-delete-all 'god-local-mode minor-mode-map-alist))
