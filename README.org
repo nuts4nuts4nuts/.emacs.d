@@ -1407,6 +1407,12 @@ Vertico is a vertical completing-read interface. It's pretty much the same as fi
 
 ;; Enable indentation+completion using the TAB key.
 (setq tab-always-indent 'complete)
+
+;; This isn't needed in Emacs 31, but I don't have that everywhere yet
+(use-package corfu-terminal
+  :init
+  (unless (display-graphic-p)
+	(corfu-terminal-mode +1)))
 #+end_src
 
 *** Embark

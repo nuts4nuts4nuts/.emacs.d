@@ -1083,6 +1083,12 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Enable indentation+completion using the TAB key.
 (setq tab-always-indent 'complete)
 
+;; This isn't needed in Emacs 31, but I don't have that everywhere yet
+(use-package corfu-terminal
+  :init
+  (unless (display-graphic-p)
+	(corfu-terminal-mode +1)))
+
 (use-package embark
   :ensure t
   :bind
