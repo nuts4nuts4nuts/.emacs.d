@@ -1302,23 +1302,27 @@ and leaving a noweb reference in its place."
 (use-package gptel
   :config
   (setq gptel-model 'gpt-6-astra
-      gptel-backend (gptel-make-openai-oauth "OpenAI-sub"))
+		gptel-backend (gptel-make-openai-oauth "OpenAI-sub"))
   (setq gptel-default-mode 'org-mode)
   ;; Never ask for confirmation before running a tool call
   (setq gptel-confirm-tool-calls nil)
   ;; Always include the results of the tool call in the buffer output
   (setq gptel-include-tool-results t)
   :bind
-  ("C-`" . gptel-send)
+  ("C-`" . dkj/gptel-send-buffer-with-point)
   ("C-M-`" . gptel-menu)
-  ("<prior>" . gptel-menu))
+  ("<prior>" . gptel-menu)
+  (:map dkj-keys
+		("C-`" . gptel-send))
+  :init
+  (require 'gptel-context))
 
 (defun dkj/gptel-add-indicator (&rest _)
   "Place a visual indicator where gptel will insert text."
   (let* ((pos (if (use-region-p) (region-end) (point)))
          (ov (make-overlay pos pos nil t t)))
     (overlay-put ov 'dkj-gptel-indicator t)
-    (overlay-put ov 'after-string (propertize " ⏳ " 'face 'warning))))
+    (overlay-put ov 'after-string (propertize "orz" 'face 'warning))))
 
 (defun dkj/gptel-remove-indicator (beg _end)
   "Remove the gptel visual indicator closest to the response."
@@ -1335,9 +1339,43 @@ and leaving a noweb reference in its place."
   "Clear all stuck gptel indicators in the current buffer."
   (interactive)
   (remove-overlays nil nil 'dkj-gptel-indicator t))
-
 (advice-add 'gptel-send :before #'dkj/gptel-add-indicator)
 (add-hook 'gptel-post-response-functions #'dkj/gptel-remove-indicator)
+
+(defun dkj/gptel-send-buffer-with-point (prompt)
+  "Prompt in the minibuffer and send the current buffer content + point to gptel."
+  (interactive "sPrompt: ")
+  (let* ((orig-buf (current-buffer))
+         (buf-name (buffer-name orig-buf))
+         (pt (point))
+         (line (line-number-at-pos pt))
+         (col (current-column))
+         (cursor-info (format "(Cursor at Line %d, Col %d in ~%s~)"
+							  line col buf-name))
+         ;; Target gptel chat buffer
+         (gptel-buf (gptel "*G1*")))
+	;; Context mgmt
+	(with-current-buffer orig-buf
+	  (if (use-region-p)
+		  (gptel-add)
+		(gptel-context-remove orig-buf)
+		(gptel-add)))
+	;; Prompt formatting
+    (with-current-buffer gptel-buf
+      (goto-char (point-max))
+	  (let ((prefix (gptel-prompt-prefix-string)))
+		(if (and prefix
+				 (not (string-empty-p prefix))
+				 (looking-back (concat (regexp-quote prefix) "[ \t\r\n]*") (point-min)))
+			(progn
+			  (re-search-backward (regexp-quote prefix) nil t)
+			  (goto-char (match-end 0))
+			  (delete-region (point) (point-max)))
+		  (unless (bolp) (insert "\n"))
+		  (insert prefix)))
+	  (insert prompt "\n" cursor-info "\n\n")
+      (gptel-send))
+	(pop-to-buffer gptel-buf)))
 
 (use-package gptel-agent
   :config
@@ -1516,7 +1554,8 @@ The DWIM behaviour of this command is as follows:
 		("i" . (lambda () (interactive) (god-mode-all -1))))
   (:map god-mode-isearch-map
 		("i" . god-mode-isearch-disable)
-		(";" . dkj/quit-and-god))
+		(";" . dkj/quit-and-god)
+		("'" . avy-isearch))
   (:map org-agenda-mode-map
 		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
