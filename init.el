@@ -1019,6 +1019,9 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Overrides suspend-frame
 (global-set-key (kbd "C-x C-z") #'repeat)
 
+;; repeat-mode makes certain command repeatable in and of themselves via maps
+(repeat-mode 1)
+
 (use-package dot-mode
   :config
   (dot-mode 1)
@@ -1079,6 +1082,12 @@ ITEMS is a list of item definitions, where each definition is:
 
 ;; Enable indentation+completion using the TAB key.
 (setq tab-always-indent 'complete)
+
+;; This isn't needed in Emacs 31, but I don't have that everywhere yet
+(use-package corfu-terminal
+  :init
+  (unless (display-graphic-p)
+	(corfu-terminal-mode +1)))
 
 (use-package embark
   :ensure t
@@ -1506,7 +1515,8 @@ The DWIM behaviour of this command is as follows:
 		;; Just use i to enter mortal-mode for now
 		("i" . (lambda () (interactive) (god-mode-all -1))))
   (:map god-mode-isearch-map
-		("i" . god-mode-isearch-disable))
+		("i" . god-mode-isearch-disable)
+		(";" . dkj/quit-and-god))
   (:map org-agenda-mode-map
 		(";" . dkj/quit-and-god)
 		("C-S-i" . org-agenda-clock-in)
