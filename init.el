@@ -1318,7 +1318,7 @@ and leaving a noweb reference in its place."
   (let* ((pos (if (use-region-p) (region-end) (point)))
          (ov (make-overlay pos pos nil t t)))
     (overlay-put ov 'dkj-gptel-indicator t)
-    (overlay-put ov 'after-string (propertize " ⏳ " 'face 'warning))))
+    (overlay-put ov 'after-string (propertize "orz" 'face 'warning))))
 
 (defun dkj/gptel-remove-indicator (beg _end)
   "Remove the gptel visual indicator closest to the response."
