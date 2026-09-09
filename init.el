@@ -149,6 +149,7 @@
 
 ;; List all files and human-readable sizes in dired
 (setq-default dired-listing-switches "-lash")
+(keymap-unset dired-mode-map "C-t C-t")
 
 ;; Don't show eldoc in the minibuffer
 (setq-default eldoc-echo-area-use-multiline-p nil)
