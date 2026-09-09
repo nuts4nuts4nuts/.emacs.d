@@ -1292,10 +1292,8 @@ and leaving a noweb reference in its place."
 
 (use-package gptel
   :config
-  (setq gptel-model 'gemini-3.1-pro-preview)
-  (setq gptel-backend (gptel-make-gemini "Gemini"
-                        :key (lambda () (getenv "GEMINI_API_KEY"))
-                        :stream t))
+  (setq gptel-model 'gpt-6-astra
+      gptel-backend (gptel-make-openai-oauth "OpenAI-sub"))
   (setq gptel-default-mode 'org-mode)
   ;; Never ask for confirmation before running a tool call
   (setq gptel-confirm-tool-calls nil)
@@ -1339,10 +1337,8 @@ and leaving a noweb reference in its place."
   (setq gptel-tools
 		(list (gptel-get-tool "Read")
               (gptel-get-tool "Write")
-              (gptel-get-tool "Edit")
 			  (gptel-get-tool "Glob")
 			  (gptel-get-tool "Grep")
-              (gptel-get-tool "Bash")
 			  (gptel-get-tool "Agent")
 			  (gptel-get-tool "Skill")
 			  (gptel-get-tool "WebSearch")
@@ -1583,6 +1579,45 @@ The DWIM behaviour of this command is as follows:
 							 (dkj/exit-god-and-insert ,char)
 						   ;; 3. Otherwise, pass execution straight through to the local override (e.g. Org Agenda)
 						   (call-interactively (or underlying-cmd 'undefined))))))))))
+
+(use-package org-timegrid
+  :vc (:url "https://github.com/Gleek/org-timegrid" :rev :newest)
+  :demand t
+  :bind (:map dkj-keys ("C-d" . (lambda () (interactive) (org-timegrid-week) (delete-other-windows))))
+  :init
+  ;; The symbol `agenda' means: read events from `org-agenda-files'.
+  (setq org-timegrid-org-files 'agenda
+        ;; Recommended compact scale; use 1.0 to match Emacs's default font.
+        org-timegrid-default-zoom 0.7
+        org-timegrid-org-capture-file
+        (expand-file-name "inbox.org" org-directory)
+        org-timegrid-org-capture-template
+        '(:target file
+          :template "* %{title}\n%{time-range}\n%?")
+        ;; Save Org buffers immediately after edits made in the calendar.
+        org-timegrid-org-auto-save t
+        ;; Set this to nil if repeating entries should be hidden.
+        org-timegrid-org-show-repeaters t
+        ;; The first matching tag supplies an event's colour.
+        org-timegrid-org-tag-color-alist
+        '(("work"     . indigo)
+          ("home"  . yellow)))
+  :config
+  (require 'org-timegrid-org))
+
+;; This is part of the same package. It adds a read-only day strip to Org
+;; Agenda; pressing RET on the strip opens the editable week view.
+(use-package org-timegrid-agenda
+  :ensure nil
+  :after org-agenda
+  :demand t
+  :init
+  ;; nil inserts the strip at the top. To place it after a particular custom
+  ;; agenda block, use a regexp matching that block's heading instead.
+  (setq org-timegrid-agenda-insert-after nil
+        org-timegrid-agenda-separator t
+        org-timegrid-agenda-minutes-before 300
+        org-timegrid-agenda-minutes-after 300))
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
