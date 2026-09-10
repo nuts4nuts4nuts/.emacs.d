@@ -1085,11 +1085,13 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Enable indentation+completion using the TAB key.
 (setq tab-always-indent 'complete)
 
-;; This isn't needed in Emacs 31, but I don't have that everywhere yet
-(use-package corfu-terminal
-  :init
-  (unless (display-graphic-p)
-	(corfu-terminal-mode +1)))
+(when (version< emacs-version "31")
+  
+  ;; This isn't needed in Emacs 31, but I don't have that everywhere yet
+  (use-package corfu-terminal
+	:init
+	(unless (display-graphic-p)
+	  (corfu-terminal-mode +1))))
 
 (use-package embark
   :ensure t
@@ -1489,6 +1491,18 @@ and leaving a noweb reference in its place."
   (setq-default mode-line-format
                 (cons '(:eval (dkj/org-srs-breadcrumbs))
                       (default-value 'mode-line-format))))
+
+(with-eval-after-load 'org-srs-item
+  (require 'org-fold)
+
+  (defun dkj/srs-go-to-heading-including-hidden (&rest _)
+    "Reach and reveal the actual card heading before narrowing."
+    (org-back-to-heading-or-point-min t)
+    (unless (org-before-first-heading-p)
+      (org-fold-show-set-visibility 'ancestors-full)))
+
+  (advice-add 'org-srs-item-narrow :before
+              #'dkj/srs-go-to-heading-including-hidden))
 
 (use-package keyfreq)
 (keyfreq-mode t)
