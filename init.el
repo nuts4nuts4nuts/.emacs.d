@@ -1574,6 +1574,9 @@ The DWIM behaviour of this command is as follows:
   (:map isearch-mode-map
 		(";" . dkj/quit-and-god)
 		("C-;" . (lambda () (interactive) (isearch-printing-char ?\;))))
+  (:map c++-mode-map
+		(";" . dkj/quit-and-god)
+		("C-;" . (lambda (arg) (interactive "*P") (setq last-command-event ?\;) (c-electric-semi&comma arg))))
   :config
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
@@ -1587,6 +1590,7 @@ The DWIM behaviour of this command is as follows:
 	"Alist for god mode.")
   (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
   :init
+  (require 'cc-mode)
   (god-mode-all))
 
 ;; God Visuals
