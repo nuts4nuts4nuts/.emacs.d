@@ -1628,7 +1628,7 @@ The DWIM behaviour of this command is as follows:
 						 (underlying-cmd (key-binding (vector chr))))
 					 (when (commandp underlying-cmd)
 					   (call-interactively underlying-cmd)))))))
- "ABCDEFGHIJKLMNOPQRSTUVWXYZ(){}[]-:")
+ "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ(){}[]-:")
 
 (use-package org-timegrid
   :vc (:url "https://github.com/Gleek/org-timegrid" :rev :newest)
