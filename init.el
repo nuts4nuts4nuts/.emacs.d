@@ -1571,15 +1571,10 @@ The DWIM behaviour of this command is as follows:
 		("'" . avy-isearch))
   (:map org-agenda-mode-map
 		(";" . dkj/quit-and-god)
-		("C-S-i" . org-agenda-clock-in)
-		("C-S-g" . org-agenda-toggle-time-grid)
-		("C-S-r" . org-agenda-clockreport-mode)
-		("C-S-l" . org-agenda-log-mode)
-		("C-S-v" . org-agenda-view-mode-dispatch))
-    (:map magit-status-mode-map
-		("C-S-p" . magit-push)
-		("C-S-f" . magit-pull)
-		("C-S-c" . magit-commit))
+		("L" . org-agenda-log-mode)
+		("V" . org-agenda-view-mode-dispatch))
+  (:map magit-status-mode-map
+		("C" . magit-commit))
   (:map dired-mode-map
 		("C-^" . dired-up-directory))
   (:map isearch-mode-map
@@ -1618,33 +1613,22 @@ The DWIM behaviour of this command is as follows:
 	(setq-local face-remapping-alist nil)))
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
 
-;; Make it so all capital letters exit god mode in text modes
-(defun dkj/exit-god-and-insert (char)
-  (interactive)
-  (god-mode-all -1)
-  (insert char))
-
-(dotimes (i 26)
-  (let* ((char (+ ?A i))
-         (key-seq (vector (list 'control char))))
-    (define-key god-local-mode-map key-seq
-				`(lambda ()
-				   (interactive)
-		           (if (and (bound-and-true-p god-local-mode)
-							(derived-mode-p 'text-mode))
-					   ;; If we are in any text-mode (like org-mode), execute directly
-					   (dkj/exit-god-and-insert ,char)
-					 ;; 1. Temporarily pull down our high-priority emulation alist
-					 (let ((emulation-mode-map-alists (delq 'dkj/god-mode-emulation-alist emulation-mode-map-alists)))
-					   ;; 2. Read what Emacs would natively resolve *beneath* our emulation map
-					   (let ((underlying-cmd (key-binding ,key-seq)))
-						 (if (and (bound-and-true-p god-local-mode)
-								  ;; If no local major mode or global mode overrode this key sequence
-								  (not (commandp underlying-cmd)))
-							 ;; Execute your custom exit-and-insert behavior
-							 (dkj/exit-god-and-insert ,char)
-						   ;; 3. Otherwise, pass execution straight through to the local override (e.g. Org Agenda)
-						   (call-interactively (or underlying-cmd 'undefined))))))))))
+(mapc
+ (lambda (chr)
+   (define-key god-local-mode-map
+			   (vector chr)
+			   (lambda ()
+				 (interactive)
+		         (if (or (derived-mode-p 'text-mode)
+						 (derived-mode-p 'prog-mode))
+					 (progn
+					   (god-mode-all -1)
+					   (insert chr))
+				   (let ((emulation-mode-map-alists (delq 'dkj/god-mode-emulation-alist emulation-mode-map-alists))
+						 (underlying-cmd (key-binding (vector chr))))
+					 (when (commandp underlying-cmd)
+					   (call-interactively underlying-cmd)))))))
+ "ABCDEFGHIJKLMNOPQRSTUVWXYZ(){}[]-:")
 
 (use-package org-timegrid
   :vc (:url "https://github.com/Gleek/org-timegrid" :rev :newest)
@@ -1659,7 +1643,7 @@ The DWIM behaviour of this command is as follows:
         (expand-file-name "inbox.org" org-directory)
         org-timegrid-org-capture-template
         '(:target file
-          :template "* %{title}\n%{time-range}\n%?")
+				  :template "* %{title}\n%{time-range}\n%?")
         ;; Save Org buffers immediately after edits made in the calendar.
         org-timegrid-org-auto-save t
         ;; Set this to nil if repeating entries should be hidden.
