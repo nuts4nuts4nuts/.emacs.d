@@ -2213,11 +2213,13 @@ The DWIM behaviour of this command is as follows:
 			   (vector chr)
 			   (lambda ()
 				 (interactive)
+				 ;; If in a text-ish mode, exit god and insert
 		         (if (or (derived-mode-p 'text-mode)
 						 (derived-mode-p 'prog-mode))
 					 (progn
 					   (god-mode-all -1)
 					   (insert chr))
+				   ;; If in a non-text-ish mode, pass through to the binding without C-
 				   (let ((emulation-mode-map-alists (delq 'dkj/god-mode-emulation-alist emulation-mode-map-alists))
 						 (underlying-cmd (key-binding (vector chr))))
 					 (when (commandp underlying-cmd)
