@@ -1234,7 +1234,7 @@ and leaving a noweb reference in its place."
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.3 . 0.7)))
+		 (org-noter-doc-split-fraction '(0.2 . 0.8)))
 	(org-noter)))
 
 (use-package doc-view
@@ -1248,6 +1248,23 @@ and leaving a noweb reference in its place."
   :init
   (pdf-tools-install))
 
+(defun dkj/nov-save ()
+  (let ((identifier (cdr (assq 'identifier nov-metadata)))
+        (index (if (integerp nov-documents-index)
+                   nov-documents-index
+                 0)))
+    (nov-save-place identifier index (point))))
+
+(defun dkj/nov-scroll-up (arg)
+  (interactive "P")
+  (nov-scroll-up arg)
+  (dkj/nov-save))
+
+(defun dkj/nov-scroll-down (arg)
+  (interactive "P")
+  (nov-scroll-down arg)
+  (dkj/nov-save))
+
 (use-package nov
   :ensure t
   :config
@@ -1256,13 +1273,17 @@ and leaving a noweb reference in its place."
 		nov-text-width 50)
   :bind
   (:map nov-mode-map
-		("<volume-down>" . #'nov-scroll-up)
-		("<volume-up>" . #'nov-scroll-down)))
+		("<volume-down>" . #'dkj/nov-scroll-up)
+		("<volume-up>" . #'dkj/nov-scroll-down)
+		("C-v" . #'dkj/nov-scroll-up)
+		("M-v" . #'dkj/nov-scroll-down)
+		("SPC" . #'dkj/nov-scroll-up)
+		("DEL" . #'dkj/nov-scroll-down)))
 
 (dkj/define-local-tool-bar nov-mode
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
-						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
-						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
+						   ("last-page" 'dkj/nov-scroll-down 'scroll-down-btn map)
+						   ("next-page" 'dkj/nov-scroll-up 'scroll-up-btn map)
 						   ("refresh" 'dkj/nov-render-document 'render-btn map))
 
 (defun dkj/nov-render-document ()
