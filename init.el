@@ -1722,7 +1722,8 @@ The DWIM behaviour of this command is as follows:
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
-  (setq ispell-program-name (executable-find "hunspell"))
+  (setq ispell-program-name (executable-find "hunspell")
+		ispell-personal-dictionary "~/org/personal-dict")
   (setq org-capture-templates
 		(quote (("t" "Todo" entry (file "~/org/inbox.org")
 				 "* TODO %?\n%U\n" :clock-in t :clock-resume t)
