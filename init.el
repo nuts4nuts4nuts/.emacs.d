@@ -13,8 +13,7 @@
 ;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; Always have the menu bar :)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -1243,10 +1242,11 @@ and leaving a noweb reference in its place."
 		("<volume-down>" . #'doc-view-scroll-up-or-next-page)
 		("<volume-up>" .  #'doc-view-scroll-down-or-previous-page)))
 
-(use-package pdf-tools
-  :ensure t
-  :init
-  (pdf-tools-install))
+(when (display-graphic-p)
+  (use-package pdf-tools
+	:ensure t
+	:init
+	(pdf-tools-install)))
 
 (defun dkj/nov-save ()
   (let ((identifier (cdr (assq 'identifier nov-metadata)))
@@ -1532,7 +1532,6 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
-(require 'god-mode-isearch)
 (defun dkj/god-terminal-active ()
   (equal overriding-terminal-local-map god-mode-isearch-map))
 
@@ -1618,6 +1617,7 @@ The DWIM behaviour of this command is as follows:
   (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
   :init
   (require 'cc-mode)
+  (require 'god-mode-isearch)
   (god-mode-all))
 
 ;; God Visuals

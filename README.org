@@ -54,8 +54,7 @@ These are some basic settings to make life a little better. They don't relate to
 ;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; Always have the menu bar :)
-(menu-bar-mode 1)
+(menu-bar-mode -1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -1736,10 +1735,11 @@ For when pdf-tools is not available
 For reading pdfs in Emacs! Useful with org-noter.
 
 #+begin_src emacs-lisp
-(use-package pdf-tools
-  :ensure t
-  :init
-  (pdf-tools-install))
+(when (display-graphic-p)
+  (use-package pdf-tools
+	:ensure t
+	:init
+	(pdf-tools-install)))
 #+end_src
 *** nov.el
 :PROPERTIES:
@@ -2127,7 +2127,6 @@ All praise due.
 https://github.com/emacsorphanage/god-mode.
 
 #+begin_src emacs-lisp
-(require 'god-mode-isearch)
 (defun dkj/god-terminal-active ()
   (equal overriding-terminal-local-map god-mode-isearch-map))
 
@@ -2213,6 +2212,7 @@ The DWIM behaviour of this command is as follows:
   (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
   :init
   (require 'cc-mode)
+  (require 'god-mode-isearch)
   (god-mode-all))
 
 ;; God Visuals
