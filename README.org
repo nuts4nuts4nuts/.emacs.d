@@ -1213,6 +1213,18 @@ You can also use ~M-x auto-package-update-now~ to update right now!
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 #+end_src
+*** Always keep jsonrpc up to date
+:PROPERTIES:
+:ID:       52EB30FA-6594-4BBB-9DDC-C520C2AFF1F8
+:END:
+#+begin_src emacs-lisp
+;; eglot needs jsonrpc >= 1.0.29
+;; Keep an ELPA copy
+(unless (assq 'jsonrpc package-alist)
+  (package-refresh-contents)
+  (package-install (cadr (assq 'jsonrpc package-archive-contents))))
+#+end_src
+
 *** Which-key
 :PROPERTIES:
 :ID:       72BD8981-CE05-4297-8793-A12FB90D609C

@@ -972,6 +972,12 @@ ITEMS is a list of item definitions, where each definition is:
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
+;; eglot needs jsonrpc >= 1.0.29
+;; Keep an ELPA copy
+(unless (assq 'jsonrpc package-alist)
+  (package-refresh-contents)
+  (package-install (cadr (assq 'jsonrpc package-archive-contents))))
+
 ;; Manual which-key
 (setq which-key-show-early-on-C-h t
       which-key-idle-delay 1e6 ; 11 days
