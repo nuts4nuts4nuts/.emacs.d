@@ -13,7 +13,10 @@
 ;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
+;; Show menu bar in gui and hide in terminal
+(if (display-graphic-p)
+	(menu-bar-mode 1)
+  (menu-bar-mode -1))
 
 ;; Show column number in the modeline
 (column-number-mode 1)
