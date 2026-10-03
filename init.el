@@ -385,6 +385,9 @@ ITEMS is a list of item definitions, where each definition is:
   (dkj/mobile-org-noter))
 
 (dkj/define-local-tool-bar org-agenda-mode
+						   ("gen-changelog" 'org-agenda-todo 'todo
+							:help "Trigger org-todo"
+							:label "org-todo")
 						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
 							:help "Switch to agenda item and run mobile-org-noter"
 							:label "Noter")

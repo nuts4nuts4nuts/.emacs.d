@@ -461,6 +461,9 @@ I've chosen ~C-t~ for this, since transposing characters is not something I can 
   (dkj/mobile-org-noter))
 
 (dkj/define-local-tool-bar org-agenda-mode
+						   ("gen-changelog" 'org-agenda-todo 'todo
+							:help "Trigger org-todo"
+							:label "org-todo")
 						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
 							:help "Switch to agenda item and run mobile-org-noter"
 							:label "Noter")
