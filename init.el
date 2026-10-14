@@ -1709,8 +1709,8 @@ The DWIM behaviour of this command is as follows:
   ;; raw inputs from virtual keyboard
   (setq overriding-text-conversion-style nil)
   ;; extra light and dark themes for eink
-  (setq dkj/theme-light 'modus-operandi)
-  (setq dkj/theme-dark 'modus-vivendi)
+  ;; (setq dkj/theme-light 'modus-operandi)
+  ;; (setq dkj/theme-dark 'modus-vivendi)
   (load-theme dkj/theme-light t)
   ;; dont blink cursor (particularly for eink)
   (setq-default blink-cursor-mode nil)
