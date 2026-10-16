@@ -40,6 +40,9 @@
 (global-unset-key (kbd "C-x C-n"))
 ;; used to be set-fill-column
 (global-set-key (kbd "C-x f") #'find-file)
+;; used to be transpose-lines
+;; I'd rather it fall through to tab stuff (C-x t)
+(global-unset-key (kbd "C-x C-t"))
 
 ;; Automatically balance windows when they are created or destroyed
 (setq window-combination-resize t)
