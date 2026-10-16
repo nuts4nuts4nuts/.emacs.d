@@ -378,17 +378,11 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
 
-(defun dkj/org-agenda-mobile-noter ()
-  "Switch to the current agenda item and run `dkj/mobile-org-noter'."
-  (interactive)
-  (org-agenda-switch-to)
-  (dkj/mobile-org-noter))
-
 (dkj/define-local-tool-bar org-agenda-mode
 						   ("gen-changelog" 'org-agenda-todo 'todo
 							:help "Trigger org-todo"
 							:label "org-todo")
-						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
+						   ("exit" 'dkj/mobile-org-noter 'mobile-noter
 							:help "Switch to agenda item and run mobile-org-noter"
 							:label "Noter")
 						   ("jump-to" 'org-agenda-schedule 'schedule
@@ -943,7 +937,10 @@ ITEMS is a list of item definitions, where each definition is:
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo"))
+							:label "org-todo")
+						   ("exit" 'dkj/mobile-org-noter 'mobile-noter
+							:help "Switch to agenda item and run mobile-org-noter"
+							:label "Noter"))
 
 (define-skeleton dkj/org-bash-block
   "Inserts a bash source block" nil
@@ -1240,6 +1237,8 @@ and leaving a noweb reference in its place."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
 		 (org-noter-doc-split-fraction '(0.2 . 0.8)))
+	(when (equal major-mode 'org-agenda-mode)
+	  (org-agenda-switch-to))
 	(org-noter)))
 
 (use-package doc-view
@@ -1302,18 +1301,29 @@ and leaving a noweb reference in its place."
 
 (define-key nov-mode-map (kbd "g") #'dkj/nov-render-document)
 
-(use-package visual-fill-column
-  :config
-  (setq-default visual-fill-column-center-text t))
+(use-package olivetti)
+
+;; Let Nov wrap text to the available window body.
+(setq nov-text-width t)
+
+(defun dkj/nov-unscaled-olivetti-width (original width)
+  "Keep Nov's column width independent of text scaling."
+  (if (derived-mode-p 'nov-mode)
+      width
+    (funcall original width)))
+
+(advice-add 'olivetti-scale-width :around
+            #'dkj/nov-unscaled-olivetti-width)
 
 (defun dkj/nov-display-setup ()
-  (when (require 'visual-fill-column nil t)
-	(setq-local visual-fill-column-width
-				(1+ nov-text-width))
-    (visual-line-fill-column-mode 1)))
+  "Center Nov text in a column at most 40 base-font columns wide."
+  (setq-local olivetti-style nil
+              olivetti-minimum-body-width 1
+              olivetti-body-width 50)
+  (visual-line-mode 1)
+  (olivetti-mode 1))
 
-(add-hook 'nov-mode-hook 'dkj/nov-display-setup)
-(add-hook 'nov-mode-hook (lambda () (text-scale-increase 2)))
+(add-hook 'nov-mode-hook #'dkj/nov-display-setup)
 
 (use-package speed-type)
 
@@ -1627,17 +1637,46 @@ The DWIM behaviour of this command is as follows:
   (god-mode-all))
 
 ;; God Visuals
+(defvar-local dkj/god-mode-face-cookies nil
+  "Face remappings installed by God-mode visuals.")
+
+(defvar-local dkj/god-mode-saved-hl-line nil
+  "Whether hl-line-mode was enabled before God-mode visuals.")
+
+(defvar-local dkj/god-mode-visuals-active nil
+  "Whether God-mode visuals have been applied.")
+
 (defun dkj/apply-god-mode-visuals ()
-  "Make the active modeline bright red when god-mode is enabled and highlight the current line."
+  "Highlight God mode without disturbing other face remappings."
   (if god-local-mode
-	  (progn
-		(face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-		(face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
-		(hl-line-mode 1)
-		(when (eq system-type 'android)
-		  (set-face-attribute 'hl-line nil :background "bisque" :inherit nil)))
-	(hl-line-mode -1)
-	(setq-local face-remapping-alist nil)))
+      (unless dkj/god-mode-visuals-active
+        (setq dkj/god-mode-saved-hl-line
+              (bound-and-true-p hl-line-mode)
+              dkj/god-mode-face-cookies
+              (list
+               (face-remap-add-relative
+                'mode-line-active
+                :background "lightcoral" :foreground "white")
+               (face-remap-add-relative
+                'mode-line-inactive
+                :background "darkred" :foreground "white")))
+
+        ;; Buffer-local instead of changing hl-line globally.
+        (when (eq system-type 'android)
+          (push (face-remap-add-relative
+                 'hl-line :background "bisque")
+                dkj/god-mode-face-cookies))
+
+        (hl-line-mode 1)
+        (setq dkj/god-mode-visuals-active t))
+
+    (when dkj/god-mode-visuals-active
+      (mapc #'face-remap-remove-relative
+            dkj/god-mode-face-cookies)
+      (setq dkj/god-mode-face-cookies nil)
+      (hl-line-mode (if dkj/god-mode-saved-hl-line 1 -1))
+      (setq dkj/god-mode-visuals-active nil))))
+
 (add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
 
 (mapc
@@ -1703,7 +1742,7 @@ The DWIM behaviour of this command is as follows:
   (tool-bar-mode 1)
   (setopt tool-bar-position 'bottom)
   ;; bigger font
-  (dkj/font-height 230)
+  (dkj/font-height 200)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; raw inputs from virtual keyboard
