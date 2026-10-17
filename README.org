@@ -2237,12 +2237,15 @@ The DWIM behaviour of this command is as follows:
 ;; God Visuals
 (defvar-local dkj/god-mode-face-cookies nil
   "Face remappings installed by God-mode visuals.")
-
 (defvar-local dkj/god-mode-saved-hl-line nil
   "Whether hl-line-mode was enabled before God-mode visuals.")
-
 (defvar-local dkj/god-mode-visuals-active nil
   "Whether God-mode visuals have been applied.")
+
+(dolist (var '(dkj/god-mode-face-cookies
+               dkj/god-mode-saved-hl-line
+               dkj/god-mode-visuals-active))
+  (put var 'permanent-local t))
 
 (defun dkj/apply-god-mode-visuals ()
   "Highlight God mode without disturbing other face remappings."
