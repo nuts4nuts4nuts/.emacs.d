@@ -1864,9 +1864,8 @@ https://codeberg.org/akib/emacs-eat/
 New hot terminal just dropped
 
 #+begin_src emacs-lisp
-(unless (eq system-type 'android)
-  (use-package ghostel
-	:ensure t))
+(use-package ghostel
+  :ensure t)
 #+end_src
 *** ox-gfm
 :PROPERTIES:

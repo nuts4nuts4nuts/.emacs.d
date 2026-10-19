@@ -1332,9 +1332,8 @@ and leaving a noweb reference in its place."
 
 (use-package eat)
 
-(unless (eq system-type 'android)
-  (use-package ghostel
-	:ensure t))
+(use-package ghostel
+  :ensure t)
 
 (use-package ox-gfm)
 (eval-after-load "org"
