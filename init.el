@@ -1659,6 +1659,37 @@ The DWIM behaviour of this command is as follows:
 	  (setq cursor-type '(bar . 5)))))
 (add-hook 'post-command-hook #'dkj/apply-god-mode-visuals)
 
+(defun dkj/sync-god-text-conversion ()
+  "Use raw keys in God mode, normal text conversion otherwise."
+  (when (eq system-type 'android)
+    (let ((style (if (bound-and-true-p god-local-mode) nil 'lambda)))
+      (unless (eq overriding-text-conversion-style style)
+        (setq overriding-text-conversion-style style)
+        (set-text-conversion-style text-conversion-style)))))
+(add-hook 'post-command-hook #'dkj/sync-god-text-conversion)
+
+(defun dkj/semicolon-from-text-conversion ()
+  "Turn the latest lone committed semicolon into God-mode entry."
+  (when (and (eq system-type 'android)
+             (not (bound-and-true-p god-local-mode))
+             (eq (if (consp last-command-event)
+                     (car last-command-event)
+                   last-command-event)
+                 'text-conversion))
+    (pcase-let ((`(,buffer ,beg ,end ,text)
+                 (car text-conversion-edits)))
+      (when (and (eq buffer (current-buffer))
+                 (equal text ";")
+                 (marker-position beg)
+                 (marker-position end)
+                 (= (- end beg) 1)
+                 (= (point) end)
+                 (equal (buffer-substring-no-properties beg end) ";"))
+        (delete-region beg end)
+        (god-mode-all 1)
+        (dkj/sync-god-text-conversion)))))
+(add-hook 'post-command-hook #'dkj/semicolon-from-text-conversion)
+
 (mapc
  (lambda (chr)
    (define-key god-local-mode-map
@@ -1725,8 +1756,6 @@ The DWIM behaviour of this command is as follows:
   (dkj/font-height 200)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
-  ;; raw inputs from virtual keyboard
-  (setq overriding-text-conversion-style nil)
   ;; extra light and dark themes for eink
   ;; (setq dkj/theme-light 'modus-operandi)
   ;; (setq dkj/theme-dark 'modus-vivendi)
