@@ -1639,51 +1639,24 @@ The DWIM behaviour of this command is as follows:
   (require 'god-mode-isearch)
   (god-mode-all))
 
-;; God Visuals
-(defvar-local dkj/god-mode-face-cookies nil
-  "Face remappings installed by God-mode visuals.")
-(defvar-local dkj/god-mode-saved-hl-line nil
-  "Whether hl-line-mode was enabled before God-mode visuals.")
-(defvar-local dkj/god-mode-visuals-active nil
-  "Whether God-mode visuals have been applied.")
-
-(dolist (var '(dkj/god-mode-face-cookies
-               dkj/god-mode-saved-hl-line
-               dkj/god-mode-visuals-active))
-  (put var 'permanent-local t))
-
+;; Visuals
 (defun dkj/apply-god-mode-visuals ()
   "Highlight God mode without disturbing other face remappings."
   (if god-local-mode
-      (unless dkj/god-mode-visuals-active
-        (setq dkj/god-mode-saved-hl-line
-              (bound-and-true-p hl-line-mode)
-              dkj/god-mode-face-cookies
-              (list
-               (face-remap-add-relative
-                'mode-line-active
-                :background "lightcoral" :foreground "white")
-               (face-remap-add-relative
-                'mode-line-inactive
-                :background "darkred" :foreground "white")))
-
-        ;; Buffer-local instead of changing hl-line globally.
-        (when (eq system-type 'android)
-          (push (face-remap-add-relative
-                 'hl-line :background "bisque")
-                dkj/god-mode-face-cookies))
-
-        (hl-line-mode 1)
-        (setq dkj/god-mode-visuals-active t))
-
-    (when dkj/god-mode-visuals-active
-      (mapc #'face-remap-remove-relative
-            dkj/god-mode-face-cookies)
-      (setq dkj/god-mode-face-cookies nil)
-      (hl-line-mode (if dkj/god-mode-saved-hl-line 1 -1))
-      (setq dkj/god-mode-visuals-active nil))))
-
-(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
+      (progn
+		(set-face-attribute
+		 'mode-line-active nil
+         :background "lightcoral" :foreground "white")
+		(set-face-attribute
+		 'mode-line-inactive nil
+         :background "darkred" :foreground "white")
+        (hl-line-mode 1))
+    (progn
+	  (dolist (frame (frame-list))
+		(face-spec-recalc 'mode-line-active frame)
+		(face-spec-recalc 'mode-line-inactive frame))
+	  (hl-line-mode -1))))
+(add-hook 'post-command-hook #'dkj/apply-god-mode-visuals)
 
 (mapc
  (lambda (chr)
