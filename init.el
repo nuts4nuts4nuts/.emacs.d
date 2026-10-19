@@ -1753,7 +1753,7 @@ The DWIM behaviour of this command is as follows:
   (tool-bar-mode 1)
   (setopt tool-bar-position 'bottom)
   ;; bigger font
-  (dkj/font-height 200)
+  (dkj/font-height 180)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
