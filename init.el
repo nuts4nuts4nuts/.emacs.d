@@ -1650,12 +1650,14 @@ The DWIM behaviour of this command is as follows:
 		(set-face-attribute
 		 'mode-line-inactive nil
          :background "darkred" :foreground "white")
-        (hl-line-mode 1))
+        (hl-line-mode 1)
+		(setq cursor-type 'box))
     (progn
 	  (dolist (frame (frame-list))
 		(face-spec-recalc 'mode-line-active frame)
 		(face-spec-recalc 'mode-line-inactive frame))
-	  (hl-line-mode -1))))
+	  (hl-line-mode -1)
+	  (setq cursor-type '(bar . 5)))))
 (add-hook 'post-command-hook #'dkj/apply-god-mode-visuals)
 
 (mapc
