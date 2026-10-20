@@ -1324,7 +1324,8 @@ and leaving a noweb reference in its place."
               olivetti-minimum-body-width 1
               olivetti-body-width 50)
   (visual-line-mode 1)
-  (olivetti-mode 1))
+  (olivetti-mode 1)
+  (text-scale-increase 2))
 
 (add-hook 'nov-mode-hook #'dkj/nov-display-setup)
 
