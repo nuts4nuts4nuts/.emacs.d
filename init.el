@@ -365,14 +365,6 @@ ITEMS is a list of item definitions, where each definition is:
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
-(defun dkj/tab-next-or-other-frame (prefix)
-  "Call tab-next without a prefix or other-frame with"
-  (interactive "P")
-  (if (equal prefix '(4)) (other-frame 1) (tab-next)))
-
-;; Shorter tab-next and other-frame binding
-(define-key dkj-keys (kbd "C-o") #'dkj/tab-next-or-other-frame)
-
 ;; Easily store links to org headers
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
@@ -1088,7 +1080,6 @@ ITEMS is a list of item definitions, where each definition is:
 (setq tab-always-indent 'complete)
 
 (when (version< emacs-version "31")
-  
   ;; This isn't needed in Emacs 31, but I don't have that everywhere yet
   (use-package corfu-terminal
 	:init
