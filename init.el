@@ -1238,8 +1238,8 @@ and leaving a noweb reference in its place."
 (use-package doc-view
   :bind
   (:map doc-view-mode-map
-		("<volume-down>" . #'doc-view-scroll-up-or-next-page)
-		("<volume-up>" .  #'doc-view-scroll-down-or-previous-page)))
+		("<volume-up>" . #'doc-view-scroll-up-or-next-page)
+		("<volume-down>" .  #'doc-view-scroll-down-or-previous-page)))
 
 (when (display-graphic-p)
   (use-package pdf-tools
@@ -1271,8 +1271,8 @@ and leaving a noweb reference in its place."
   (setq nov-save-place-file "~/org/nov-places")
   :bind
   (:map nov-mode-map
-		("<volume-down>" . #'dkj/nov-scroll-up)
-		("<volume-up>" . #'dkj/nov-scroll-down)
+		("<volume-up>" . #'dkj/nov-scroll-up)
+		("<volume-down>" . #'dkj/nov-scroll-down)
 		("C-v" . #'dkj/nov-scroll-up)
 		("M-v" . #'dkj/nov-scroll-down)
 		("SPC" . #'dkj/nov-scroll-up)
@@ -1616,13 +1616,13 @@ operates on the current EPUB and refreshes the buffer."
   (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-good)
-	(scroll-down-command)))
+	(scroll-up-command)))
 
 (defun dkj/org-again-or-scroll ()
   (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-again)
-	(scroll-up-command)))
+	(scroll-down-command)))
 
 (use-package org-srs
   :demand t
@@ -1944,8 +1944,8 @@ The DWIM behaviour of this command is as follows:
   (defun dkj/agenda-split ()
 	(split-window-below))
   ;; special bindings
-  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
-  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
+  (global-set-key (kbd "<volume-up>") #'scroll-up-command)
+  (global-set-key (kbd "<volume-down>") #'scroll-down-command)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
