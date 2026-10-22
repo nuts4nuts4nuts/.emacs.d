@@ -1268,8 +1268,7 @@ and leaving a noweb reference in its place."
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 50)
+  (setq nov-save-place-file "~/org/nov-places")
   :bind
   (:map nov-mode-map
 		("<volume-down>" . #'dkj/nov-scroll-up)
@@ -1313,12 +1312,199 @@ and leaving a noweb reference in its place."
   "Center Nov text in a column at most 40 base-font columns wide."
   (setq-local olivetti-style nil
               olivetti-minimum-body-width 1
-              olivetti-body-width 50)
+              olivetti-body-width 60)
   (visual-line-mode 1)
   (olivetti-mode 1)
   (text-scale-increase 2))
 
 (add-hook 'nov-mode-hook #'dkj/nov-display-setup)
+
+(require 'cl-lib)
+(require 'dom)
+(require 'json)
+(require 'nov)
+(require 'seq)
+(require 'url-util)
+
+(defun dkj/epub--valid-image-file-p (file)
+  "Return non-nil if FILE exists, is non-empty, and has a valid image header."
+  (and file
+       (file-exists-p file)
+       (> (or (file-attribute-size (file-attributes file)) 0) 0)
+       (image-type-from-file-header file)))
+
+(defun dkj/epub--http-url-p (s)
+  "Return non-nil if S is an HTTP(S) URL string."
+  (and (stringp s)
+       (string-match-p "\\`https?://" s)))
+
+(defun dkj/epub--parse-srcset-url (srcset)
+  "Extract the last (typically highest-resolution) HTTP(S) URL from SRCSET."
+  (when (and (stringp srcset) (not (string-empty-p srcset)))
+    (let* ((entries (split-string srcset "," t "[ \t\n\r]+"))
+           (last-entry (car (last entries)))
+           (url (car (split-string (or last-entry "") "[ \t\n\r]+" t))))
+      (and (dkj/epub--http-url-p url) url))))
+
+(defun dkj/epub--extract-data-attrs-url (data-attrs)
+  "Extract the `src' URL from a JSON DATA-ATTRS attribute (e.g. Substack)."
+  (when (and (stringp data-attrs) (not (string-empty-p data-attrs)))
+    (condition-case nil
+        (let* ((parsed (json-parse-string data-attrs :object-type 'alist))
+               (src (alist-get 'src parsed)))
+          (and (dkj/epub--http-url-p src) src))
+      (error nil))))
+
+(defun dkj/epub--find-external-url (img-node ancestors)
+  "Find an external HTTP(S) URL for IMG-NODE given its DOM ANCESTORS."
+  (or
+   ;; 1. Direct lazy-loading attributes on <img>
+   (seq-some (lambda (attr)
+               (let ((val (dom-attr img-node attr)))
+                 (and (dkj/epub--http-url-p val) val)))
+             '(data-src data-original data-lazy-src data-orig-file src))
+   ;; 2. JSON `data-attrs' on <img> (Substack / EinkBro)
+   (dkj/epub--extract-data-attrs-url (dom-attr img-node 'data-attrs))
+   ;; 3. `srcset' / `data-srcset' on <img>
+   (dkj/epub--parse-srcset-url (dom-attr img-node 'srcset))
+   (dkj/epub--parse-srcset-url (dom-attr img-node 'data-srcset))
+   ;; 4. Sibling <source> inside an enclosing <picture>
+   (seq-some (lambda (anc)
+               (when (eq (dom-tag anc) 'picture)
+                 (seq-some (lambda (child)
+                             (when (eq (dom-tag child) 'source)
+                               (or (dkj/epub--parse-srcset-url (dom-attr child 'srcset))
+                                   (dkj/epub--parse-srcset-url (dom-attr child 'data-srcset))
+                                   (let ((s (dom-attr child 'src)))
+                                     (and (dkj/epub--http-url-p s) s)))))
+                           (dom-children anc))))
+             ancestors)
+   ;; 5. Enclosing <a href="https://...">
+   (seq-some (lambda (anc)
+               (when (eq (dom-tag anc) 'a)
+                 (let ((href (dom-attr anc 'href)))
+                   (and (dkj/epub--http-url-p href) href))))
+             ancestors)))
+
+(defun dkj/epub--download-image (url dest-file)
+  "Download URL and replace DEST-FILE if the downloaded payload is a valid image."
+  (let ((tmp-file (make-temp-file "epub-img-")))
+    (unwind-protect
+        (let ((ok (if (executable-find "curl")
+                      (zerop (call-process "curl" nil nil nil
+                                           "-fsSL"
+                                           "--connect-timeout" "10"
+                                           "--max-time" "30"
+                                           "-o" tmp-file url))
+                    (condition-case nil
+                        (progn (url-copy-file url tmp-file t) t)
+                      (error nil)))))
+          (when (and ok (dkj/epub--valid-image-file-p tmp-file))
+            (make-directory (file-name-directory dest-file) t)
+            (rename-file tmp-file dest-file t)
+            t))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file)))))
+
+(defun dkj/epub--repack (work-dir epub-file)
+  "Repack WORK-DIR into EPUB-FILE with an uncompressed leading `mimetype' entry."
+  (let ((tmp-epub (concat (make-temp-name (expand-file-name "repack-" temporary-file-directory))
+                          ".epub"))
+        (default-directory (file-name-as-directory work-dir)))
+    (unwind-protect
+        (progn
+          (when (file-exists-p "mimetype")
+            (unless (zerop (call-process "zip" nil nil nil "-qX0" tmp-epub "mimetype"))
+              (error "Failed to pack mimetype into %s" tmp-epub)))
+          (unless (zerop (call-process "zip" nil nil nil "-qr9D" tmp-epub "." "-x" "mimetype"))
+            (error "Failed to pack contents into %s" tmp-epub))
+          (rename-file tmp-epub epub-file t))
+      (when (file-exists-p tmp-epub)
+        (delete-file tmp-epub)))))
+
+(defun dkj/epub-validate-and-fix-images (&optional epub-file)
+  "Validate images referenced in EPUB-FILE's HTML and download missing/empty ones.
+When called interactively inside a `nov-mode' buffer (without a prefix arg),
+operates on the current EPUB and refreshes the buffer."
+  (interactive
+   (list (if (and (derived-mode-p 'nov-mode)
+                  (not current-prefix-arg)
+                  (bound-and-true-p nov-file-name))
+             nov-file-name
+           (read-file-name "EPUB file: "
+                           (when (file-directory-p "~/org/assets/texts/")
+                             "~/org/assets/texts/")
+                           nil t nil
+                           (lambda (f)
+                             (or (file-directory-p f)
+                                 (string-match-p "\\.epub\\'" f)))))))
+  (setq epub-file (expand-file-name epub-file))
+  (let* ((in-nov-p (and (derived-mode-p 'nov-mode)
+                        (bound-and-true-p nov-file-name)
+                        (file-equal-p epub-file nov-file-name)
+                        (bound-and-true-p nov-work-dir)
+                        (file-directory-p nov-work-dir)))
+         (work-dir (if in-nov-p
+                       nov-work-dir
+                     (make-temp-file "epub-fix-" t)))
+         (valid-count 0)
+         (fixed-count 0)
+         (failed-count 0)
+         (seen-files (make-hash-table :test #'equal)))
+    (unwind-protect
+        (progn
+          (unless in-nov-p
+            (unless (zerop (nov-unzip-epub work-dir epub-file))
+              (error "Failed to unzip %s" epub-file)))
+          (dolist (html-file (directory-files-recursively
+                              work-dir "\\.\\(x?html?\\|xml\\)\\'"))
+            (unless (string-match-p "/\\(?:container\\.xml\\|content\\.opf\\|toc\\.ncx\\)\\'"
+                                    html-file)
+              (let ((html-dir (file-name-directory html-file))
+                    (dom (with-temp-buffer
+                           (insert-file-contents html-file)
+                           (libxml-parse-html-region (point-min) (point-max)))))
+                (cl-labels
+                    ((walk (node ancestors)
+                       (when (consp node)
+                         (when (eq (dom-tag node) 'img)
+                           (let* ((src (dom-attr node 'src))
+                                  (rel (and src
+                                            (not (dkj/epub--http-url-p src))
+                                            (car (nov-url-filename-and-target src))))
+                                  (local-path (and rel
+                                                   (not (string-empty-p rel))
+                                                   (expand-file-name rel html-dir))))
+                             (when (and local-path
+                                        (not (gethash local-path seen-files)))
+                               (puthash local-path t seen-files)
+                               (if (dkj/epub--valid-image-file-p local-path)
+                                   (cl-incf valid-count)
+                                 (let ((ext-url (dkj/epub--find-external-url node ancestors)))
+                                   (message "Downloading %s -> %s..."
+                                            (or ext-url "<no external URL>")
+                                            (file-name-nondirectory local-path))
+                                   (if (and ext-url
+                                            (dkj/epub--download-image ext-url local-path))
+                                       (cl-incf fixed-count)
+                                     (cl-incf failed-count)))))))
+                         (let ((next-anc (cons node ancestors)))
+                           (dolist (child (dom-children node))
+                             (walk child next-anc))))))
+                  (walk dom nil)))))
+          (when (> fixed-count 0)
+            (dkj/epub--repack work-dir epub-file)
+            (when in-nov-p
+              (clear-image-cache)
+              (if (fboundp 'dkj/nov-render-document)
+                  (dkj/nov-render-document)
+                (nov-render-document))))
+          (message "EPUB images (%s): %d valid, %d downloaded & fixed, %d failed"
+                   (file-name-nondirectory epub-file)
+                   valid-count fixed-count failed-count))
+      (unless in-nov-p
+        (when (file-directory-p work-dir)
+          (delete-directory work-dir t))))))
 
 (use-package speed-type)
 
