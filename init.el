@@ -1718,6 +1718,29 @@ operates on the current EPUB and refreshes the buffer."
   (advice-add 'org-srs-item-narrow :before
               #'dkj/srs-go-to-heading-including-hidden))
 
+(with-eval-after-load 'org-srs-item-card
+  (defun my-org-srs-hide-mnemonic (&rest _)
+    "Hide immediate-child Mnemonic subtrees during card questions."
+    (save-excursion
+      ;; Org-srs narrows the buffer to the entry being reviewed.
+      (goto-char (point-min))
+      (let ((child-level (1+ (or (org-current-level) 0))))
+        (org-map-entries
+         (lambda ()
+           (when (and (= (org-current-level) child-level)
+                      (string-equal-ignore-case
+                       (org-get-heading t t t t)
+                       "Mnemonic"))
+             (let ((beg (point))
+                   (end (save-excursion
+                          (org-end-of-subtree t t)
+                          (point))))
+               (org-srs-item-card-put-ellipsis-overlay beg end))))
+         nil nil))))
+
+  (advice-add 'org-srs-item-card-hide
+              :after #'my-org-srs-hide-mnemonic))
+
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
@@ -1803,7 +1826,8 @@ The DWIM behaviour of this command is as follows:
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
 		god-mode-alist '((nil . "C-")
-						 ("g" . "C-M-")))
+						 ("g" . "M-")
+						 ("h" . "C-M-")))
   ;; Ensure god mode keymap gets priority over minor modes
   (setq minor-mode-map-alist
 		(assq-delete-all 'god-local-mode minor-mode-map-alist))
