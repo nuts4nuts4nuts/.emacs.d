@@ -1977,6 +1977,8 @@ The DWIM behaviour of this command is as follows:
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
+  ;; space is at a premium so don't show the whole grid
+  (setq org-agenda-use-time-grid nil)
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
   (setq ispell-program-name (executable-find "hunspell")
 		ispell-personal-dictionary "~/org/personal-dict")
