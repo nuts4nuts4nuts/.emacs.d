@@ -2273,6 +2273,77 @@ A cool SVG calendar for org with draggable events and everything!
         org-timegrid-agenda-minutes-before 300
         org-timegrid-agenda-minutes-after 300))
 #+end_src
+*** Pebble Agenda
+
+The native =Pebble Agenda= watch app manages tasks from this Emacs instance.
+The matching Emacs package (version 0.2.0) is kept in
+=lisp/pebble-agenda/= beside this configuration, so it can travel with the
+configuration to Android.  It is a local package: =:ensure nil= prevents
+=use-package= from trying to download it from a package archive.
+
+On Android the service starts after initialization, using the existing
+=org-agenda-files=.  Watch edits are saved to those files.  The service uses
+phone loopback (=http://127.0.0.1:8765=) and a generated private pairing token.
+On the Mac it does not start automatically: localhost on the phone cannot
+reach the Mac.  Configure a phone-reachable HTTPS endpoint/tunnel and set
+=pebble-agenda-public-url= before starting it there.
+
+After restarting Android Emacs (or running =M-x dkj/start-pebble-agenda=):
+
+1. Run =M-x pebble-agenda-pairing-info=.
+2. In the Pebble phone app, open =Pebble Agenda= → =Settings=.
+3. Enter the displayed Emacs address and token, then save.
+
+Up/Down navigates locally.  Select opens a task and then its editable field.
+The state menu uses the file's TODO keywords; schedule/deadline menus offer
+Today, Tomorrow, In one week, and Clear date.  Views / refresh opens Today,
+Upcoming, Open, and Done filters.  Completed tasks can be reopened from Done.
+
+=M-x pebble-agenda-refresh= refreshes the watch.  Toggle
+=M-x pebble-agenda-mode= to stop or start the service.  Emacs must stay running.
+The token lives in =pebble-agenda-token-file= (normally
+=~/.emacs.d/pebble-agenda-token=); keep it private and out of version control.
+Unsaved/conflicting edits must be resolved in Emacs before the watch saves them.
+Only local, unencrypted Org files are supported.
+
+The package files were copied into place without evaluating this configuration,
+starting the service, or reading agenda files.  Detailed setup instructions are
+also included in =lisp/pebble-agenda/README.md=.  To update the local package,
+replace =pebble.el=, =pebble-agenda.el=, and =pebble-config.html= together from a
+matching project release and restart Emacs.
+
+#+begin_src emacs-lisp
+;; Pebble Agenda is vendored locally so this config also works on Android.
+(use-package pebble-agenda
+  :ensure nil
+  :load-path (lambda ()
+               (list (expand-file-name "lisp/pebble-agenda" user-emacs-directory)))
+  :commands (pebble-agenda-mode
+             pebble-agenda-pairing-info
+             pebble-agenda-refresh)
+  :init
+  ;; Use the existing agenda file selection; do not maintain a second list.
+  (setq pebble-agenda-files nil
+        pebble-agenda-default-view 'today
+        pebble-agenda-save-changes t
+        pebble-http-host "127.0.0.1"
+        pebble-http-port 8765
+        pebble-agenda-public-url "http://127.0.0.1:8765")
+  (defun dkj/start-pebble-agenda ()
+    "Start the paired watch's agenda service in this Emacs instance."
+    (interactive)
+    (condition-case err
+        (progn
+          (require 'pebble-agenda)
+          (pebble-agenda-mode 1))
+      (error (display-warning 'pebble-agenda
+                              (error-message-string err) :warning))))
+  ;; Phone localhost reaches Android Emacs, not this Mac.  On a desktop,
+  ;; configure a phone-reachable endpoint before starting the service manually.
+  (when (eq system-type 'android)
+    (add-hook 'after-init-hook #'dkj/start-pebble-agenda)))
+#+end_src
+
 ** Android stuff
 :PROPERTIES:
 :ID:       4c1bcb00-b749-42d8-a02a-da02f5c13e7d

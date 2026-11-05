@@ -17,3 +17,7 @@ transient/
 tutorial*
 url/
 tramp
+
+# Pebble Agenda private pairing state and setup snapshots
+/pebble-agenda-token
+/backups/pebble-agenda-setup-*/

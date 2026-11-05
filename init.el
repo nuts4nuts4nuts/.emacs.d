@@ -1671,6 +1671,36 @@ The DWIM behaviour of this command is as follows:
         org-timegrid-agenda-minutes-before 300
         org-timegrid-agenda-minutes-after 300))
 
+;; Pebble Agenda is vendored locally so this config also works on Android.
+(use-package pebble-agenda
+  :ensure nil
+  :load-path (lambda ()
+               (list (expand-file-name "lisp/pebble-agenda" user-emacs-directory)))
+  :commands (pebble-agenda-mode
+             pebble-agenda-pairing-info
+             pebble-agenda-refresh)
+  :init
+  ;; Use the existing agenda file selection; do not maintain a second list.
+  (setq pebble-agenda-files nil
+        pebble-agenda-default-view 'today
+        pebble-agenda-save-changes t
+        pebble-http-host "127.0.0.1"
+        pebble-http-port 8765
+        pebble-agenda-public-url "http://127.0.0.1:8765")
+  (defun dkj/start-pebble-agenda ()
+    "Start the paired watch's agenda service in this Emacs instance."
+    (interactive)
+    (condition-case err
+        (progn
+          (require 'pebble-agenda)
+          (pebble-agenda-mode 1))
+      (error (display-warning 'pebble-agenda
+                              (error-message-string err) :warning))))
+  ;; Phone localhost reaches Android Emacs, not this Mac.  On a desktop,
+  ;; configure a phone-reachable endpoint before starting the service manually.
+  (when (eq system-type 'android)
+    (add-hook 'after-init-hook #'dkj/start-pebble-agenda)))
+
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
   (tool-bar-mode 1)
