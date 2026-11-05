@@ -13,8 +13,10 @@
 ;; Turn off the tool bar and scroll bar
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; Always have the menu bar :)
-(menu-bar-mode 1)
+;; Show menu bar in gui and hide in terminal
+(if (display-graphic-p)
+	(menu-bar-mode 1)
+  (menu-bar-mode -1))
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -38,6 +40,9 @@
 (global-unset-key (kbd "C-x C-n"))
 ;; used to be set-fill-column
 (global-set-key (kbd "C-x f") #'find-file)
+;; used to be transpose-lines
+;; I'd rather it fall through to tab stuff (C-x t)
+(global-unset-key (kbd "C-x C-t"))
 
 ;; Automatically balance windows when they are created or destroyed
 (setq window-combination-resize t)
@@ -360,14 +365,6 @@ ITEMS is a list of item definitions, where each definition is:
 (define-prefix-command 'dkj-keys)
 (global-set-key (kbd "C-t") #'dkj-keys)
 
-(defun dkj/tab-next-or-other-frame (prefix)
-  "Call tab-next without a prefix or other-frame with"
-  (interactive "P")
-  (if (equal prefix '(4)) (other-frame 1) (tab-next)))
-
-;; Shorter tab-next and other-frame binding
-(define-key dkj-keys (kbd "C-o") #'dkj/tab-next-or-other-frame)
-
 ;; Easily store links to org headers
 (define-key dkj-keys (kbd "C-l") #'org-store-link)
 ;; Capture something
@@ -376,14 +373,11 @@ ITEMS is a list of item definitions, where each definition is:
 ;; Open the agenda
 (define-key dkj-keys (kbd "C-a") #'org-agenda)
 
-(defun dkj/org-agenda-mobile-noter ()
-  "Switch to the current agenda item and run `dkj/mobile-org-noter'."
-  (interactive)
-  (org-agenda-switch-to)
-  (dkj/mobile-org-noter))
-
 (dkj/define-local-tool-bar org-agenda-mode
-						   ("exit" 'dkj/org-agenda-mobile-noter 'mobile-noter
+						   ("gen-changelog" 'org-agenda-todo 'todo
+							:help "Trigger org-todo"
+							:label "org-todo")
+						   ("exit" 'dkj/mobile-org-noter 'mobile-noter
 							:help "Switch to agenda item and run mobile-org-noter"
 							:label "Noter")
 						   ("jump-to" 'org-agenda-schedule 'schedule
@@ -938,7 +932,10 @@ ITEMS is a list of item definitions, where each definition is:
 (dkj/define-local-tool-bar org-mode
 						   ("gen-changelog" 'org-todo 'todo
 							:help "Trigger org-todo"
-							:label "org-todo"))
+							:label "org-todo")
+						   ("exit" 'dkj/mobile-org-noter 'mobile-noter
+							:help "Switch to agenda item and run mobile-org-noter"
+							:label "Noter"))
 
 (define-skeleton dkj/org-bash-block
   "Inserts a bash source block" nil
@@ -1083,7 +1080,6 @@ ITEMS is a list of item definitions, where each definition is:
 (setq tab-always-indent 'complete)
 
 (when (version< emacs-version "31")
-  
   ;; This isn't needed in Emacs 31, but I don't have that everywhere yet
   (use-package corfu-terminal
 	:init
@@ -1234,35 +1230,58 @@ and leaving a noweb reference in its place."
   "Call org-noter in a way that sets everything up perfectly for mobile device usage."
   (interactive)
   (let* ((org-noter-notes-window-location 'vertical-split)
-		 (org-noter-doc-split-fraction '(0.3 . 0.7)))
+		 (org-noter-doc-split-fraction '(0.2 . 0.8)))
+	(when (equal major-mode 'org-agenda-mode)
+	  (org-agenda-switch-to))
 	(org-noter)))
 
 (use-package doc-view
   :bind
   (:map doc-view-mode-map
-		("<volume-down>" . #'doc-view-scroll-up-or-next-page)
-		("<volume-up>" .  #'doc-view-scroll-down-or-previous-page)))
+		("<volume-up>" . #'doc-view-scroll-up-or-next-page)
+		("<volume-down>" .  #'doc-view-scroll-down-or-previous-page)))
 
-(use-package pdf-tools
-  :ensure t
-  :init
-  (pdf-tools-install))
+(when (display-graphic-p)
+  (use-package pdf-tools
+	:ensure t
+	:init
+	(pdf-tools-install)))
+
+(defun dkj/nov-save ()
+  (let ((identifier (cdr (assq 'identifier nov-metadata)))
+        (index (if (integerp nov-documents-index)
+                   nov-documents-index
+                 0)))
+    (nov-save-place identifier index (point))))
+
+(defun dkj/nov-scroll-up (arg)
+  (interactive "P")
+  (nov-scroll-up arg)
+  (dkj/nov-save))
+
+(defun dkj/nov-scroll-down (arg)
+  (interactive "P")
+  (nov-scroll-down arg)
+  (dkj/nov-save))
 
 (use-package nov
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
-  (setq nov-save-place-file "~/org/nov-places"
-		nov-text-width 50)
+  (setq nov-save-place-file "~/org/nov-places")
   :bind
   (:map nov-mode-map
-		("<volume-down>" . #'nov-scroll-up)
-		("<volume-up>" . #'nov-scroll-down)))
+		("<volume-up>" . #'dkj/nov-scroll-up)
+		("<volume-down>" . #'dkj/nov-scroll-down)
+		("C-v" . #'dkj/nov-scroll-up)
+		("M-v" . #'dkj/nov-scroll-down)
+		("SPC" . #'dkj/nov-scroll-up)
+		("DEL" . #'dkj/nov-scroll-down)))
 
 (dkj/define-local-tool-bar nov-mode
 						   ("exit" 'org-noter-kill-session 'quit-noter-btn map)
-						   ("last-page" 'nov-scroll-down 'scroll-down-btn map)
-						   ("next-page" 'nov-scroll-up 'scroll-up-btn map)
+						   ("last-page" 'dkj/nov-scroll-down 'scroll-down-btn map)
+						   ("next-page" 'dkj/nov-scroll-up 'scroll-up-btn map)
 						   ("refresh" 'dkj/nov-render-document 'render-btn map))
 
 (defun dkj/nov-render-document ()
@@ -1275,26 +1294,224 @@ and leaving a noweb reference in its place."
 
 (define-key nov-mode-map (kbd "g") #'dkj/nov-render-document)
 
-(use-package visual-fill-column
-  :config
-  (setq-default visual-fill-column-center-text t))
+(use-package olivetti)
+
+;; Let Nov wrap text to the available window body.
+(setq nov-text-width t)
+
+(defun dkj/nov-unscaled-olivetti-width (original width)
+  "Keep Nov's column width independent of text scaling."
+  (if (derived-mode-p 'nov-mode)
+      width
+    (funcall original width)))
+
+(advice-add 'olivetti-scale-width :around
+            #'dkj/nov-unscaled-olivetti-width)
 
 (defun dkj/nov-display-setup ()
-  (when (require 'visual-fill-column nil t)
-	(setq-local visual-fill-column-width
-				(1+ nov-text-width))
-    (visual-line-fill-column-mode 1)))
+  "Center Nov text in a column at most 40 base-font columns wide."
+  (setq-local olivetti-style nil
+              olivetti-minimum-body-width 1
+              olivetti-body-width 60)
+  (visual-line-mode 1)
+  (olivetti-mode 1)
+  (text-scale-increase 2))
 
-(add-hook 'nov-mode-hook 'dkj/nov-display-setup)
-(add-hook 'nov-mode-hook (lambda () (text-scale-increase 2)))
+(add-hook 'nov-mode-hook #'dkj/nov-display-setup)
+
+(require 'cl-lib)
+(require 'dom)
+(require 'json)
+(require 'nov)
+(require 'seq)
+(require 'url-util)
+
+(defun dkj/epub--valid-image-file-p (file)
+  "Return non-nil if FILE exists, is non-empty, and has a valid image header."
+  (and file
+       (file-exists-p file)
+       (> (or (file-attribute-size (file-attributes file)) 0) 0)
+       (image-type-from-file-header file)))
+
+(defun dkj/epub--http-url-p (s)
+  "Return non-nil if S is an HTTP(S) URL string."
+  (and (stringp s)
+       (string-match-p "\\`https?://" s)))
+
+(defun dkj/epub--parse-srcset-url (srcset)
+  "Extract the last (typically highest-resolution) HTTP(S) URL from SRCSET."
+  (when (and (stringp srcset) (not (string-empty-p srcset)))
+    (let* ((entries (split-string srcset "," t "[ \t\n\r]+"))
+           (last-entry (car (last entries)))
+           (url (car (split-string (or last-entry "") "[ \t\n\r]+" t))))
+      (and (dkj/epub--http-url-p url) url))))
+
+(defun dkj/epub--extract-data-attrs-url (data-attrs)
+  "Extract the `src' URL from a JSON DATA-ATTRS attribute (e.g. Substack)."
+  (when (and (stringp data-attrs) (not (string-empty-p data-attrs)))
+    (condition-case nil
+        (let* ((parsed (json-parse-string data-attrs :object-type 'alist))
+               (src (alist-get 'src parsed)))
+          (and (dkj/epub--http-url-p src) src))
+      (error nil))))
+
+(defun dkj/epub--find-external-url (img-node ancestors)
+  "Find an external HTTP(S) URL for IMG-NODE given its DOM ANCESTORS."
+  (or
+   ;; 1. Direct lazy-loading attributes on <img>
+   (seq-some (lambda (attr)
+               (let ((val (dom-attr img-node attr)))
+                 (and (dkj/epub--http-url-p val) val)))
+             '(data-src data-original data-lazy-src data-orig-file src))
+   ;; 2. JSON `data-attrs' on <img> (Substack / EinkBro)
+   (dkj/epub--extract-data-attrs-url (dom-attr img-node 'data-attrs))
+   ;; 3. `srcset' / `data-srcset' on <img>
+   (dkj/epub--parse-srcset-url (dom-attr img-node 'srcset))
+   (dkj/epub--parse-srcset-url (dom-attr img-node 'data-srcset))
+   ;; 4. Sibling <source> inside an enclosing <picture>
+   (seq-some (lambda (anc)
+               (when (eq (dom-tag anc) 'picture)
+                 (seq-some (lambda (child)
+                             (when (eq (dom-tag child) 'source)
+                               (or (dkj/epub--parse-srcset-url (dom-attr child 'srcset))
+                                   (dkj/epub--parse-srcset-url (dom-attr child 'data-srcset))
+                                   (let ((s (dom-attr child 'src)))
+                                     (and (dkj/epub--http-url-p s) s)))))
+                           (dom-children anc))))
+             ancestors)
+   ;; 5. Enclosing <a href="https://...">
+   (seq-some (lambda (anc)
+               (when (eq (dom-tag anc) 'a)
+                 (let ((href (dom-attr anc 'href)))
+                   (and (dkj/epub--http-url-p href) href))))
+             ancestors)))
+
+(defun dkj/epub--download-image (url dest-file)
+  "Download URL and replace DEST-FILE if the downloaded payload is a valid image."
+  (let ((tmp-file (make-temp-file "epub-img-")))
+    (unwind-protect
+        (let ((ok (if (executable-find "curl")
+                      (zerop (call-process "curl" nil nil nil
+                                           "-fsSL"
+                                           "--connect-timeout" "10"
+                                           "--max-time" "30"
+                                           "-o" tmp-file url))
+                    (condition-case nil
+                        (progn (url-copy-file url tmp-file t) t)
+                      (error nil)))))
+          (when (and ok (dkj/epub--valid-image-file-p tmp-file))
+            (make-directory (file-name-directory dest-file) t)
+            (rename-file tmp-file dest-file t)
+            t))
+      (when (file-exists-p tmp-file)
+        (delete-file tmp-file)))))
+
+(defun dkj/epub--repack (work-dir epub-file)
+  "Repack WORK-DIR into EPUB-FILE with an uncompressed leading `mimetype' entry."
+  (let ((tmp-epub (concat (make-temp-name (expand-file-name "repack-" temporary-file-directory))
+                          ".epub"))
+        (default-directory (file-name-as-directory work-dir)))
+    (unwind-protect
+        (progn
+          (when (file-exists-p "mimetype")
+            (unless (zerop (call-process "zip" nil nil nil "-qX0" tmp-epub "mimetype"))
+              (error "Failed to pack mimetype into %s" tmp-epub)))
+          (unless (zerop (call-process "zip" nil nil nil "-qr9D" tmp-epub "." "-x" "mimetype"))
+            (error "Failed to pack contents into %s" tmp-epub))
+          (rename-file tmp-epub epub-file t))
+      (when (file-exists-p tmp-epub)
+        (delete-file tmp-epub)))))
+
+(defun dkj/epub-validate-and-fix-images (&optional epub-file)
+  "Validate images referenced in EPUB-FILE's HTML and download missing/empty ones.
+When called interactively inside a `nov-mode' buffer (without a prefix arg),
+operates on the current EPUB and refreshes the buffer."
+  (interactive
+   (list (if (and (derived-mode-p 'nov-mode)
+                  (not current-prefix-arg)
+                  (bound-and-true-p nov-file-name))
+             nov-file-name
+           (read-file-name "EPUB file: "
+                           (when (file-directory-p "~/org/assets/texts/")
+                             "~/org/assets/texts/")
+                           nil t nil
+                           (lambda (f)
+                             (or (file-directory-p f)
+                                 (string-match-p "\\.epub\\'" f)))))))
+  (setq epub-file (expand-file-name epub-file))
+  (let* ((in-nov-p (and (derived-mode-p 'nov-mode)
+                        (bound-and-true-p nov-file-name)
+                        (file-equal-p epub-file nov-file-name)
+                        (bound-and-true-p nov-work-dir)
+                        (file-directory-p nov-work-dir)))
+         (work-dir (if in-nov-p
+                       nov-work-dir
+                     (make-temp-file "epub-fix-" t)))
+         (valid-count 0)
+         (fixed-count 0)
+         (failed-count 0)
+         (seen-files (make-hash-table :test #'equal)))
+    (unwind-protect
+        (progn
+          (unless in-nov-p
+            (unless (zerop (nov-unzip-epub work-dir epub-file))
+              (error "Failed to unzip %s" epub-file)))
+          (dolist (html-file (directory-files-recursively
+                              work-dir "\\.\\(x?html?\\|xml\\)\\'"))
+            (unless (string-match-p "/\\(?:container\\.xml\\|content\\.opf\\|toc\\.ncx\\)\\'"
+                                    html-file)
+              (let ((html-dir (file-name-directory html-file))
+                    (dom (with-temp-buffer
+                           (insert-file-contents html-file)
+                           (libxml-parse-html-region (point-min) (point-max)))))
+                (cl-labels
+                    ((walk (node ancestors)
+                       (when (consp node)
+                         (when (eq (dom-tag node) 'img)
+                           (let* ((src (dom-attr node 'src))
+                                  (rel (and src
+                                            (not (dkj/epub--http-url-p src))
+                                            (car (nov-url-filename-and-target src))))
+                                  (local-path (and rel
+                                                   (not (string-empty-p rel))
+                                                   (expand-file-name rel html-dir))))
+                             (when (and local-path
+                                        (not (gethash local-path seen-files)))
+                               (puthash local-path t seen-files)
+                               (if (dkj/epub--valid-image-file-p local-path)
+                                   (cl-incf valid-count)
+                                 (let ((ext-url (dkj/epub--find-external-url node ancestors)))
+                                   (message "Downloading %s -> %s..."
+                                            (or ext-url "<no external URL>")
+                                            (file-name-nondirectory local-path))
+                                   (if (and ext-url
+                                            (dkj/epub--download-image ext-url local-path))
+                                       (cl-incf fixed-count)
+                                     (cl-incf failed-count)))))))
+                         (let ((next-anc (cons node ancestors)))
+                           (dolist (child (dom-children node))
+                             (walk child next-anc))))))
+                  (walk dom nil)))))
+          (when (> fixed-count 0)
+            (dkj/epub--repack work-dir epub-file)
+            (when in-nov-p
+              (clear-image-cache)
+              (if (fboundp 'dkj/nov-render-document)
+                  (dkj/nov-render-document)
+                (nov-render-document))))
+          (message "EPUB images (%s): %d valid, %d downloaded & fixed, %d failed"
+                   (file-name-nondirectory epub-file)
+                   valid-count fixed-count failed-count))
+      (unless in-nov-p
+        (when (file-directory-p work-dir)
+          (delete-directory work-dir t))))))
 
 (use-package speed-type)
 
 (use-package eat)
 
-(unless (eq system-type 'android)
-  (use-package ghostel
-	:ensure t))
+(use-package ghostel
+  :ensure t)
 
 (use-package ox-gfm)
 (eval-after-load "org"
@@ -1399,13 +1616,13 @@ and leaving a noweb reference in its place."
   (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-good)
-	(scroll-down-command)))
+	(scroll-up-command)))
 
 (defun dkj/org-again-or-scroll ()
   (interactive)
   (if (org-srs-reviewing-p)
 	  (org-srs-review-rate-again)
-	(scroll-up-command)))
+	(scroll-down-command)))
 
 (use-package org-srs
   :demand t
@@ -1501,6 +1718,29 @@ and leaving a noweb reference in its place."
   (advice-add 'org-srs-item-narrow :before
               #'dkj/srs-go-to-heading-including-hidden))
 
+(with-eval-after-load 'org-srs-item-card
+  (defun my-org-srs-hide-mnemonic (&rest _)
+    "Hide immediate-child Mnemonic subtrees during card questions."
+    (save-excursion
+      ;; Org-srs narrows the buffer to the entry being reviewed.
+      (goto-char (point-min))
+      (let ((child-level (1+ (or (org-current-level) 0))))
+        (org-map-entries
+         (lambda ()
+           (when (and (= (org-current-level) child-level)
+                      (string-equal-ignore-case
+                       (org-get-heading t t t t)
+                       "Mnemonic"))
+             (let ((beg (point))
+                   (end (save-excursion
+                          (org-end-of-subtree t t)
+                          (point))))
+               (org-srs-item-card-put-ellipsis-overlay beg end))))
+         nil nil))))
+
+  (advice-add 'org-srs-item-card-hide
+              :after #'my-org-srs-hide-mnemonic))
+
 (use-package keyfreq)
 (keyfreq-mode t)
 (keyfreq-autosave-mode t)
@@ -1511,7 +1751,6 @@ and leaving a noweb reference in its place."
   :config
   (setq denote-directory "~/org/"))
 
-(require 'god-mode-isearch)
 (defun dkj/god-terminal-active ()
   (equal overriding-terminal-local-map god-mode-isearch-map))
 
@@ -1587,7 +1826,8 @@ The DWIM behaviour of this command is as follows:
   (setq god-exempt-major-modes nil
 		god-exempt-predicates nil
 		god-mode-alist '((nil . "C-")
-						 ("g" . "C-M-")))
+						 ("g" . "M-")
+						 ("h" . "C-M-")))
   ;; Ensure god mode keymap gets priority over minor modes
   (setq minor-mode-map-alist
 		(assq-delete-all 'god-local-mode minor-mode-map-alist))
@@ -1597,21 +1837,60 @@ The DWIM behaviour of this command is as follows:
   (add-to-list 'emulation-mode-map-alists 'dkj/god-mode-emulation-alist)
   :init
   (require 'cc-mode)
+  (require 'god-mode-isearch)
   (god-mode-all))
 
-;; God Visuals
+;; Visuals
 (defun dkj/apply-god-mode-visuals ()
-  "Make the active modeline bright red when god-mode is enabled and highlight the current line."
+  "Highlight God mode without disturbing other face remappings."
   (if god-local-mode
-	  (progn
-		(face-remap-add-relative 'mode-line-active :background "lightcoral" :foreground "white")
-		(face-remap-add-relative 'mode-line-inactive :background "darkred" :foreground "white")
-		(hl-line-mode 1)
-		(when (eq system-type 'android)
-		  (set-face-attribute 'hl-line nil :background "bisque" :inherit nil)))
-	(hl-line-mode -1)
-	(setq-local face-remapping-alist nil)))
-(add-hook 'god-local-mode-hook #'dkj/apply-god-mode-visuals)
+      (progn
+		(set-face-attribute
+		 'mode-line-active nil
+         :background "lightcoral" :foreground "white")
+		(set-face-attribute
+		 'mode-line-inactive nil
+         :background "darkred" :foreground "white")
+        (hl-line-mode 1)
+		(setq cursor-type 'box))
+    (progn
+	  (dolist (frame (frame-list))
+		(face-spec-recalc 'mode-line-active frame)
+		(face-spec-recalc 'mode-line-inactive frame))
+	  (hl-line-mode -1)
+	  (setq cursor-type '(bar . 5)))))
+(add-hook 'post-command-hook #'dkj/apply-god-mode-visuals)
+
+(defun dkj/sync-god-text-conversion ()
+  "Use raw keys in God mode, normal text conversion otherwise."
+  (when (eq system-type 'android)
+    (let ((style (if (bound-and-true-p god-local-mode) nil 'lambda)))
+      (unless (eq overriding-text-conversion-style style)
+        (setq overriding-text-conversion-style style)
+        (set-text-conversion-style text-conversion-style)))))
+(add-hook 'post-command-hook #'dkj/sync-god-text-conversion)
+
+(defun dkj/semicolon-from-text-conversion ()
+  "Turn the latest lone committed semicolon into God-mode entry."
+  (when (and (eq system-type 'android)
+             (not (bound-and-true-p god-local-mode))
+             (eq (if (consp last-command-event)
+                     (car last-command-event)
+                   last-command-event)
+                 'text-conversion))
+    (pcase-let ((`(,buffer ,beg ,end ,text)
+                 (car text-conversion-edits)))
+      (when (and (eq buffer (current-buffer))
+                 (equal text ";")
+                 (marker-position beg)
+                 (marker-position end)
+                 (= (- end beg) 1)
+                 (= (point) end)
+                 (equal (buffer-substring-no-properties beg end) ";"))
+        (delete-region beg end)
+        (god-mode-all 1)
+        (dkj/sync-god-text-conversion)))))
+(add-hook 'post-command-hook #'dkj/semicolon-from-text-conversion)
 
 (mapc
  (lambda (chr)
@@ -1706,14 +1985,12 @@ The DWIM behaviour of this command is as follows:
   (tool-bar-mode 1)
   (setopt tool-bar-position 'bottom)
   ;; bigger font
-  (dkj/font-height 230)
+  (dkj/font-height 180)
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
-  ;; raw inputs from virtual keyboard
-  (setq overriding-text-conversion-style nil)
   ;; extra light and dark themes for eink
-  (setq dkj/theme-light 'modus-operandi)
-  (setq dkj/theme-dark 'modus-vivendi)
+  ;; (setq dkj/theme-light 'modus-operandi)
+  ;; (setq dkj/theme-dark 'modus-vivendi)
   (load-theme dkj/theme-light t)
   ;; dont blink cursor (particularly for eink)
   (setq-default blink-cursor-mode nil)
@@ -1721,8 +1998,8 @@ The DWIM behaviour of this command is as follows:
   (defun dkj/agenda-split ()
 	(split-window-below))
   ;; special bindings
-  (global-set-key (kbd "<volume-down>") #'scroll-up-command)
-  (global-set-key (kbd "<volume-up>") #'scroll-down-command)
+  (global-set-key (kbd "<volume-up>") #'scroll-up-command)
+  (global-set-key (kbd "<volume-down>") #'scroll-down-command)
   (global-set-key (kbd "A-e") #'avy-goto-char-2)
   (global-set-key (kbd "A-d") #'delete-other-windows)
   (setq org-agenda-prefix-format
@@ -1730,8 +2007,11 @@ The DWIM behaviour of this command is as follows:
 		  (todo . "")
 		  (tags . "")
 		  (search . "%-12:c %?|e ")))
+  ;; space is at a premium so don't show the whole grid
+  (setq org-agenda-use-time-grid nil)
   (setq-default mode-line-buffer-identification `(-12 . ,(propertized-buffer-identification "%b")))
-  (setq ispell-program-name (executable-find "hunspell"))
+  (setq ispell-program-name (executable-find "hunspell")
+		ispell-personal-dictionary "~/org/personal-dict")
   (setq org-capture-templates
 		(quote (("t" "Todo" entry (file "~/org/inbox.org")
 				 "* TODO %?\n%U\n" :clock-in t :clock-resume t)
