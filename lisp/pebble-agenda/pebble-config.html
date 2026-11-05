@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pebble Agenda pairing</title>
+<style>body{font:17px system-ui;margin:2rem auto;padding:0 1rem;max-width:30rem;color:#17212b;background:#f5f6fa}label{display:block;margin:1.2rem 0 .4rem}input,button{box-sizing:border-box;width:100%;padding:.8rem;font:inherit}button{margin-top:1.5rem;background:#185d8c;color:white;border:0;border-radius:.4rem}small{display:block;margin-top:.5rem;color:#425365}#error{color:#9e2020}</style></head>
+<body><h1>Pebble Agenda</h1><p>Connect your watch to the Emacs instance that manages your Org agenda.</p>
+<form id="pair"><label for="url">Emacs address</label><input id="url" type="url" required value="http://127.0.0.1:8765" autocapitalize="none" spellcheck="false"><small>Use localhost when Emacs runs on this Android phone. For desktop Emacs, use your configured secure endpoint.</small>
+<label for="token">Pairing token</label><input id="token" type="password" required autocomplete="off" autocapitalize="none" spellcheck="false"><small>In Emacs, run M-x pebble-agenda-pairing-info and copy the token here.</small>
+<button type="submit">Save connection</button><p id="error" role="alert"></p></form>
+<script>
+(function(){
+  var initial; try { initial=JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch(e) { initial={}; }
+  if(initial.url) document.getElementById('url').value=initial.url;
+  document.getElementById('pair').onsubmit=function(event){
+    event.preventDefault();
+    var url=document.getElementById('url').value.replace(/\/+$/,''),token=document.getElementById('token').value.trim();
+    if(!/^https?:\/\/[^\s?#]+$/.test(url)||token.length<32){document.getElementById('error').textContent='Enter a valid HTTP(S) address and the full Emacs token.';return;}
+    var match=location.search.match(/[?&]return_to=([^&]+)/),returnTo=match?decodeURIComponent(match[1]):'pebblejs://close#';
+    if(!/^http:\/\/(localhost|127\.0\.0\.1):[0-9]+\/close\?$/.test(returnTo)) returnTo='pebblejs://close#';
+    location.href=returnTo+encodeURIComponent(JSON.stringify({url:url,token:token}));
+  };
+})();
+</script></body></html>
