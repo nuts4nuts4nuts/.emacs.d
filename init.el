@@ -19,8 +19,6 @@
   (menu-bar-mode -1))
 ;; tab-bar-history-mode replaces winner
 (tab-bar-history-mode 1)
-;; save windows across sessions
-(desktop-save-mode 1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
