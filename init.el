@@ -17,6 +17,8 @@
 (if (display-graphic-p)
 	(menu-bar-mode 1)
   (menu-bar-mode -1))
+;; tab-bar-history-mode replaces winner
+(tab-bar-history-mode 1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -85,9 +87,6 @@
 (setq sendmail-program "gmi")
 (setq message-sendmail-extra-arguments '("send" "--quiet" "-t" "-C" "~/.mail/dvdjoh.gmail"))
 (setq notmuch-fcc-dirs nil)
-
-;; Winner mode remembers my window layouts
-(winner-mode 1)
 
 ;; Save minibuffer history across sessions
 (savehist-mode 1)
@@ -173,12 +172,6 @@
           '(lambda ()
              (dkj/open-agenda-main-view '(16))))
 (setq initial-buffer-choice (lambda () (get-buffer "*Org Agenda*")))
-
-;; I don't want to accidentally clear the terminal (or scrollback)
-(with-eval-after-load "vterm"
-  (define-key vterm-mode-map (kbd "C-l") nil)
-  (define-key vterm-mode-map (kbd "C-c C-l") nil)
-  (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
 
 (defun dkj/cc-cc ()
   "Simulate pressing C-c C-c"
@@ -384,9 +377,9 @@ ITEMS is a list of item definitions, where each definition is:
 							:help "org-agenda-schedule"
 							:label "Schedule"))
 
-;; Nicer winner-mode bindings
-(define-key dkj-keys (kbd "C-p") #'winner-undo)
-(define-key dkj-keys (kbd "C-n") #'winner-redo)
+;; Nicer window history bindings
+(define-key dkj-keys (kbd "C-p") #'tab-bar-history-back)
+(define-key dkj-keys (kbd "C-n") #'tab-bar-history-forward)
 
 ;; Better macro bindings
 (define-key dkj-keys (kbd "C-9") #'kmacro-start-macro-or-insert-counter)
