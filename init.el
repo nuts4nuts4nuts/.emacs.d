@@ -1513,6 +1513,32 @@ operates on the current EPUB and refreshes the buffer."
 (use-package ghostel
   :ensure t)
 
+;; Make system notifications work from ghostel on macos and android
+(use-package alert
+      :ensure t
+      :config
+      (pcase system-type
+        ('darwin
+         (setq alert-default-style 'osx-notifier))
+        ('android
+         (if (fboundp 'android-notifications-notify)
+             (progn
+               (alert-define-style
+                'android-notifications
+                :title "Android Notifications"
+                :notifier
+                (lambda (info)
+                  (android-notifications-notify
+                   :title (or (plist-get info :title) "Emacs")
+                   :body (or (plist-get info :message) "")
+                   :urgency (pcase (plist-get info :severity)
+                              ((or 'urgent 'high) 'critical)
+                              ('moderate 'normal)
+                              (_ 'low)))))
+               (setq alert-default-style 'android-notifications))
+           ;; Termux Emacs fallback (needs termux-api + Termux:API app)
+           (setq alert-default-style 'termux)))))
+
 (use-package ox-gfm)
 (eval-after-load "org"
   '(require 'ox-gfm nil t))
