@@ -17,6 +17,8 @@
 (if (display-graphic-p)
 	(menu-bar-mode 1)
   (menu-bar-mode -1))
+;; tab-bar-history-mode replaces winner
+(tab-bar-history-mode 1)
 
 ;; Show column number in the modeline
 (column-number-mode 1)
@@ -85,9 +87,6 @@
 (setq sendmail-program "gmi")
 (setq message-sendmail-extra-arguments '("send" "--quiet" "-t" "-C" "~/.mail/dvdjoh.gmail"))
 (setq notmuch-fcc-dirs nil)
-
-;; Winner mode remembers my window layouts
-(winner-mode 1)
 
 ;; Save minibuffer history across sessions
 (savehist-mode 1)
@@ -168,17 +167,45 @@
 ;; without confirmation
 (setq async-shell-command-buffer 'new-buffer)
 
-;; Start on agenda buffer
-(add-hook 'after-init-hook
-          '(lambda ()
-             (dkj/open-agenda-main-view '(16))))
-(setq initial-buffer-choice (lambda () (get-buffer "*Org Agenda*")))
+(defvar dkj/saved-frame-state nil
+  "Window, tab, and tab-history state.")
 
-;; I don't want to accidentally clear the terminal (or scrollback)
-(with-eval-after-load "vterm"
-  (define-key vterm-mode-map (kbd "C-l") nil)
-  (define-key vterm-mode-map (kbd "C-c C-l") nil)
-  (define-key vterm-mode-map (kbd "C-q") #'vterm-send-next-key))
+(defun dkj/save-frame-state (&optional frame)
+  (when (and (frame-live-p frame)
+             (not (frame-parent frame))) ; ignore child frames (posframe, corfu, etc.)
+    (with-selected-frame frame
+      (setq dkj/saved-frame-state
+            (list :ws           (window-state-get (frame-root-window frame) t)
+                  :tabs         (copy-tree (frame-parameter frame 'tabs))
+                  :hist-back    (copy-tree (frame-parameter frame 'tab-bar-history-back))
+                  :hist-forward (copy-tree (frame-parameter frame 'tab-bar-history-forward)))))))
+(add-hook 'delete-frame-functions #'dkj/save-frame-state)
+
+(defun dkj/restore-frame-state (&optional frame)
+  (when (and dkj/saved-frame-state (frame-live-p frame))
+    (with-selected-frame frame
+      (let ((tabs         (plist-get dkj/saved-frame-state :tabs))
+            (ws           (plist-get dkj/saved-frame-state :ws))
+            (hist-back    (plist-get dkj/saved-frame-state :hist-back))
+            (hist-forward (plist-get dkj/saved-frame-state :hist-forward)))
+        (when tabs
+          (set-frame-parameter frame 'tabs (copy-tree tabs)))
+        (when ws
+          (window-state-put ws (frame-root-window frame) t))
+        (set-frame-parameter frame 'tab-bar-history-back (copy-tree hist-back))
+        (set-frame-parameter frame 'tab-bar-history-forward (copy-tree hist-forward))))))
+(add-hook 'after-make-frame-functions #'dkj/restore-frame-state)
+
+;; Start on agenda buffer if there's no saved state
+(add-hook 'after-init-hook
+          (lambda ()
+            (dkj/open-agenda-main-view '(16))))
+(setq initial-buffer-choice
+      (lambda ()
+        (if dkj/saved-frame-state
+            (window-buffer (selected-window))
+          (or (get-buffer "*Org Agenda*")
+              (get-buffer "*scratch*")))))
 
 (defun dkj/cc-cc ()
   "Simulate pressing C-c C-c"
@@ -384,9 +411,9 @@ ITEMS is a list of item definitions, where each definition is:
 							:help "org-agenda-schedule"
 							:label "Schedule"))
 
-;; Nicer winner-mode bindings
-(define-key dkj-keys (kbd "C-p") #'winner-undo)
-(define-key dkj-keys (kbd "C-n") #'winner-redo)
+;; Nicer window history bindings
+(define-key dkj-keys (kbd "C-p") #'tab-bar-history-back)
+(define-key dkj-keys (kbd "C-n") #'tab-bar-history-forward)
 
 ;; Better macro bindings
 (define-key dkj-keys (kbd "C-9") #'kmacro-start-macro-or-insert-counter)
@@ -1975,36 +2002,6 @@ The DWIM behaviour of this command is as follows:
         org-timegrid-agenda-separator t
         org-timegrid-agenda-minutes-before 300
         org-timegrid-agenda-minutes-after 300))
-
-;; Pebble Agenda is vendored locally so this config also works on Android.
-(use-package pebble-agenda
-  :ensure nil
-  :load-path (lambda ()
-               (list (expand-file-name "lisp/pebble-agenda" user-emacs-directory)))
-  :commands (pebble-agenda-mode
-             pebble-agenda-pairing-info
-             pebble-agenda-refresh)
-  :init
-  ;; Use the existing agenda file selection; do not maintain a second list.
-  (setq pebble-agenda-files nil
-        pebble-agenda-default-view 'today
-        pebble-agenda-save-changes t
-        pebble-http-host "127.0.0.1"
-        pebble-http-port 8765
-        pebble-agenda-public-url "http://127.0.0.1:8765")
-  (defun dkj/start-pebble-agenda ()
-    "Start the paired watch's agenda service in this Emacs instance."
-    (interactive)
-    (condition-case err
-        (progn
-          (require 'pebble-agenda)
-          (pebble-agenda-mode 1))
-      (error (display-warning 'pebble-agenda
-                              (error-message-string err) :warning))))
-  ;; Phone localhost reaches Android Emacs, not this Mac.  On a desktop,
-  ;; configure a phone-reachable endpoint before starting the service manually.
-  (when (eq system-type 'android)
-    (add-hook 'after-init-hook #'dkj/start-pebble-agenda)))
 
 (when (eq system-type 'android)
   ;; tool bar is cool and should be on bottom
