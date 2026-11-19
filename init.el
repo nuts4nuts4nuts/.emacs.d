@@ -2009,6 +2009,9 @@ The DWIM behaviour of this command is as follows:
   (setopt tool-bar-position 'bottom)
   ;; bigger font
   (dkj/font-height 180)
+  ;; better font
+  (set-face-attribute 'default nil
+                    :family "JetBrainsMonoNL Nerd Font")
   ;; always display keyboard
   (setq touch-screen-display-keyboard t)
   ;; extra light and dark themes for eink
