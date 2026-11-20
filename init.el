@@ -1631,6 +1631,26 @@ operates on the current EPUB and refreshes the buffer."
 (use-package eca
   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 
+(use-package agent-shell
+  :ensure t)
+
+(connection-local-set-profile-variables
+ 'remote-direct-async-process
+ '((tramp-direct-async-process . t)))
+
+(connection-local-set-profiles
+ '(:application tramp :machine "air")
+ 'remote-direct-async-process)
+
+(add-to-list 'tramp-connection-properties
+			 (list (regexp-quote "/ssh:davidjohnston@air:") "direct-async" t))
+
+(use-package agent-shell-tramp
+  :vc (:url "https://github.com/junyi-hou/agent-shell-tramp" :rev :newest)
+  :after agent-shell
+  :config
+  (agent-shell-tramp-mode 1))
+
 (defun dkj/org-good-or-scroll ()
   (interactive)
   (if (org-srs-reviewing-p)

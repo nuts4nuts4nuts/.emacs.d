@@ -2195,6 +2195,37 @@ Agentic IDE experience for Emacs?
 (use-package eca
   :vc (:url "https://github.com/editor-code-assistant/eca-emacs" :rev :newest))
 #+end_src
+
+*** agent-shell
+:PROPERTIES:
+:ID:       e6588c24-4d63-4022-b182-3a0ec24d3cb7
+:END:
+Agentic IDE experience for Emacs?
+(but as an interface to external harnesses, not its own harness)
+
+#+begin_src emacs-lisp
+(use-package agent-shell
+  :ensure t)
+
+(connection-local-set-profile-variables
+ 'remote-direct-async-process
+ '((tramp-direct-async-process . t)))
+
+(connection-local-set-profiles
+ '(:application tramp :machine "air")
+ 'remote-direct-async-process)
+
+(add-to-list 'tramp-connection-properties
+			 (list (regexp-quote "/ssh:davidjohnston@air:") "direct-async" t))
+
+(use-package agent-shell-tramp
+  :vc (:url "https://github.com/junyi-hou/agent-shell-tramp" :rev :newest)
+  :after agent-shell
+  :config
+  (agent-shell-tramp-mode 1))
+  
+#+end_src
+
 *** org-srs
 :PROPERTIES:
 :ID:       BC240B89-A76B-4081-984E-34C0BE2502B4
